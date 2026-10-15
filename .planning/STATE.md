@@ -120,6 +120,7 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: FK name draw_receiver_id_fkey/draw_giver_id_fkey confirmed by running a real query against the linked Supabase project (npx supabase db query --linked) before writing the supabase-js query, instead of assuming the Postgres default name
 - [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: docs/sdd.md §4 had MyDrawResult without an id field; real code uses DrawResult with id — SDD updated in the same change per CLAUDE.md rule (spec divergence fixed alongside the code)
 - [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: memberGuard generalized to read paramMap.get('id') ?? paramMap.get('groupId'), reusable between /group/:id and /draw/:groupId/result without duplicating the guard
+- [Quick 261015-mbk]: Added "Ver meu amigo secreto" link to group-view.page.html (participant screen), gated by podeVerResultadoDoSorteio(status, temParticipante) pure predicate — closes the UI gap where DRAW-08/09 were unreachable for non-admin participants (only manage-group.page.html, admin-only, linked to /draw/:groupId/result before this change)
 
 ### Pending Todos
 
@@ -135,6 +136,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T18:53:47.990Z
-Stopped at: Completed 04-04-PLAN.md
+Last session: 2026-10-15T19:08:00.000Z
+Stopped at: Completed quick task 261015-mbk
 Resume file: None
