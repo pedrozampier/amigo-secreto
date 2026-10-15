@@ -182,12 +182,12 @@ Preenchido durante a criação do roadmap.
 
 | Requisito | Fase | Status |
 |-----------|------|--------|
-| AUTH-01 | Fase 2 | Pendente |
-| AUTH-02 | Fase 2 | Pendente |
-| AUTH-03 | Fase 2 | Pendente |
-| AUTH-04 | Fase 2 | Pendente |
-| AUTH-05 | Fase 2 | Pendente |
-| AUTH-06 | Fase 2 | Pendente |
+| AUTH-01 | Fase 2 | Completo |
+| AUTH-02 | Fase 2 | Completo |
+| AUTH-03 | Fase 2 | Completo |
+| AUTH-04 | Fase 2 | Completo |
+| AUTH-05 | Fase 2 | Completo |
+| AUTH-06 | Fase 2 | Completo |
 | DB-01 | Fase 1 | Completo |
 | DB-02 | Fase 1 | Completo |
 | DB-03 | Fase 1 | Completo |
