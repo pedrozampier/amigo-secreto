@@ -273,7 +273,8 @@ src/
 │   │   │   ├── holiday.service.ts        # BrasilAPI (API-01..04)
 │   │   │   └── draw.service.ts           # Fase 4
 │   │   ├── guards/
-│   │   │   └── auth.guard.ts
+│   │   │   ├── auth.guard.ts
+│   │   │   └── admin.guard.ts            # só o admin abre /group/:id/manage
 │   │   ├── resolvers/
 │   │   │   └── group.resolver.ts
 │   │   ├── interceptors/
@@ -316,7 +317,7 @@ src/
 | └ `/dashboard` | `features/dashboard/dashboard.page.ts` | herda `authGuard` |
 | └ `/group` *(layout)* | `features/group/group-layout/group-layout.page.ts` | herda `authGuard` |
 | &nbsp;&nbsp;&nbsp;└ `/group/create` | `features/group/create/create-group.page.ts` | herda `authGuard` |
-| &nbsp;&nbsp;&nbsp;└ `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | herda `authGuard` + **`groupResolver`** |
+| &nbsp;&nbsp;&nbsp;└ `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | herda `authGuard` + **`adminGuard`** (`canActivate`) + **`groupResolver`** (`resolve`) |
 | └ `/join/:token` | `features/group/join/join-group.page.ts` | herda `authGuard` (deep link via `returnUrl`) |
 | └ `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | Fase 4 |
 
