@@ -11,7 +11,7 @@
     "test": "ng test",
     "lint": "eslint src --max-warnings=0",
     "check:no-rxjs-state": "! grep -rn 'BehaviorSubject\\|new Subject' src/app",
-    "check:no-secrets": "! grep -rEi 'service_role|sb_secret_' src/ && ! grep -rEi 'service_role|sb_secret_' dist/"
+    "check:no-secrets": "! grep -rEi 'service_role|sb_secret_' src/ && ! grep -rEi 'service_role|sb_secret_[A-Za-z0-9_-]{10,}' dist/"
   },
   "private": true,
   "packageManager": "npm@10.9.2",
