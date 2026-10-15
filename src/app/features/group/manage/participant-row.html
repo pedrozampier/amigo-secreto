@@ -1,0 +1,21 @@
+<div class="flex items-center justify-between gap-2 border-b py-3 last:border-b-0">
+  <span class="min-w-0 flex-1 truncate text-sm text-foreground">
+    {{ participant().display_name }}
+  </span>
+
+  @if (podeRemover()) {
+    @if (confirmando()) {
+      <div class="flex shrink-0 items-center gap-1">
+        <span class="text-xs text-muted-foreground">Remover?</span>
+        <button hlmBtn variant="destructive" size="sm" class="min-h-11" type="button"
+                (click)="confirmarRemocao.emit(participant().id)">Sim</button>
+        <button hlmBtn variant="outline" size="sm" class="min-h-11" type="button"
+                (click)="cancelarRemocao.emit()">Não</button>
+      </div>
+    } @else {
+      <button hlmBtn variant="outline" size="sm" type="button" class="min-h-11 shrink-0"
+              [attr.aria-label]="'Remover ' + participant().display_name"
+              (click)="pedirRemocao.emit(participant().id)">Remover</button>
+    }
+  }
+</div>

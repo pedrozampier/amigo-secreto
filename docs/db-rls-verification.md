@@ -207,3 +207,250 @@ passar por essas funções), uma policy de `SELECT` em `participant` que faz `SE
 - `SUPABASE_URL` e o esquema de chave pública emitido pelo projeto (novo formato "publicável"
   vs. o legado `anon`) ainda não foram fornecidos; pertencem ao setup das plans 01-03/01-04,
   não a este documento de verificação de RLS.
+
+## Verificação da migration 0004 (Fase 3)
+
+**Data da execução:** 2026-10-15
+**Projeto:** Supabase remoto real (project ref `ccruvfblgdvnjxenezuh`), via CLI linkada
+**Objetivo:** provar que `public.join_group_by_token` e `public.preview_group_by_token`
+(migration `0004_group_join_rpcs.sql`) destravam a entrada por convite sem reabrir a RLS
+direta sobre `public.group` — GRP-06, GRP-07, GRP-08.
+
+**Diferença de método em relação às verificações anteriores:** as Partes A–G acima foram
+executadas pelo usuário no SQL Editor do painel Supabase, alternando sessões manualmente.
+Esta seção foi executada pelo orquestrador diretamente contra o banco de produção, usando
+`npx supabase db query --linked` após o projeto Supabase ter sido linkado via CLI. Nenhum
+`supabase db push` foi necessário — a migration `0004` **já estava aplicada no banco remoto
+antes desta sessão**, tendo sido criada manualmente via SQL Editor em algum momento
+anterior (mesmo padrão de aplicação manual das migrations `0001`–`0003`; ver seção
+"Itens não capturados" abaixo para a dívida de processo associada).
+
+Usuários reais usados (já existentes em `auth.users` no projeto):
+
+| Papel | UUID | E-mail |
+|-------|------|--------|
+| A (admin, cria o grupo) | `f41aaa98-fdc2-45dd-9941-af6616c7ae57` | `test-admin@utfsecret.dev` |
+| B (joiner, entra pelo convite) | `6b8baaa2-5342-45a4-a524-a46d76b67163` | `test-participant@utfsecret.dev` |
+| C (terceiro usuário, testa grupo fechado) | `5e21548f-0228-4a7b-af51-4e70148bf732` | `teste-fase2@exemplo.com` |
+
+### Passo 1 — as funções existem como SECURITY DEFINER
+
+Query executada:
+
+```sql
+select p.proname, p.prosecdef, array_to_string(p.proconfig,',') as cfg
+from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public'
+  and p.proname in ('join_group_by_token','preview_group_by_token');
+```
+
+Saída observada (2 linhas):
+
+```json
+[
+  { "proname": "join_group_by_token",    "prosecdef": true, "cfg": "search_path=\"\"" },
+  { "proname": "preview_group_by_token", "prosecdef": true, "cfg": "search_path=\"\"" }
+]
+```
+
+**Interpretação:** ambas as funções existem no schema `public`, com `prosecdef = true`
+(equivalente a `security definer`) e `search_path` travado em string vazia — exatamente o
+padrão exigido desde `0002_private_helpers.sql` para evitar sequestro de `search_path`.
+
+### Passo 2 — criar grupo como A
+
+Query executada:
+
+```sql
+insert into public.group (name, admin_id)
+values ('Grupo Teste 0004', 'f41aaa98-fdc2-45dd-9941-af6616c7ae57')
+returning id, name, status, invite_token;
+```
+
+Saída observada:
+
+```json
+[{ "id": "53ed7d73-1bd5-4cb1-a080-0f4c3118d449",
+   "name": "Grupo Teste 0004",
+   "status": "open",
+   "invite_token": "c844819f57dcbdebb439d4b88e6e82d7" }]
+```
+
+### Passo 3a — `preview_group_by_token` como B (via RPC)
+
+Query executada:
+
+```sql
+begin;
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"6b8baaa2-5342-45a4-a524-a46d76b67163","role":"authenticated"}';
+select 'preview_rpc' as teste, name, status
+from public.preview_group_by_token('c844819f57dcbdebb439d4b88e6e82d7');
+commit;
+```
+
+Saída observada:
+
+```json
+[{ "teste": "preview_rpc", "name": "Grupo Teste 0004", "status": "open" }]
+```
+
+### Passo 3b — SELECT direto na tabela `group` como B (o critério central)
+
+Query executada:
+
+```sql
+begin;
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"6b8baaa2-5342-45a4-a524-a46d76b67163","role":"authenticated"}';
+select count(*) as linhas_visiveis_direto
+from public.group where invite_token = 'c844819f57dcbdebb439d4b88e6e82d7';
+commit;
+```
+
+Saída observada:
+
+```json
+[{ "linhas_visiveis_direto": 0 }]
+```
+
+**Interpretação (prova central da 0004):** a RLS continua bloqueando a leitura direta de
+`public.group` por um não-membro — exatamente como as Partes F e G provam para o restante
+do schema. Somente o `SECURITY DEFINER` atravessa esse bloqueio. É a premissa que justifica
+toda a migration `0004`: sem ela, B não teria como nem ler o nome do grupo para decidir se
+quer entrar.
+
+### Passo 4a — `join_group_by_token` como B
+
+Query executada (mesma transação com role `authenticated` e claims de B):
+
+```sql
+select public.join_group_by_token('c844819f57dcbdebb439d4b88e6e82d7') as resultado;
+```
+
+Saída observada:
+
+```json
+[{ "resultado": { "code": "OK", "group_id": "53ed7d73-1bd5-4cb1-a080-0f4c3118d449" } }]
+```
+
+### Passo 4b — linha de `participant` criada com `display_name` não vazio
+
+Query executada:
+
+```sql
+select id, user_id, display_name from public.participant
+where group_id = '53ed7d73-1bd5-4cb1-a080-0f4c3118d449';
+```
+
+Saída observada:
+
+```json
+[{ "id": "e587f290-bd69-4fae-9125-a039fb88c9fd",
+   "user_id": "6b8baaa2-5342-45a4-a524-a46d76b67163",
+   "display_name": "test-participant" }]
+```
+
+**Interpretação (Passos 4a/4b):** B — que não tinha acesso de leitura direto à linha de
+`group` — consegue entrar no grupo via RPC, e a linha de `participant` resultante carrega o
+`display_name` copiado de `profile`, não nulo nem vazio. GRP-06 comprovado de ponta a ponta.
+
+### Passo 5 — GRP-07, join repetido como B
+
+Query executada:
+
+```sql
+select public.join_group_by_token('c844819f57dcbdebb439d4b88e6e82d7') as resultado;
+```
+
+Saída observada:
+
+```json
+[{ "resultado": { "code": "ALREADY_MEMBER" } }]
+```
+
+**Interpretação:** código estável devolvido, sem vazar o erro `23505` (unique_violation) do
+Postgres por trás. GRP-07 comprovado.
+
+### Passo 6 — GRP-08, grupo fechado, join como terceiro usuário C
+
+Queries executadas:
+
+```sql
+update public.group set status = 'closed' where id = '53ed7d73-1bd5-4cb1-a080-0f4c3118d449';
+
+begin;
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"5e21548f-0228-4a7b-af51-4e70148bf732","role":"authenticated"}';
+select public.join_group_by_token('c844819f57dcbdebb439d4b88e6e82d7') as resultado;
+commit;
+```
+
+Saída observada:
+
+```json
+[{ "resultado": { "code": "GROUP_CLOSED" } }]
+```
+
+**Interpretação:** um grupo que não está `open` não aceita mais ninguém, nem um usuário que
+nunca havia tentado entrar antes. GRP-08 comprovado.
+
+### Passo 7 — token inexistente
+
+Query executada:
+
+```sql
+select public.join_group_by_token('naoexiste') as resultado;
+```
+
+Saída observada:
+
+```json
+[{ "resultado": { "code": "INVALID_TOKEN" } }]
+```
+
+### Passo 8 — limpeza e confirmação
+
+Queries executadas:
+
+```sql
+delete from public.group where name = 'Grupo Teste 0004';
+
+select
+  (select count(*) from public.group where name = 'Grupo Teste 0004') as grupos_restantes,
+  (select count(*) from public.participant where group_id = '53ed7d73-1bd5-4cb1-a080-0f4c3118d449') as participantes_restantes;
+```
+
+Saída observada:
+
+```json
+[{ "grupos_restantes": 0, "participantes_restantes": 0 }]
+```
+
+**Interpretação:** o `on delete cascade` de `participant.group_id` funcionou — nenhum
+resíduo do teste permanece no banco de produção.
+
+### Resumo por requisito
+
+| Requisito | Descrição | Resultado |
+|-----------|-----------|-----------|
+| GRP-06 | Não-membro descobre nome+status pelo token (`preview_group_by_token`) e entra no grupo (`join_group_by_token`), com a linha de `participant` resultante carregando `display_name` não vazio — tudo isso sem que a RLS direta sobre `group` seja reaberta (Passo 3b confirma 0 linhas no SELECT direto) | PASS |
+| GRP-07 | Join duplicado devolve `ALREADY_MEMBER` em vez do erro cru `23505` do Postgres | PASS |
+| GRP-08 | Grupo fora de `status = 'open'` rejeita qualquer novo join com `GROUP_CLOSED` | PASS |
+
+### Itens não capturados / dívida de processo
+
+- **As migrations `0001`–`0004` foram todas aplicadas manualmente via SQL Editor do painel
+  Supabase, nunca por `npx supabase db push`.** Consequência direta: a tabela
+  `supabase_migrations.schema_migrations` **não existe** no projeto remoto, e
+  `npx supabase migration list` mostra a coluna `remote` vazia para as 4 migrations, mesmo
+  todas estando de fato aplicadas e verificadas em produção (como provam os Passos 1–8
+  acima). O histórico de migrations da CLI está, portanto, dissociado do estado real do
+  banco. Nenhum `db push` foi executado nesta sessão — a `0004` já estava aplicada quando a
+  verificação começou.
+- Esta é dívida de processo documentada, não um bloqueio funcional: o schema real e as RLS
+  policies reais foram verificados diretamente via `pg_proc`/`pg_policies` e via execução
+  das funções, independentemente do que a CLI de migrations acredita estar sincronizado.
+  Recomendação para sessões futuras: rodar `npx supabase db push` (ou
+  `npx supabase migration repair`) ao menos uma vez para reconciliar o histórico da CLI com
+  o estado real do banco, antes que a divergência cresça mais.

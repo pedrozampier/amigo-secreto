@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-10-15T02:37:51.793Z"
+status: executing
+stopped_at: Completed 05-04-PLAN.md
+last_updated: "2026-10-15T21:07:39.889Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
-  completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
-  percent: 0
+  completed_phases: 4
+  total_plans: 25
+  completed_plans: 24
+  percent: 80
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-14)
 
 **Core value:** O sorteio é privado de verdade — garantido pelo banco (RLS), não pela interface — e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código entregue.
-**Current focus:** Phase 01 — fundacao-scaffold-banco-rls
+**Current focus:** Phase 05 — pwa-acessibilidade-e-entrega
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 05 (pwa-acessibilidade-e-entrega) — EXECUTING
+Plan: 6 of 6
+Status: Ready to execute
 Last activity: 2026-10-15
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -56,6 +56,20 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P01 | 15min | 3 tasks | 4 files |
 | Phase 01 P03 | 35 | 3 tasks | 54 files |
 | Phase 01-fundacao-scaffold-banco-rls P04 | 25min | 2 tasks | 5 files |
+| Phase 02 P02 | 10min | 2 tasks | 6 files |
+| Phase 02 P01 | 25min | 2 tasks | 4 files |
+| Phase 02 P03 | 20min | 3 tasks | 13 files |
+| Phase 03 P02 | 3min | 2 tasks | 9 files |
+| Phase 03 P01 | 36min | 3 tasks | 5 files |
+| Phase 03 P03 | 8min | 2 tasks | 4 files |
+| Phase 03 P04 | 12min | 3 tasks | 12 files |
+| Phase 03 P06 | 20min | 3 tasks | 9 files |
+| Phase 04 P01 | 3min | 2 tasks | 5 files |
+| Phase 04-sorteio-e-revela-o P02 | 12min | 2 tasks | 3 files |
+| Phase 04-sorteio-e-revela-o P03 | 6min | 2 tasks | 7 files |
+| Phase 04-sorteio-e-revela-o P04 | 5min | 4 tasks | 10 files |
+| Phase 04 P05 | 19min | 2 tasks | 2 files |
+| Phase 05 P04 | 25min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -84,6 +98,33 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: Disabled Vercel Deployment Protection deliberately for an academic deliverable so the grader can open the production URL without a Vercel login
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: amigo-secreto.vercel.app is an unrelated third-party Next.js app occupying that subdomain globally; the real production URL is the per-deployment Vercel URL under the zmp2 team scope
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: npm requires --legacy-peer-deps in CI too (vitest@4/npm 10.9.2 arborist bug), consistent with plan 01-03
+- [Phase 02]: [Phase 02-02]: Generated only input and label Spartan primitives, not field — field pulls separator + @ng-icons peers absent from docs/sdd.md §2
+- [Phase 02]: [Phase 02-01]: ng test's Vitest builder rejects --run; use ng test --watch=false --include=<glob> to target a single spec
+- [Phase 02]: authGuard applied exactly once on the parent layout route (D-19); provideAppInitializer awaits AuthService.initialize() before first navigation, eliminating the F5 login flash (D-01)
+- [Phase 02]: Login/register stub components are structurally required in plan 02-03 because tsc resolves loadComponent statically; without them the route tree fails TS2307
+- [Phase 02-autentica-o-end-to-end]: 02-04 complete — human browser/SQL checkpoint approved 2026-10-15, all 6 steps passed and profile.display_name confirmed correct (D-13 chain proven end to end)
+- [Phase 02-autentica-o-end-to-end]: D-20 ("Confirm email" desabilitado) era falso no projeto real — signUp devolvia session: null sem erro e o redirect para /dashboard era revertido pelo authGuard em silencio. Resolvido desativando "Confirm email" no Supabase (escolha do usuario, Opcao A); fragilidade residual no codigo registrada em deferred-items.md
+- [Phase 03]: [Phase 03-02]: HolidayService exposes diasAteONatal/natal as raw signal references (no trailing call) on ChristmasCountdownCard fields to avoid freezing a one-time read; year for the countdown is sourced from the BrasilAPI response's own date field rather than new Date(), keeping the public GET load-bearing (D-14)
+- [Phase 03]: [Phase 03-01]: Falso negativo no grep de verificação da Task 1 da plan (conta 3 ocorrências da string de configuração search_path vazio, por causa de um comentário explicativo na própria plan); a migration está correta (confirmado via pg_proc: prosecdef=true em ambas as funções)
+- [Phase 03]: [Phase 03-01]: Verificação da Task 3 (migration 0004) executada pelo orquestrador via CLI do Supabase linkada contra o projeto de produção real, não pelo usuário manualmente no SQL Editor; a migration já estava aplicada remotamente antes desta sessão, e supabase_migrations.schema_migrations não existe no banco -- historico da CLI de migrations esta dissociado do estado real (dívida de processo documentada em docs/db-rls-verification.md)
+- [Phase 03]: [Phase 03-03]: updateWishList ganhou um terceiro parâmetro groupId (não previsto no pseudocódigo da plan) para permitir o refetch exigido por D-05 sem introduzir um signal extra
+- [Phase 03]: [Phase 03-03]: Desvio documentado de D-08 — checagem de admin embutida no groupResolver (devolvendo UrlTree) em vez de um adminGuard separado, porque canActivate roda antes de resolve na mesma rota; padrão a ser reaproveitado pelo drawResultResolver da Fase 4
+- [Phase 03]: [Phase 03-04]: ManageGroupPage e JoinGroupPage criados como esqueletos estruturais nesta plan (não na 03-05) porque tsc resolve loadComponent estaticamente; sem eles a árvore de rotas não compila
+- [Phase 03]: [Phase 03-04]: Cards de grupos participados no dashboard não linkam para /manage — o groupResolver redirecionaria o não-admin de volta, e um link que sempre rebate é péssima UX
+- [Phase 03]: [Phase 03-06]: memberGuard admite admin OU participante checando apenas group !== null (RLS ja faz OR das duas policies de SELECT) — sem query extra em participant, sem comparar admin_id
+- [Phase 03]: [Phase 03-06]: GroupViewPage e ManageGroupPage ficam como dois componentes separados por papel (participante vs admin) em vez de afrouxar adminGuard com @if (souAdmin()) espalhado; admin-que-tambem-e-participante entra em /group/:id sem redirect e ve um link para /manage
+- [Phase 04]: [Phase 04-01]: config.toml escrito à mão com apenas project_id e [functions.run-draw], seguindo o fallback do plan apos a CLI recusar sobrescrever supabase/functions/run-draw/ ja criado
+- [Phase 04]: [Phase 04-01]: check:no-secrets validado com dist/ limpo — stale dist/ local continha a string service_role interna ao SDK supabase-js, nao um secret real; CI sempre builda fresh e dist/ e gitignored, logo nao e regressao
+- [Phase 04-sorteio-e-revela-o]: D-01: admin participa do próprio sorteio — createGroup agora insere o admin como participant na mesma transação do grupo (RPC create_group, migration 0006)
+- [Phase 04-sorteio-e-revela-o]: D-02: atomicidade group+participant implementada via RPC plpgsql SECURITY DEFINER único, não via dois .insert() separados do cliente
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-03]: grupoAtual() = GroupService.currentGroup() ?? group() introduzido em ManageGroupPage porque group() (input.required do groupResolver) e congelado na navegacao e nao reflete loadGroup() chamado pelo proprio componente apos o sorteio (D-11)
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-03]: D-04 (admin nao remove a propria linha) e UI-only, mantendo a policy de DELETE em participant inalterada no banco - adiado como V2-02 item c
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: FK name draw_receiver_id_fkey/draw_giver_id_fkey confirmed by running a real query against the linked Supabase project (npx supabase db query --linked) before writing the supabase-js query, instead of assuming the Postgres default name
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: docs/sdd.md §4 had MyDrawResult without an id field; real code uses DrawResult with id — SDD updated in the same change per CLAUDE.md rule (spec divergence fixed alongside the code)
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: memberGuard generalized to read paramMap.get('id') ?? paramMap.get('groupId'), reusable between /group/:id and /draw/:groupId/result without duplicating the guard
+- [Quick 261015-mbk]: Added "Ver meu amigo secreto" link to group-view.page.html (participant screen), gated by podeVerResultadoDoSorteio(status, temParticipante) pure predicate — closes the UI gap where DRAW-08/09 were unreachable for non-admin participants (only manage-group.page.html, admin-only, linked to /draw/:groupId/result before this change)
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-05]: DRAW-10 verificado via SQL impersonado (role/claims) em vez do snippet literal de DevTools/fetch -- mesma policy de RLS, caminho de verificacao diferente
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-05]: verificacao real de DRAW-10 rodou contra o banco de producao (ccruvfblgdvnjxenezuh), nao um ambiente de teste isolado -- limpeza de dados de teste (grupo Teste2 + 2 usuarios) fica pendente
 
 ### Pending Todos
 
@@ -94,9 +135,18 @@ Nenhum ainda.
 - Fase 1 é bloqueante para todas as demais — nenhuma linha de frontend antes de RLS testada manualmente com dois usuários distintos (DB-10)
 - Débito técnico aceito e documentado: atomicidade cross-statement entre inserir pares e fechar grupo na Edge Function (ver ARCHITECTURE.md) — não bloqueia a Fase 4, mas deve constar no SDD/README
 - ENG-06 (Gitflow/PRs) e ENG-08 (Kanban) são contínuos desde a Fase 1 — não tratar como tarefas de fechamento
+- Supabase "Confirm email" DEVE permanecer desativado (mailer_autoconfirm: true): com ele ligado, signUp devolve session: null sem erro e register.page.ts navega para /dashboard so para o authGuard devolver ao /login, sem mensagem alguma. Correcao robusta (signUp expor needsConfirmation) registrada em deferred-items.md
+- Plan 04-02 marcou DRAW-04 completo seguindo seu frontmatter, mas o texto de DRAW-04 em REQUIREMENTS.md (bloqueio com menos de 3 participantes) nao corresponde ao que 04-02 entregou (admin entra no proprio grupo via RPC create_group); revisar mapeamento de requisito em /gsd:transition da Fase 4
+- Limpeza pendente de dados de teste de producao: grupo 'Teste2' (9e0b6421-23e6-43d2-bbcd-3e162e08c4ef) e 2 usuarios de teste (bruno-teste4@exemplo.com, carla-teste4@exemplo.com) criados durante a verificacao de DRAW-10 (plan 04-05)
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 261015-mbk | Adicionar link para a tela de revelacao do par em group-view para participantes nao-admin quando o grupo esta fechado | 2026-10-15 | 217aa9e | [261015-mbk-adicionar-link-para-a-tela-de-revelacao-](./quick/261015-mbk-adicionar-link-para-a-tela-de-revelacao-/) |
 
 ## Session Continuity
 
-Last session: 2026-10-15T02:31:27.194Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-10-15T21:07:39.883Z
+Stopped at: Completed 05-04-PLAN.md
 Resume file: None
