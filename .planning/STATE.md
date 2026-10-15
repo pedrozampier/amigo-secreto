@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 2 context gathered
-last_updated: "2026-10-15T02:54:00.279Z"
+status: executing
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-10-15T03:24:51.312Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 8
+  completed_plans: 5
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-14)
 
 **Core value:** O sorteio é privado de verdade — garantido pelo banco (RLS), não pela interface — e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código entregue.
-**Current focus:** Phase 01 — fundacao-scaffold-banco-rls
+**Current focus:** Phase 02 — autentica-o-end-to-end
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 02 (autentica-o-end-to-end) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
 Last activity: 2026-10-15
 
 Progress: [░░░░░░░░░░] 0%
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P01 | 15min | 3 tasks | 4 files |
 | Phase 01 P03 | 35 | 3 tasks | 54 files |
 | Phase 01-fundacao-scaffold-banco-rls P04 | 25min | 2 tasks | 5 files |
+| Phase 02 P02 | 10min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,7 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: Disabled Vercel Deployment Protection deliberately for an academic deliverable so the grader can open the production URL without a Vercel login
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: amigo-secreto.vercel.app is an unrelated third-party Next.js app occupying that subdomain globally; the real production URL is the per-deployment Vercel URL under the zmp2 team scope
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: npm requires --legacy-peer-deps in CI too (vitest@4/npm 10.9.2 arborist bug), consistent with plan 01-03
+- [Phase 02]: [Phase 02-02]: Generated only input and label Spartan primitives, not field — field pulls separator + @ng-icons peers absent from docs/sdd.md §2
 
 ### Pending Todos
 
@@ -97,6 +99,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T02:54:00.275Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-autentica-o-end-to-end/02-CONTEXT.md
+Last session: 2026-10-15T03:24:51.307Z
+Stopped at: Completed 02-02-PLAN.md
+Resume file: None

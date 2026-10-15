@@ -17,8 +17,8 @@
 
 ### Autenticação (AUTH)
 
-- [ ] **AUTH-01**: Visitante cria conta com e-mail e senha via Supabase Auth
-- [ ] **AUTH-02**: Usuário faz login com e-mail e senha e recebe sessão JWT
+- [x] **AUTH-01**: Visitante cria conta com e-mail e senha via Supabase Auth
+- [x] **AUTH-02**: Usuário faz login com e-mail e senha e recebe sessão JWT
 - [ ] **AUTH-03**: Sessão persiste após recarregar a página (`onAuthStateChange` → Signal)
 - [ ] **AUTH-04**: Usuário faz logout a partir de qualquer página autenticada
 - [ ] **AUTH-05**: Rotas protegidas redirecionam visitante não autenticado para `/login`
