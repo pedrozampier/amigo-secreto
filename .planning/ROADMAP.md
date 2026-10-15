@@ -27,6 +27,7 @@
 **Requirements**: DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07, DB-08, DB-09, DB-10, DB-11, UI-01, UI-02, ENG-01, ENG-04, ENG-05, ENG-06, ENG-08, ENG-10
 
 **Success Criteria** (o que precisa ser OBSERVAVELMENTE verdadeiro):
+
   1. O scaffold Angular `^21.x` standalone + Tailwind `^4.x` + Spartan UI compila e roda (`ng serve`) sem nenhum componente `NgModule`
   2. As 4 tabelas (`profile`, `group`, `participant`, `draw`) existem no Supabase com todas as constraints (`UNIQUE`, `CHECK`) e índices, e RLS está habilitada nas 4 — verificável por `SELECT tablename, rowsecurity FROM pg_tables`
   3. Testando manualmente no SQL Editor com dois usuários distintos (antes de qualquer código de frontend): usuário B não lê/escreve linhas de `draw`/`participant`/`group` pertencentes a usuário A — nenhuma policy usa `using (true)` nem recursiona (42P17)
@@ -36,6 +37,7 @@
 **Plans**: 4 plans (3 waves)
 
 Plans:
+
 - [x] 01-01-PLAN.md — Schema, constraints, índices, funções `private` SECURITY DEFINER e todas as policies de RLS, provadas com dois usuários no SQL Editor (DB-01..DB-10)
 - [x] 01-02-PLAN.md — Kanban no GitHub Projects com as 11 user stories como Issues, evidência de Gitflow, MCP documentado no SDD (ENG-06, ENG-08, ENG-10)
 - [x] 01-03-PLAN.md — Scaffold Angular 21 LTS + Tailwind v4 + Spartan UI + ESLint com as 7 regras como `error`, com teste negativo executado (UI-01, UI-02, ENG-01, ENG-04)
@@ -56,6 +58,7 @@ Plans:
 **Requirements**: AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05, AUTH-06
 
 **Success Criteria**:
+
   1. Visitante cria conta com e-mail/senha e a tabela `profile` é populada automaticamente (trigger), sem nenhuma chamada extra do frontend
   2. Usuário loga com e-mail/senha e recebe uma sessão JWT válida, refletida imediatamente num Signal de estado (`'loading' | 'authenticated' | 'unauthenticated'`)
   3. Ao recarregar a página (F5) em uma rota autenticada, a sessão é restaurada sem flash de redirecionamento para `/login`
@@ -65,6 +68,7 @@ Plans:
 **Plans**: 4 plans (3 waves)
 
 Plans:
+
 - [x] 02-01-PLAN.md — `SupabaseClientService` injetável, `AuthService` com um signal de sessão e tudo derivado em `computed()`, mapa PT-BR de erros do Auth (AUTH-01..03, AUTH-06)
 - [x] 02-02-PLAN.md — Geração das primitivas Spartan `input` e `label` em `libs/ui/`, sem nenhuma dependência nova, registrada no SDD §2.1 (AUTH-01, AUTH-02)
 - [x] 02-03-PLAN.md — `authGuard` funcional com `returnUrl`, `provideAppInitializer` matando o flash no F5, rotas com layout autenticado aninhado, header com logout e `/dashboard` placeholder (AUTH-03..05)
@@ -85,6 +89,7 @@ Plans:
 **Requirements**: GRP-01, GRP-02, GRP-03, GRP-04, GRP-05, GRP-06, GRP-07, GRP-08, GRP-09, WISH-01, WISH-02, WISH-03, API-01, API-02, API-03, API-04
 
 **Success Criteria**:
+
   1. Administrador cria um grupo (Reactive Form validado), recebe um link de convite único e único clique copia esse link
   2. Administrador vê a lista de participantes do grupo e consegue remover qualquer um; tentar entrar duas vezes no mesmo grupo é rejeitado com mensagem clara, e um grupo não `open` para de aceitar novos participantes
   3. Usuário autenticado entra em um grupo abrindo o link de convite diretamente (deep link), e o dashboard mostra separadamente os grupos que administra e os que participa
@@ -94,6 +99,7 @@ Plans:
 **Plans**: 6 plans (5 waves)
 
 Plans:
+
 - [x] 03-01-PLAN.md — Migration `0004` com os RPCs `SECURITY DEFINER` do convite (`join_group_by_token`, `preview_group_by_token`), mapa PT-BR dos códigos de erro e validação com dois usuários (GRP-06..08)
 - [x] 03-02-PLAN.md — Trilha de API pública: `provideHttpClient` + interceptor funcional, `HolidayService` com `toSignal()` e card de contagem do Natal em `@defer` (API-01..04)
 - [x] 03-03-PLAN.md — Contratos TypeScript, `GroupService` em signals com refetch-após-mutação, e `groupResolver` funcional com a checagem de admin embutida (camada de contrato das telas)
@@ -116,6 +122,7 @@ Plans:
 **Requirements**: DRAW-01, DRAW-02, DRAW-03, DRAW-04, DRAW-05, DRAW-06, DRAW-07, DRAW-08, DRAW-09, DRAW-10, ENG-02, ENG-03
 
 **Success Criteria**:
+
   1. Administrador aciona o sorteio pela tela de gestão do grupo e ele roda inteiramente na Edge Function (nunca no cliente); com menos de 3 participantes, a ação é bloqueada com mensagem explicativa
   2. Clicar duas vezes (ou duas abas) no botão de sorteio produz exatamente N pares, nunca duplicados — a segunda invocação é rejeitada e o grupo muda para `status = 'closed'` só uma vez
   3. Testes `.spec.ts` comprovam automaticamente: ausência de autossorteio, *perfect matching* (cada pessoa dá e recebe exatamente uma vez), e rejeição da segunda invocação
@@ -125,6 +132,7 @@ Plans:
 **Plans**: 5 plans (4 waves)
 
 Plans:
+
 - [x] 04-01-PLAN.md — Algoritmo puro de sorteio (Fisher-Yates + pareamento circular) duplicado para Deno/Vitest, specs de ENG-02, e a Edge Function run-draw completa (DRAW-02, DRAW-03, DRAW-05, DRAW-06, DRAW-07, ENG-02)
 - [x] 04-02-PLAN.md — Migration 0006 com o RPC transacional create_group (admin participa do próprio sorteio, D-01/D-02) e GroupService.createGroup() atualizado (DRAW-04)
 - [x] 04-03-PLAN.md — DrawService.runDraw() + mapa de erros + botão de sorteio na tela de gestão com confirmação, contador e refetch, e D-04 (admin não se remove) (DRAW-01, ENG-03)
@@ -146,13 +154,36 @@ Plans:
 **Requirements**: UI-03, UI-04, UI-05, UI-06, UI-07, ENG-07, ENG-09
 
 **Success Criteria**:
+
   1. A aplicação em produção (Vercel) é instalável como PWA, confirmado pelo Lighthouse/DevTools sem erros de manifest, com `manifest.webmanifest` completo (ícones, `theme_color`, `background_color`, `display: standalone`)
   2. Perder a conexão exibe feedback visual claro de estado offline
   3. O layout funciona a partir de 320px de largura e os fluxos principais passam auditoria WCAG 2.1 AA (contraste, foco visível, labels, navegação por teclado)
   4. O README consolida o PRD (incluindo diagrama ER em Mermaid e design system) e linka um protótipo Figma navegável e público
   5. Existe um `.spec.md` detalhando os componentes Standalone e Services do projeto
 
-**Plans**: TBD
+**Plans**: 6 plans (5 waves)
+
+Plans:
+**Wave 1**
+
+- [ ] 05-01-PLAN.md — Paleta natalina nos dois temas, foco 1.4.11 e ícones PWA gerados por script (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 05-02-PLAN.md — Manifest, service worker, ConnectivityService (effect) e banner offline (wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 05-03-PLAN.md — Correções WCAG: skip link funcional, aria-live (inclui "Sorteando..."), headings, labels, alvos de toque, D-12 (wave 3)
+- [ ] 05-04-PLAN.md — README com PRD/ER/Design System, .spec.md e roteiro do protótipo (wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 05-06-PLAN.md — Documento de auditoria de acessibilidade com contraste calculado (wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [ ] 05-05-PLAN.md — Checkpoint humano (PR + preview Vercel, Lighthouse, 320px, Figma), reconciliação D-17 e tabela RA1–RA8 (wave 5)
 
 **UI hint**: yes
 
