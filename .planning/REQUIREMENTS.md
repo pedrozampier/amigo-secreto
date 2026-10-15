@@ -59,8 +59,8 @@
 - [x] **DRAW-05**: Sorteio usa Fisher-Yates + pareamento circular (ciclo único), garantindo estruturalmente zero autossorteio
 - [x] **DRAW-06**: Segunda invocação é rejeitada por lock otimista (`UPDATE ... WHERE status='open'`, aborta se 0 linhas afetadas)
 - [x] **DRAW-07**: Grupo passa para `status = 'closed'` ao fim do sorteio
-- [ ] **DRAW-08**: Participante revela o próprio par com ação deliberada (cartão flip controlado por Signal)
-- [ ] **DRAW-09**: Participante vê a lista de desejos de quem tirou
+- [x] **DRAW-08**: Participante revela o próprio par com ação deliberada (cartão flip controlado por Signal)
+- [x] **DRAW-09**: Participante vê a lista de desejos de quem tirou
 - [ ] **DRAW-10**: Administrador não consegue ler os pares — verificável na prática, não só na UI
 
 ### Lista de Desejos (WISH)

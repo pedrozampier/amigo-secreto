@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-10-15T18:45:44.435Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-10-15T18:53:47.992Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 19
-  completed_plans: 17
+  completed_plans: 18
   percent: 40
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 ## Current Position
 
 Phase: 04 (sorteio-e-revela-o) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-10-15
 
@@ -67,6 +67,7 @@ Progress: [████░░░░░░] 40%
 | Phase 04 P01 | 3min | 2 tasks | 5 files |
 | Phase 04-sorteio-e-revela-o P02 | 12min | 2 tasks | 3 files |
 | Phase 04-sorteio-e-revela-o P03 | 6min | 2 tasks | 7 files |
+| Phase 04-sorteio-e-revela-o P04 | 5min | 4 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -116,6 +117,9 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 04-sorteio-e-revela-o]: D-02: atomicidade group+participant implementada via RPC plpgsql SECURITY DEFINER único, não via dois .insert() separados do cliente
 - [Phase 04-sorteio-e-revela-o]: [Phase 04-03]: grupoAtual() = GroupService.currentGroup() ?? group() introduzido em ManageGroupPage porque group() (input.required do groupResolver) e congelado na navegacao e nao reflete loadGroup() chamado pelo proprio componente apos o sorteio (D-11)
 - [Phase 04-sorteio-e-revela-o]: [Phase 04-03]: D-04 (admin nao remove a propria linha) e UI-only, mantendo a policy de DELETE em participant inalterada no banco - adiado como V2-02 item c
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: FK name draw_receiver_id_fkey/draw_giver_id_fkey confirmed by running a real query against the linked Supabase project (npx supabase db query --linked) before writing the supabase-js query, instead of assuming the Postgres default name
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: docs/sdd.md §4 had MyDrawResult without an id field; real code uses DrawResult with id — SDD updated in the same change per CLAUDE.md rule (spec divergence fixed alongside the code)
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: memberGuard generalized to read paramMap.get('id') ?? paramMap.get('groupId'), reusable between /group/:id and /draw/:groupId/result without duplicating the guard
 
 ### Pending Todos
 
@@ -131,6 +135,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T18:45:36.894Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-10-15T18:53:47.990Z
+Stopped at: Completed 04-04-PLAN.md
 Resume file: None
