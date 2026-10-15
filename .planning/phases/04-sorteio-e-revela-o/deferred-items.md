@@ -22,8 +22,11 @@ DRAW-05 DRAW-06 DRAW-07 DRAW-08 DRAW-09` (ou editar a tabela manualmente) na pr�
 passagem de `/gsd:transition` da Fase 4, já que as evidências de entrega existem nos
 SUMMARYs de 04-01/04-02/04-03/04-04.
 
-**Status:** Não corrigido nesta plan. `DRAW-10` já está correto (`Completo`) em ambos os
-lugares.
+**Status:** RESOLVIDO em 2026-10-15, no fechamento da Fase 4 pelo orquestrador de
+`/gsd:execute-phase`. Nota: `requirements mark-complete` reportou sucesso para os 11 IDs
+mas atualizou apenas a lista de checkboxes (já marcada), sem tocar a tabela de
+rastreabilidade — as 11 linhas foram corrigidas por edição direta. As únicas linhas
+`Pendente` restantes no arquivo pertencem à Fase 5, corretamente em aberto.
 
 ---
 
