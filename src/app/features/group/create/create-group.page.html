@@ -1,0 +1,56 @@
+@if (grupoCriado(); as grupo) {
+  <div hlmCard class="w-full">
+    <div hlmCardHeader>
+      <h1 hlmCardTitle>{{ grupo.name }}</h1>
+      <p hlmCardDescription>Grupo criado! Compartilhe o link de convite abaixo.</p>
+    </div>
+    <div hlmCardContent>
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="invite-link">Link de convite</label>
+          <input hlmInput id="invite-link" type="text" readonly [value]="linkConvite()" />
+        </div>
+
+        <button hlmBtn type="button" (click)="copiarLink()">
+          {{ copiado() ? 'Copiado!' : 'Copiar link' }}
+        </button>
+
+        <button hlmBtn variant="outline" type="button" (click)="irParaGerenciar()">
+          Ir para gerenciar grupo
+        </button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div hlmCard class="w-full">
+    <div hlmCardHeader>
+      <h1 hlmCardTitle>Criar grupo</h1>
+      <p hlmCardDescription>Dê um nome ao seu amigo secreto.</p>
+    </div>
+    <div hlmCardContent>
+      <form [formGroup]="form" (ngSubmit)="enviar()" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="name">Nome do grupo</label>
+          <input hlmInput id="name" type="text" formControlName="name" autocomplete="off" />
+          @if (form.controls.name.invalid && (form.controls.name.touched || submetido())) {
+            <p class="text-sm text-destructive">
+              @if (form.controls.name.hasError('required')) {
+                Informe o nome do grupo.
+              } @else {
+                O nome precisa ter entre 3 e 60 caracteres.
+              }
+            </p>
+          }
+        </div>
+
+        @if (erroApi()) {
+          <p class="text-sm text-destructive" role="alert">{{ erroApi() }}</p>
+        }
+
+        <button hlmBtn type="submit" class="w-full" [disabled]="form.invalid || enviando()">
+          {{ enviando() ? 'Criando...' : 'Criar grupo' }}
+        </button>
+      </form>
+    </div>
+  </div>
+}
