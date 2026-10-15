@@ -1,0 +1,11 @@
+# config.toml mínimo. Este repo foi linkado (`supabase link`) mas nunca inicializado
+# (`supabase init`), e as migrations 0001-0005 foram aplicadas À MÃO no SQL Editor, sem
+# registro na tabela de histórico da CLI. Por isso este arquivo declara SOMENTE o
+# necessário para `functions deploy` — nada de [db], [auth] ou [api], que poderiam
+# induzir alguém a rodar `supabase db push` e tentar reaplicar o schema já vivo.
+project_id = "ccruvfblgdvnjxenezuh"
+
+[functions.run-draw]
+# verify_jwt = true é o default e é o que queremos: a função LÊ o header Authorization
+# para descobrir quem chama (DRAW-03). Sem JWT válido não há como validar o admin.
+verify_jwt = true

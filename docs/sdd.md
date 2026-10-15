@@ -378,7 +378,7 @@ A checagem vive agora no `adminGuard` (`CanActivateFn`), que roda antes de a rot
 | Service | Arquivo | Responsabilidade Macro |
 |:--------|:--------|:-----------------------|
 | `AuthService` | `core/services/auth.service.ts` | Gerenciar sessão Supabase, estado do usuário logado (Signal) e fluxos de login/logout. |
-| `GroupService` | `core/services/group.service.ts` | CRUD de grupos, listagem/remoção de participantes, atualização da própria wishlist e os dois RPCs de convite (`join_group_by_token`, `preview_group_by_token`). Estado em `signal()`, re-buscado após cada mutação. Não escreve `group.status` — isso pertence à Edge Function do sorteio. |
+| `GroupService` | `core/services/group.service.ts` | CRUD de grupos, listagem/remoção de participantes, atualização da própria wishlist e os RPCs de `public`: `create_group` (0006 — cria o grupo E insere o admin como participante na mesma transação, D-01/D-02 da Fase 4), `join_group_by_token` e `preview_group_by_token` (0004). Estado em `signal()`, re-buscado após cada mutação. Não escreve `group.status` — isso pertence à Edge Function do sorteio. |
 | `HolidayService` | `core/services/holiday.service.ts` | `GET` à BrasilAPI via `HttpClient`, ponte Observable→Signal com `toSignal()` e cálculo de dias até o Natal. Único tráfego do projeto que passa por `HttpClient` e, portanto, pelos interceptors. |
 | `DrawService` | `core/services/draw.service.ts` | Executar algoritmo de sorteio, consultar par sorteado do usuário autenticado. (Fase 4.) |
 

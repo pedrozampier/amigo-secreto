@@ -60,22 +60,28 @@ export class GroupService {
   }
 
   /**
-   * GRP-01 + GRP-02. `admin_id` é OBRIGATÓRIO no payload: a policy de INSERT é
-   * `with check (admin_id = auth.uid())` — omitir faz o insert ser recusado.
-   * `invite_token` NÃO é enviado: o default do schema
-   * `encode(gen_random_bytes(16),'hex')` já o gera (GRP-02 sem código novo).
-   * `.select().single()` no fim traz a linha criada já com o token.
+   * GRP-01 + GRP-02 + D-01/D-02 da Fase 4.
+   *
+   * Passa pelo RPC `public.create_group` (migration 0006) em vez de um `.insert()`
+   * direto porque DUAS COISAS têm de acontecer atomicamente: criar o grupo E inserir o
+   * admin como `participant`. O admin PARTICIPA do sorteio do próprio grupo (D-01) — sem
+   * a linha em `participant` ele não entra no sorteio, que é o bug que motivou a
+   * migration 0005.
+   *
+   * NUNCA "simplificar" isto de volta para `.insert({ name, admin_id })`: duas escritas
+   * separadas do cliente não são atômicas, e um grupo sem o admin dentro é o mesmo bug,
+   * só mais raro. O RPC é `SECURITY DEFINER` e tira o `admin_id` de `auth.uid()` no
+   * próprio corpo — por isso `admin_id` não é mais enviado daqui.
+   *
+   * `invite_token` continua vindo do default do schema (GRP-02 sem código novo), e o RPC
+   * devolve a linha criada já com o token.
    */
   async createGroup(name: string): Promise<{ group: Group | null; error: string | null }> {
     const uid = this.auth.user()?.id;
     if (!uid) {
       return { group: null, error: 'Você precisa estar autenticado para criar um grupo.' };
     }
-    const { data, error } = await this.supabase
-      .from('group')
-      .insert({ name, admin_id: uid })
-      .select()
-      .single();
+    const { data, error } = await this.supabase.rpc('create_group', { p_name: name });
     if (error) {
       return { group: null, error: 'Não foi possível criar o grupo.' };
     }
