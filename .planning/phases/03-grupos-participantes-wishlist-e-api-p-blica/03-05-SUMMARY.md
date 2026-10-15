@@ -124,3 +124,56 @@ None - no external service configuration required.
 
 All 8 files-created/modified claims verified present on disk. All 3 task commit hashes
 (`787605e`, `7fc02de`, `8b54f9b`) verified present in `git log`.
+
+---
+
+## Task 4 — Checkpoint aprovado (2026-10-15)
+
+Verificação manual no navegador, com duas contas reais (`Ana Júlia Souza`, admin do grupo
+"Teste2"; `zampa`, participante). Aprovada pelo usuário.
+
+**Três defeitos encontrados durante a verificação — todos corrigidos e commitados:**
+
+| # | Defeito | Correção |
+|---|---------|----------|
+| 1 | Criar grupo falhava com `group_admin_id_fkey` — usuário em `auth.users` sem linha em `profile` | Backfill em produção; dívida estrutural registrada em `phases/02-*/deferred-items.md` |
+| 2 | `JoinGroupPage` e `ManageGroupPage` presas em "Carregando..." para sempre | `22fda92` — carga movida do constructor para `effect()` |
+| 3 | **Não-admin conseguia abrir `/group/:id/manage` de grupo alheio** | `22f2181` — checagem movida do resolver para `adminGuard` (`CanActivateFn`) |
+| 4 | Admin lia zero participantes do próprio grupo | `785eb0a` — migration `0005`, policy de SELECT para o admin |
+
+**O defeito 3 em detalhe** (o mais grave): a checagem de admin vivia no `groupResolver`
+devolvendo um `UrlTree`. Um `UrlTree` devolvido por um `ResolveFn` **não redireciona** —
+ao contrário de `CanActivateFn`, onde é o contrato oficial, o valor de um resolver apenas
+vira `route.data`. A rota ativava e o componente recebia um `UrlTree` onde esperava um
+`Group`, renderizando o cabeçalho vazio. O link de convite não vazou, mas apenas por
+acidente: `@if (souAdmin())` comparava um `admin_id` `undefined` e falhava.
+
+O spec existente passava porque verificava que o resolver *retornava* o `UrlTree`, nunca
+que o Router *agia* sobre ele — testava a coisa errada, em verde.
+
+**Lição de processo:** os quatro defeitos passaram por `ng build`, `eslint`,
+`check:no-rxjs-state` e pela suíte de testes. Nenhum gate automático deste projeto
+exercita um fluxo real contra o banco, e dois dos defeitos eram de ciclo de vida de
+componente (`input.required` no constructor) ou de contrato do Router — categorias que
+testes de função pura não alcançam.
+
+**Resultado dos 10 passos:**
+
+| Passo | Resultado |
+|-------|-----------|
+| 1. Dashboard + card BrasilAPI em `@defer` | ✓ |
+| 2. Offline / interceptor | ✓ |
+| 3. Criar grupo (form validado + link copiável) | ✓ após correção 1 |
+| 4. Entrar por convite | ✓ após correção 2 |
+| 5. Entrar duas vezes → "Você já faz parte deste grupo." | ✓ |
+| 6. Lista de participantes + remoção inline | ✓ após correção 4 |
+| 7. Wishlist (salvar + persistir após F5) | ✓ |
+| 8. Não-admin barrado em `/group/:id/manage` | ✓ após correção 3 |
+| 9. Grupo fechado → "não está mais aceitando participantes" | ✓ |
+| 10. Token inválido → "Este convite não é válido." | ✓ |
+
+**Estado do ambiente após a verificação:** grupo "Teste2" reaberto (`status = 'open'`);
+nenhum dado de teste residual além dos grupos que o usuário criou deliberadamente.
+
+**Lacuna conhecida, não corrigida:** não existe tela para o participante não-admin, o que
+mantém WISH-01 e WISH-02 sem atender. Ver `deferred-items.md` desta fase.
