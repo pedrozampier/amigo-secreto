@@ -170,7 +170,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 05-02-PLAN.md — Manifest, service worker, ConnectivityService (effect) e banner offline (wave 2)
+- [x] 05-02-PLAN.md — Manifest, service worker, ConnectivityService (effect) e banner offline (wave 2)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -257,7 +257,7 @@ Plans:
 | 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
 | 3. Grupos, Participantes, Wishlist e API Pública | 6/6 | Complete | 2026-10-15 |
 | 4. Sorteio e Revelação | 2/5 | In Progress|  |
-| 5. PWA, Acessibilidade e Entrega | 1/6 | In Progress|  |
+| 5. PWA, Acessibilidade e Entrega | 2/6 | In Progress|  |
 
 ---
 *Roadmap criado em: 2026-10-14*

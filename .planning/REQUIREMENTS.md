@@ -85,8 +85,8 @@
 - [x] **UI-01**: Layout mobile-first funcional a partir de 320px de largura
 - [x] **UI-02**: Interface construída com Tailwind CSS v4 + componentes Spartan UI
 - [x] **UI-03**: `manifest.webmanifest` configurado com ícones, `theme_color`, `background_color` e `display: standalone`
-- [ ] **UI-04**: Aplicação é instalável como PWA (verificado no Lighthouse/DevTools)
-- [ ] **UI-05**: Estado offline exibe feedback visual ao usuário
+- [x] **UI-04**: Aplicação é instalável como PWA (verificado no Lighthouse/DevTools)
+- [x] **UI-05**: Estado offline exibe feedback visual ao usuário
 - [ ] **UI-06**: Acessibilidade WCAG 2.1 AA nos fluxos principais (contraste, foco, labels, navegação por teclado)
 - [ ] **UI-07**: Protótipo navegável no Figma com link público no README
 
