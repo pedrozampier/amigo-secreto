@@ -109,6 +109,18 @@ npm não o instalou automaticamente. Ele será instalado quando a primeira fase 
 componente de data do Spartan (ex. date-picker/calendar) o exigir; a entrada na tabela já
 documenta a dependência com antecedência, conforme a regra do SDD.
 
+**Primitivas Spartan UI geradas (atualizado na Fase 2).** O `libs/ui/` contém apenas as
+primitivas efetivamente usadas, geradas sob demanda por `ng g @spartan-ng/cli:ui <nome>`:
+`utils`, `button` e `card` (Fase 1) e `input` + `label` (Fase 2, para os Reactive Forms de
+login e cadastro). Isso é **geração de código local**, não instalação de dependência: as
+`peerDependencies` de `input` e `label` são apenas `@angular/core`, `@angular/forms` e
+`@spartan-ng/brain`, todas já presentes na tabela §2 — `package.json` não muda ao gerá-las.
+
+A primitiva `field` (o "form field" do Spartan) foi deliberadamente **não** gerada: ela
+depende de `separator` e puxa `@ng-icons/core` + `@ng-icons/lucide` como peers, que não
+constam da §2. Rótulo (`hlmLabel`) + campo (`hlmInput`) + um parágrafo de mensagem de erro
+já atendem o ID23 do checklist sem ampliar a árvore de dependências.
+
 ---
 
 ## 🗄️ 3. Arquitetura de Dados
