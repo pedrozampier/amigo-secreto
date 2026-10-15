@@ -94,14 +94,33 @@ The draw itself runs in a **Supabase Edge Function**, never on the client, so pa
 never exposed to the browser that triggered it (Fisher-Yates shuffle → circular pairing
 → single transaction insert → set `status = 'closed'`). See `docs/sdd.md` §7.
 
-## Git workflow
+## Git workflow — graded, so treat it as a deliverable
 
-Simplified Gitflow, and it is itself graded (ID25–ID27): `main` and `develop` branches,
-integration through **Pull Requests**. History shows feature work merging into `develop`,
-then `develop` → `main` via PR.
+Gitflow is **not** just hygiene here: it is worth three rubric indicators, and two of them
+grade the *process*, not the end state.
 
-Work on `develop` or a branch off it — not directly on `main`. Commit messages follow
-Conventional Commits (`docs:`, `feat:`, `fix:`), as in the existing history.
+| Indicador | Exigência |
+|:---|:---|
+| **RA7-ID25** | `main` + `develop` branches |
+| **RA7-ID26** | Integration through **Pull Requests**, with conflict resolution |
+| **RA7-ID27** | Modern build + automated deploy |
+
+**Hard rules:**
+
+1. **Never commit directly to `main`.** `main` only ever receives merges from `develop`
+   via PR. A history of direct commits to `main` visibly fails ID25/ID26.
+2. **Branch from `develop`**, never from `main`. GSD is configured with
+   `git.branching_strategy: "phase"`, so each roadmap phase gets its own
+   `gsd/phase-{N}-{slug}` branch automatically.
+3. **Integrate through PRs** — `feature → develop`, then `develop → main`. Several small,
+   real PRs across the project beat one giant PR at the end: ID26 says "colaborar
+   *ativamente*", which a single end-of-term merge does not demonstrate.
+4. **Conventional Commits** (`docs:`, `feat:`, `fix:`, `chore:`), matching existing history.
+5. **Keep the Kanban current as you go** (ENG-08 / RA8-ID28). A board populated the week
+   before submission is worth nothing — the rubric grades the practice.
+
+**Current state:** the planning artifacts live on `feature/project-planning`, branched off
+`develop`, pending a PR into `develop`. `main` is untouched at the last released merge.
 
 ## Language
 
