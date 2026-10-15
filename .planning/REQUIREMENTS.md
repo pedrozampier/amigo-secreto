@@ -87,7 +87,7 @@
 - [x] **UI-03**: `manifest.webmanifest` configurado com ícones, `theme_color`, `background_color` e `display: standalone`
 - [x] **UI-04**: Aplicação é instalável como PWA (verificado no Lighthouse/DevTools)
 - [x] **UI-05**: Estado offline exibe feedback visual ao usuário
-- [ ] **UI-06**: Acessibilidade WCAG 2.1 AA nos fluxos principais (contraste, foco, labels, navegação por teclado)
+- [x] **UI-06**: Acessibilidade WCAG 2.1 AA nos fluxos principais (contraste, foco, labels, navegação por teclado)
 - [ ] **UI-07**: Protótipo navegável no Figma com link público no README
 
 ### Qualidade e Entrega (ENG)
