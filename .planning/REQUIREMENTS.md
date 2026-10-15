@@ -53,12 +53,12 @@
 ### Sorteio (DRAW)
 
 - [ ] **DRAW-01**: Administrador aciona o sorteio a partir da tela de gestão do grupo
-- [ ] **DRAW-02**: Sorteio roda em Supabase Edge Function, nunca no cliente
-- [ ] **DRAW-03**: Edge Function valida que o chamador é o `admin_id` do grupo
+- [x] **DRAW-02**: Sorteio roda em Supabase Edge Function, nunca no cliente
+- [x] **DRAW-03**: Edge Function valida que o chamador é o `admin_id` do grupo
 - [ ] **DRAW-04**: Sorteio é bloqueado com menos de 3 participantes, com mensagem explicativa
-- [ ] **DRAW-05**: Sorteio usa Fisher-Yates + pareamento circular (ciclo único), garantindo estruturalmente zero autossorteio
-- [ ] **DRAW-06**: Segunda invocação é rejeitada por lock otimista (`UPDATE ... WHERE status='open'`, aborta se 0 linhas afetadas)
-- [ ] **DRAW-07**: Grupo passa para `status = 'closed'` ao fim do sorteio
+- [x] **DRAW-05**: Sorteio usa Fisher-Yates + pareamento circular (ciclo único), garantindo estruturalmente zero autossorteio
+- [x] **DRAW-06**: Segunda invocação é rejeitada por lock otimista (`UPDATE ... WHERE status='open'`, aborta se 0 linhas afetadas)
+- [x] **DRAW-07**: Grupo passa para `status = 'closed'` ao fim do sorteio
 - [ ] **DRAW-08**: Participante revela o próprio par com ação deliberada (cartão flip controlado por Signal)
 - [ ] **DRAW-09**: Participante vê a lista de desejos de quem tirou
 - [ ] **DRAW-10**: Administrador não consegue ler os pares — verificável na prática, não só na UI
@@ -93,7 +93,7 @@
 ### Qualidade e Entrega (ENG)
 
 - [x] **ENG-01**: ESLint configurado com as 5 regras que tornam a rubrica mecanicamente verificável (`prefer-control-flow`, `prefer-signals`, `prefer-inject`, `prefer-standalone`, `prefer-signal-model`)
-- [ ] **ENG-02**: Testes unitários (`.spec.ts`) cobrindo o algoritmo de sorteio: ausência de autossorteio e *perfect matching*
+- [x] **ENG-02**: Testes unitários (`.spec.ts`) cobrindo o algoritmo de sorteio: ausência de autossorteio e *perfect matching*
 - [ ] **ENG-03**: Teste cobrindo a rejeição da segunda invocação do sorteio
 - [x] **ENG-04**: Build de produção executa sem erros nem warnings de lint
 - [x] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado

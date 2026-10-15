@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-10-15T14:51:07.947Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-10-15T18:36:59.388Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 14
-  completed_plans: 14
+  total_plans: 19
+  completed_plans: 16
   percent: 40
 ---
 
@@ -21,12 +21,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-14)
 
 **Core value:** O sorteio é privado de verdade — garantido pelo banco (RLS), não pela interface — e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código entregue.
-**Current focus:** Phase 03 — grupos-participantes-wishlist-e-api-p-blica
+**Current focus:** Phase 04 — sorteio-e-revela-o
 
 ## Current Position
 
-Phase: 4
-Plan: Not started
+Phase: 04 (sorteio-e-revela-o) — EXECUTING
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-10-15
 
@@ -64,6 +64,8 @@ Progress: [████░░░░░░] 40%
 | Phase 03 P03 | 8min | 2 tasks | 4 files |
 | Phase 03 P04 | 12min | 3 tasks | 12 files |
 | Phase 03 P06 | 20min | 3 tasks | 9 files |
+| Phase 04 P01 | 3min | 2 tasks | 5 files |
+| Phase 04-sorteio-e-revela-o P02 | 12min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -107,6 +109,10 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 03]: [Phase 03-04]: Cards de grupos participados no dashboard não linkam para /manage — o groupResolver redirecionaria o não-admin de volta, e um link que sempre rebate é péssima UX
 - [Phase 03]: [Phase 03-06]: memberGuard admite admin OU participante checando apenas group !== null (RLS ja faz OR das duas policies de SELECT) — sem query extra em participant, sem comparar admin_id
 - [Phase 03]: [Phase 03-06]: GroupViewPage e ManageGroupPage ficam como dois componentes separados por papel (participante vs admin) em vez de afrouxar adminGuard com @if (souAdmin()) espalhado; admin-que-tambem-e-participante entra em /group/:id sem redirect e ve um link para /manage
+- [Phase 04]: [Phase 04-01]: config.toml escrito à mão com apenas project_id e [functions.run-draw], seguindo o fallback do plan apos a CLI recusar sobrescrever supabase/functions/run-draw/ ja criado
+- [Phase 04]: [Phase 04-01]: check:no-secrets validado com dist/ limpo — stale dist/ local continha a string service_role interna ao SDK supabase-js, nao um secret real; CI sempre builda fresh e dist/ e gitignored, logo nao e regressao
+- [Phase 04-sorteio-e-revela-o]: D-01: admin participa do próprio sorteio — createGroup agora insere o admin como participant na mesma transação do grupo (RPC create_group, migration 0006)
+- [Phase 04-sorteio-e-revela-o]: D-02: atomicidade group+participant implementada via RPC plpgsql SECURITY DEFINER único, não via dois .insert() separados do cliente
 
 ### Pending Todos
 
@@ -121,6 +127,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T14:51:07.944Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-sorteio-e-revela-o/04-CONTEXT.md
+Last session: 2026-10-15T18:36:48.766Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: None
