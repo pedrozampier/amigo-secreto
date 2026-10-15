@@ -7,10 +7,18 @@ import {
   HlmCardTitle,
 } from '@spartan-ng/helm/card';
 import { AuthService } from '../../core/services/auth.service';
+import { ChristmasCountdownCard } from './christmas-countdown.card';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [HlmCard, HlmCardHeader, HlmCardTitle, HlmCardDescription, HlmCardContent],
+  imports: [
+    HlmCard,
+    HlmCardHeader,
+    HlmCardTitle,
+    HlmCardDescription,
+    HlmCardContent,
+    ChristmasCountdownCard,
+  ],
   templateUrl: './dashboard.page.html',
 })
 export class DashboardPage {

@@ -10,3 +10,13 @@
     </p>
   </div>
 </div>
+
+<!-- RA2-ID8 / D-12: Deferrable View. O card só é baixado e inicializado quando
+     entra no viewport — e por isso a chamada HTTP à BrasilAPI também é diferida. -->
+@defer (on viewport) {
+  <div class="mt-4">
+    <app-christmas-countdown />
+  </div>
+} @placeholder {
+  <div class="mt-4 h-28 animate-pulse rounded-lg border bg-muted/40"></div>
+}
