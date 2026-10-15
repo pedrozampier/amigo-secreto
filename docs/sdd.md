@@ -121,6 +121,12 @@ depende de `separator` e puxa `@ng-icons/core` + `@ng-icons/lucide` como peers, 
 constam da §2. Rótulo (`hlmLabel`) + campo (`hlmInput`) + um parágrafo de mensagem de erro
 já atendem o ID23 do checklist sem ampliar a árvore de dependências.
 
+**Fase 3 não gerou nenhuma primitiva Spartan nova.** A confirmação de remoção de
+participante (GRP-05) foi deliberadamente implementada como uma confirmação inline em dois
+passos (um signal guardando o id em confirmação, alternando botões via `@if`), em vez da
+primitiva `dialog`: `dialog` arrastaria `@ng-icons/core` + `@ng-icons/lucide` como peers,
+ausentes da tabela §2 — exatamente a mesma razão que levou a não gerar `field` acima.
+
 ---
 
 ## 🗄️ 3. Arquitetura de Dados
@@ -251,58 +257,93 @@ export interface MyDrawResult {
 
 ### 📂 5.1. Estrutura de Pastas Base
 
+> Atualizado ao final da Fase 3 (D-07) para refletir a árvore real em disco
+> (`find src/app -type d`), não a previsão original da v1.0.0.
+
 ```
 src/
 ├── app/
 │   ├── core/
+│   │   ├── models/
+│   │   │   └── group.model.ts            # Group, Participant, JoinResult, GroupPreview (§4)
 │   │   ├── services/
+│   │   │   ├── supabase-client.service.ts
 │   │   │   ├── auth.service.ts
 │   │   │   ├── group.service.ts
-│   │   │   └── draw.service.ts
+│   │   │   ├── holiday.service.ts        # BrasilAPI (API-01..04)
+│   │   │   └── draw.service.ts           # Fase 4
 │   │   ├── guards/
 │   │   │   └── auth.guard.ts
-│   │   └── interceptors/
-│   │       └── error.interceptor.ts
+│   │   ├── resolvers/
+│   │   │   └── group.resolver.ts
+│   │   ├── interceptors/
+│   │   │   └── error.interceptor.ts
+│   │   ├── auth-error-messages.ts
+│   │   ├── join-error-messages.ts
+│   │   └── dias-ate-natal.ts
 │   ├── features/
 │   │   ├── auth/
 │   │   │   ├── login/
 │   │   │   └── register/
-│   │   ├── dashboard/
+│   │   ├── shell/                        # authenticated-layout.page (rota pai, authGuard)
+│   │   ├── dashboard/                    # dashboard.page + christmas-countdown.card
 │   │   ├── group/
+│   │   │   ├── group.routes.ts
+│   │   │   ├── group-layout/
 │   │   │   ├── create/
-│   │   │   ├── manage/
+│   │   │   ├── manage/                   # manage-group.page + participant-row
 │   │   │   └── join/
 │   │   └── draw/
-│   │       └── result/
-│   └── shared/
-│       ├── components/
-│       │   ├── button/
-│       │   ├── card/
-│       │   └── modal/
-│       └── pipes/
+│   │       └── result/                   # Fase 4
+│   └── shared/                           # components/ e pipes/ existem como pastas
+│       ├── components/                   # vazias (só .gitkeep) — criadas quando
+│       └── pipes/                        # houver reuso real, nenhum até a Fase 3
 ├── environments/
-└── styles/
+└── styles.css
 ```
 
 ### 🚦 5.2. Mapa de Rotas e Páginas (Features)
 
-| Rota | Page Component | Functional Guard |
+> Atualizado ao final da Fase 3 (D-07): a tabela da v1.0.0 listava tudo "flat", o que
+> havia divergido da árvore real de rotas aninhadas. Abaixo, a hierarquia real e onde
+> cada guard/resolver atua.
+
+| Rota | Page Component | Guard / Resolver |
 |:-----|:---------------|:-----------------|
 | `/login` | `features/auth/login/login.page.ts` | Público |
 | `/register` | `features/auth/register/register.page.ts` | Público |
-| `/dashboard` | `features/dashboard/dashboard.page.ts` | `authGuard` |
-| `/group/create` | `features/group/create/create-group.page.ts` | `authGuard` |
-| `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | `authGuard` + `adminGuard` |
-| `/join/:token` | `features/group/join/join-group.page.ts` | `authGuard` |
-| `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | `authGuard` |
+| *(rota pai sem path)* | `features/shell/authenticated-layout.page.ts` | **`authGuard`** — aplicado UMA vez; todas as rotas abaixo herdam |
+| └ `/dashboard` | `features/dashboard/dashboard.page.ts` | herda `authGuard` |
+| └ `/group` *(layout)* | `features/group/group-layout/group-layout.page.ts` | herda `authGuard` |
+| &nbsp;&nbsp;&nbsp;└ `/group/create` | `features/group/create/create-group.page.ts` | herda `authGuard` |
+| &nbsp;&nbsp;&nbsp;└ `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | herda `authGuard` + **`groupResolver`** |
+| └ `/join/:token` | `features/group/join/join-group.page.ts` | herda `authGuard` (deep link via `returnUrl`) |
+| └ `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | Fase 4 |
+
+**Hierarquia de layout (RA5-ID17).** `/group/create` e `/group/:id/manage` são rotas
+**filhas** de um `GroupLayoutPage` com `<router-outlet>` próprio, que por sua vez é filho da
+rota de layout autenticado. `/join/:token` é deliberadamente **flat** (fora de `/group`):
+quem abre um convite ainda não é membro, e renderizar o layout de um grupo que a pessoa não
+integra seria incoerente.
+
+**Sobre o `adminGuard` previsto na v1.0.0 deste documento.** Ele não existe. A checagem de
+"só o admin acessa `/group/:id/manage`" vive **dentro do `groupResolver`**, que devolve um
+`UrlTree` para `/dashboard` quando `admin_id` não é o usuário da sessão. Razão mecânica: o
+Angular Router executa os `canActivate` **antes** dos `resolve` da mesma rota, então um guard
+jamais conseguiria ler o grupo buscado pelo resolver — a versão com guard separado exigiria
+uma segunda query por navegação. Devolver `UrlTree` de um `ResolveFn` é comportamento
+oficialmente suportado do Router.
 
 ### 🧠 5.3. Core Services (Singleton)
+
+> Linha do `GroupService` e `HolidayService` atualizadas ao final da Fase 3 (D-07).
 
 | Service | Arquivo | Responsabilidade Macro |
 |:--------|:--------|:-----------------------|
 | `AuthService` | `core/services/auth.service.ts` | Gerenciar sessão Supabase, estado do usuário logado (Signal) e fluxos de login/logout. |
-| `GroupService` | `core/services/group.service.ts` | CRUD de grupos, geração de invite token, listagem de participantes. |
-| `DrawService` | `core/services/draw.service.ts` | Executar algoritmo de sorteio, consultar par sorteado do usuário autenticado. |
+| `GroupService` | `core/services/group.service.ts` | CRUD de grupos, listagem/remoção de participantes, atualização da própria wishlist e os dois RPCs de convite (`join_group_by_token`, `preview_group_by_token`). Estado em `signal()`, re-buscado após cada mutação. Não escreve `group.status` — isso pertence à Edge Function do sorteio. |
+| `HolidayService` | `core/services/holiday.service.ts` | `GET` à BrasilAPI via `HttpClient`, ponte Observable→Signal com `toSignal()` e cálculo de dias até o Natal. Único tráfego do projeto que passa por `HttpClient` e, portanto, pelos interceptors. |
+| `DrawService` | `core/services/draw.service.ts` | Executar algoritmo de sorteio, consultar par sorteado do usuário autenticado. (Fase 4.) |
 
 ---
 

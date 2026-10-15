@@ -43,11 +43,11 @@
 - [x] **GRP-01**: Administrador cria um grupo informando nome (Reactive Form validado)
 - [x] **GRP-02**: Sistema gera um `invite_token` único por grupo
 - [x] **GRP-03**: Administrador visualiza o link de convite e consegue copiá-lo
-- [ ] **GRP-04**: Administrador vê a lista de participantes do seu grupo
-- [ ] **GRP-05**: Administrador remove um participante do grupo
-- [ ] **GRP-06**: Usuário autenticado entra em um grupo via link de convite
-- [ ] **GRP-07**: Tentativa de entrar duas vezes no mesmo grupo é rejeitada com mensagem clara
-- [ ] **GRP-08**: Grupo com status diferente de `open` não aceita novos participantes
+- [x] **GRP-04**: Administrador vê a lista de participantes do seu grupo
+- [x] **GRP-05**: Administrador remove um participante do grupo
+- [x] **GRP-06**: Usuário autenticado entra em um grupo via link de convite
+- [x] **GRP-07**: Tentativa de entrar duas vezes no mesmo grupo é rejeitada com mensagem clara
+- [x] **GRP-08**: Grupo com status diferente de `open` não aceita novos participantes
 - [x] **GRP-09**: Usuário vê no dashboard os grupos que administra e os que participa
 
 ### Sorteio (DRAW)
@@ -65,9 +65,9 @@
 
 ### Lista de Desejos (WISH)
 
-- [ ] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
-- [ ] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
-- [ ] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
+- [x] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
+- [x] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
+- [x] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
 
 ### Contexto Externo / API Pública (API)
 
@@ -155,7 +155,13 @@ a tabela que garante o pedido central do usuário: **cumprir o checklist inteiro
 ### Melhorias de Robustez
 
 - **V2-01**: Mover o INSERT dos pares e o UPDATE de `status` para uma função plpgsql transacional via RPC (fecha a janela não atômica da Edge Function — débito técnico conhecido e documentado)
-- **V2-02**: Trigger `BEFORE UPDATE` validando as transições de `group.status` no banco
+- **V2-02**: Triggers de defesa em profundidade no banco: (a) `BEFORE UPDATE` validando as
+  transições de `group.status`; (b) `BEFORE UPDATE` em `participant` restringindo a edição à
+  coluna `wish_list` — hoje a policy `"participant: editar os proprios dados"` permite ao
+  usuário atualizar a linha inteira da própria participação (inclusive `group_id` e
+  `display_name`), e a restrição vive apenas no `GroupService.updateWishList()`, que envia
+  somente `{ wish_list }`. WISH-03 (não editar a lista de outra pessoa) já está garantido
+  pela policy, que é o que importa para a nota.
 - **V2-03**: Confirmação de presença (RSVP) explícita antes do sorteio
 - **V2-04**: Avatar gerado automaticamente por participante
 
@@ -199,15 +205,15 @@ Preenchido durante a criação do roadmap.
 | DB-09 | Fase 1 | Completo |
 | DB-10 | Fase 1 | Completo |
 | DB-11 | Fase 1 | Completo |
-| GRP-01 | Fase 3 | Pendente |
-| GRP-02 | Fase 3 | Pendente |
-| GRP-03 | Fase 3 | Pendente |
-| GRP-04 | Fase 3 | Pendente |
-| GRP-05 | Fase 3 | Pendente |
-| GRP-06 | Fase 3 | Pendente |
-| GRP-07 | Fase 3 | Pendente |
-| GRP-08 | Fase 3 | Pendente |
-| GRP-09 | Fase 3 | Pendente |
+| GRP-01 | Fase 3 | Completo |
+| GRP-02 | Fase 3 | Completo |
+| GRP-03 | Fase 3 | Completo |
+| GRP-04 | Fase 3 | Completo |
+| GRP-05 | Fase 3 | Completo |
+| GRP-06 | Fase 3 | Completo |
+| GRP-07 | Fase 3 | Completo |
+| GRP-08 | Fase 3 | Completo |
+| GRP-09 | Fase 3 | Completo |
 | DRAW-01 | Fase 4 | Pendente |
 | DRAW-02 | Fase 4 | Pendente |
 | DRAW-03 | Fase 4 | Pendente |
@@ -218,13 +224,13 @@ Preenchido durante a criação do roadmap.
 | DRAW-08 | Fase 4 | Pendente |
 | DRAW-09 | Fase 4 | Pendente |
 | DRAW-10 | Fase 4 | Pendente |
-| WISH-01 | Fase 3 | Pendente |
-| WISH-02 | Fase 3 | Pendente |
-| WISH-03 | Fase 3 | Pendente |
-| API-01 | Fase 3 | Pendente |
-| API-02 | Fase 3 | Pendente |
-| API-03 | Fase 3 | Pendente |
-| API-04 | Fase 3 | Pendente |
+| WISH-01 | Fase 3 | Completo |
+| WISH-02 | Fase 3 | Completo |
+| WISH-03 | Fase 3 | Completo |
+| API-01 | Fase 3 | Completo |
+| API-02 | Fase 3 | Completo |
+| API-03 | Fase 3 | Completo |
+| API-04 | Fase 3 | Completo |
 | UI-01 | Fase 1 | Completo |
 | UI-02 | Fase 1 | Completo |
 | UI-03 | Fase 5 | Pendente |
