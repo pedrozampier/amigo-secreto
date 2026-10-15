@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-10-15T18:36:59.388Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-10-15T18:38:41.739Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
@@ -124,9 +124,10 @@ Nenhum ainda.
 - Débito técnico aceito e documentado: atomicidade cross-statement entre inserir pares e fechar grupo na Edge Function (ver ARCHITECTURE.md) — não bloqueia a Fase 4, mas deve constar no SDD/README
 - ENG-06 (Gitflow/PRs) e ENG-08 (Kanban) são contínuos desde a Fase 1 — não tratar como tarefas de fechamento
 - Supabase "Confirm email" DEVE permanecer desativado (mailer_autoconfirm: true): com ele ligado, signUp devolve session: null sem erro e register.page.ts navega para /dashboard so para o authGuard devolver ao /login, sem mensagem alguma. Correcao robusta (signUp expor needsConfirmation) registrada em deferred-items.md
+- Plan 04-02 marcou DRAW-04 completo seguindo seu frontmatter, mas o texto de DRAW-04 em REQUIREMENTS.md (bloqueio com menos de 3 participantes) nao corresponde ao que 04-02 entregou (admin entra no proprio grupo via RPC create_group); revisar mapeamento de requisito em /gsd:transition da Fase 4
 
 ## Session Continuity
 
-Last session: 2026-10-15T18:36:48.766Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-10-15T18:37:03.124Z
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None

@@ -225,7 +225,7 @@ Plans:
 | 1. Fundação — Scaffold, Banco e RLS | 4/4 | Complete | 2026-10-14 |
 | 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
 | 3. Grupos, Participantes, Wishlist e API Pública | 6/6 | Complete | 2026-10-15 |
-| 4. Sorteio e Revelação | 0/TBD | Not started | - |
+| 4. Sorteio e Revelação | 2/5 | In Progress|  |
 | 5. PWA, Acessibilidade e Entrega | 0/TBD | Not started | - |
 
 ---

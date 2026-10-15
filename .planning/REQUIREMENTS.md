@@ -55,7 +55,7 @@
 - [ ] **DRAW-01**: Administrador aciona o sorteio a partir da tela de gestão do grupo
 - [x] **DRAW-02**: Sorteio roda em Supabase Edge Function, nunca no cliente
 - [x] **DRAW-03**: Edge Function valida que o chamador é o `admin_id` do grupo
-- [ ] **DRAW-04**: Sorteio é bloqueado com menos de 3 participantes, com mensagem explicativa
+- [x] **DRAW-04**: Sorteio é bloqueado com menos de 3 participantes, com mensagem explicativa
 - [x] **DRAW-05**: Sorteio usa Fisher-Yates + pareamento circular (ciclo único), garantindo estruturalmente zero autossorteio
 - [x] **DRAW-06**: Segunda invocação é rejeitada por lock otimista (`UPDATE ... WHERE status='open'`, aborta se 0 linhas afetadas)
 - [x] **DRAW-07**: Grupo passa para `status = 'closed'` ao fim do sorteio
