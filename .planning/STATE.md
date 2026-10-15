@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-10-15T03:24:51.312Z"
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-10-15T03:25:55.972Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 8
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 ## Current Position
 
 Phase: 02 (autentica-o-end-to-end) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-10-15
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P03 | 35 | 3 tasks | 54 files |
 | Phase 01-fundacao-scaffold-banco-rls P04 | 25min | 2 tasks | 5 files |
 | Phase 02 P02 | 10min | 2 tasks | 6 files |
+| Phase 02 P01 | 25min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,7 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: amigo-secreto.vercel.app is an unrelated third-party Next.js app occupying that subdomain globally; the real production URL is the per-deployment Vercel URL under the zmp2 team scope
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: npm requires --legacy-peer-deps in CI too (vitest@4/npm 10.9.2 arborist bug), consistent with plan 01-03
 - [Phase 02]: [Phase 02-02]: Generated only input and label Spartan primitives, not field — field pulls separator + @ng-icons peers absent from docs/sdd.md §2
+- [Phase 02]: [Phase 02-01]: ng test's Vitest builder rejects --run; use ng test --watch=false --include=<glob> to target a single spec
 
 ### Pending Todos
 
@@ -99,6 +101,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T03:24:51.307Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-10-15T03:25:55.966Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None
