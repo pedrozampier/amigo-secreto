@@ -75,3 +75,61 @@ Worth a unit spec asserting the null-session branch does not navigate.
 
 **Status:** Not fixed in code. Mitigated by Supabase configuration; latent if that
 configuration changes.
+
+---
+
+## Usuário sem linha em `profile` quebra a criação de grupo (descoberto na Fase 3)
+
+**Descoberto em:** 2026-10-15, durante a verificação manual do checkpoint da plan 03-05.
+
+**Sintoma:** ao criar um grupo, a tela devolve o erro cru do Postgres:
+
+```
+message: 'insert or update on table "group" violates foreign key constraint "group_admin_id_fkey"'
+details: 'Key is not present in table "profile".'
+```
+
+**Causa:** o usuário `teste-fase2@exemplo.com` (`5e21548f-...`, criado em 2026-10-15
+03:53) existia em `auth.users` mas **não tinha linha correspondente em `public.profile`**.
+Os outros dois usuários de teste (criados às 01:44 e 01:45) tinham. O trigger
+`on_auth_user_created` → `public.handle_new_user()` existe, está habilitado (`tgenabled =
+'O'`) e sua definição está correta, então signups normais pela API criam o profile. O
+usuário órfão provavelmente foi criado por um caminho que não disparou o trigger
+(ex.: Authentication → Add user no painel).
+
+Como `group.admin_id` tem FK para `profile.id`, qualquer usuário nesse estado consegue
+logar normalmente e só descobre que está quebrado ao tentar criar um grupo — recebendo uma
+mensagem de constraint que não significa nada para ele.
+
+**Corrigido no dado (não no código):** backfill executado contra produção em 2026-10-15,
+criando o profile faltante a partir de `raw_user_meta_data ->> 'display_name'`
+(resultou em "Ana Júlia Souza"). Verificado: zero usuários órfãos restantes, e a criação
+de grupo passou a funcionar com esse usuário (testada em transação com `rollback`).
+
+**Por que adiado, não corrigido:** é um problema da trilha de autenticação (Fase 2), não da
+Fase 3 — a plan 03-05 não o causou. O usuário escolheu deliberadamente registrar como
+dívida em vez de ampliar o escopo da Fase 3.
+
+**Correção sugerida (migration 0005, quando houver ciclo para isso):**
+
+1. Tornar o trigger idempotente — o `insert` atual não tem cláusula de conflito, então se
+   rodar duas vezes para o mesmo id ele estoura e **aborta o signup inteiro**:
+   ```sql
+   insert into public.profile (id, email, display_name)
+   values (...) on conflict (id) do nothing;
+   ```
+2. Incluir o backfill na própria migration, para que qualquer ambiente novo (ou restore de
+   backup) se auto-corrija:
+   ```sql
+   insert into public.profile (id, email, display_name)
+   select u.id, u.email,
+          coalesce(u.raw_user_meta_data ->> 'display_name', split_part(u.email,'@',1))
+   from auth.users u left join public.profile p on p.id = u.id
+   where p.id is null;
+   ```
+3. Opcional, na UI: o `GroupService` traduzir `group_admin_id_fkey` para uma mensagem em
+   PT-BR, no mesmo espírito do `join-error-messages.ts` da plan 03-01 — nenhum código de
+   erro do Postgres deveria chegar à tela.
+
+**Status:** Dado corrigido em produção; o schema continua permitindo o estado. Latente para
+qualquer usuário futuro criado fora do fluxo de signup da aplicação.
