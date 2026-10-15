@@ -1,7 +1,8 @@
 # Verificação de Privacidade do Sorteio — Admin Participante (DRAW-10, D-13)
 
 **Data de criação do roteiro:** 2026-10-15
-**Projeto:** Supabase (instância real, `ccruvfblgdvnjxenezuh`)
+**Data de execução real (Parte D):** 2026-10-15
+**Projeto:** Supabase (instância real de produção, `ccruvfblgdvnjxenezuh`)
 **Objetivo:** provar, com evidência executada (não apenas leitura de código), que o
 administrador de um grupo — mesmo sendo agora participante do próprio sorteio (D-01) —
 **não lê o par sorteado de nenhum outro participante**, conforme DRAW-10 e o core value do
@@ -79,8 +80,8 @@ console.log('Parte A(b) — linhas de outro participante (deve ser []):', await 
 
 | Passo | Query | Esperado | Observado |
 |-------|-------|----------|-----------|
-| A(a)  | `GET /rest/v1/draw?select=*` como admin | array com exatamente 1 objeto, `giver_id = participant.id` do admin | `[pendente]` |
-| A(b)  | `GET /rest/v1/draw?select=*&giver_id=eq.<outro>` como admin | `[]` | `[pendente]` |
+| A(a)  | `GET /rest/v1/draw?select=*` como admin | array com exatamente 1 objeto, `giver_id = participant.id` do admin | `[não executado via DevTools nesta rodada — a verificação real da asserção dupla foi feita via SQL impersonado, Parte B abaixo, que exercita a mesma policy de RLS pelo caminho do banco em vez do REST do PostgREST]` |
+| A(b)  | `GET /rest/v1/draw?select=*&giver_id=eq.<outro>` como admin | `[]` | `[não executado via DevTools nesta rodada — ver Parte B]` |
 
 ## Parte B — SQL equivalente para o SQL Editor com duas sessões
 
@@ -102,10 +103,41 @@ select * from public.draw where giver_id = '<uuid-de-outro-participante>';
 rollback;
 ```
 
+**Execução real** (2026-10-15, projeto `ccruvfblgdvnjxenezuh`, banco de produção — ver nota
+de ressalva na Parte D). Grupo "Teste2" (`id = 9e0b6421-23e6-43d2-bbcd-3e162e08c4ef`),
+sorteado de verdade via UI (`/group/:id/manage` → "Realizar sorteio"), 4 participantes:
+
+| participant.id | display_name | papel |
+|---|---|---|
+| `5a17b141-0160-4842-b40f-62a536637c8d` | zampa | participante |
+| `e02b9bf6-b7cb-425a-b16e-841e3aa52019` | Ana Júlia Souza | **admin** |
+| `5dcd6441-7864-438e-8f49-e70f3a7db5fb` | Bruno Carvalho | participante |
+| `18bfda62-158c-44cd-9803-21b0451a64db` | Carla Menezes | participante |
+
+Variante executada: em vez do `select *` completo (que exporia o par de outrem em texto
+cru no log de verificação), a contagem equivalente, impersonando a admin (`sub =
+5e21548f-0228-4a7b-af51-4e70148bf732`, usuário da Ana Júlia):
+
+```sql
+-- B(a) — todas as linhas de draw visíveis para a admin, dentro do seu próprio grupo.
+select count(*) from public.draw where group_id = '9e0b6421-23e6-43d2-bbcd-3e162e08c4ef';
+
+-- B(b) — tentando ler especificamente o par de Bruno (outro participante).
+select count(*) from public.draw where giver_id = '5dcd6441-7864-438e-8f49-e70f3a7db5fb';
+```
+
 | Passo | Query | Esperado | Observado |
 |-------|-------|----------|-----------|
-| B(a)  | `select * from public.draw;` (sessão do admin) | 1 linha, `giver_id` = participant.id do admin | `[pendente]` |
-| B(b)  | `select * from public.draw where giver_id = '<outro>';` (sessão do admin) | 0 linhas | `[pendente]` |
+| B(a)  | `count(*) from public.draw where group_id = '9e0b6421-...'` (sessão da admin) | 1 (de 4 linhas existentes no grupo) | **1** — PASS |
+| B(b)  | `count(*) from public.draw where giver_id = '5dcd6441-...'` (giver_id de Bruno, sessão da admin) | 0 | **0** — PASS |
+
+**Prova complementar (não-admin lendo a própria linha):** impersonando Bruno
+(`sub = e197369e-8610-4458-9698-df057d1649e8`), `select * from public.draw where giver_id =
+'5dcd6441-...'` devolve exatamente 1 linha, com `receiver_id = 'e02b9bf6-...'` — que,
+ao fazer join com `participant.display_name`, corresponde a "Ana Júlia Souza" (a admin).
+Confirma que Bruno lê o próprio par (inclusive quando o receiver é a admin) e que a RLS não
+trata a admin como um caso especial em nenhuma direção — nem como alguém que não pode ser
+sorteado, nem como alguém que pode ver os pares dos outros.
 
 ## Parte C — Prova herdada da Fase 1 (citar, não reexecutar)
 
@@ -132,34 +164,66 @@ participante.
 ## Parte D — Checklist de execução real
 
 Esta seção registra a execução efetiva do roteiro acima, com a saída observada colada no
-lugar dos placeholders `[pendente]`. Nenhuma saída deve ser inventada — se a execução
-ficar pendente de uma pessoa (navegador real, duas contas reais), isso fica registrado
-explicitamente como `[pendente]`, nunca com um valor fabricado.
+lugar dos placeholders originais. Nenhuma saída foi inventada.
 
-- [ ] **Passo 1** — Confirmar um grupo real com `status = 'closed'` e `n >= 3`
+- [x] **Passo 1** — Confirmado um grupo real com `status = 'closed'` e `n = 4`
       participantes, resultado de um sorteio executado via UI (`/group/:id/manage` →
-      "Realizar sorteio"). Grupo usado: `[pendente]`.
-- [ ] **Passo 2** — Executar Parte A(a)/A(b) no DevTools, autenticado como o admin deste
-      grupo. Saída colada: `[pendente]`.
-- [ ] **Passo 3** — Executar Parte B(a)/B(b) no SQL Editor, impersonando o `sub` do mesmo
-      admin. Saída colada: `[pendente]`.
-- [ ] **Passo 4** — Confirmar que o `giver_id` retornado em A(a)/B(a) é de fato o
-      `participant.id` do admin (comparar com `select id from public.participant where
-      user_id = '<uuid-do-admin>' and group_id = '<grupo>'`). `[pendente]`.
+      "Realizar sorteio"). Grupo usado: "Teste2",
+      `id = 9e0b6421-23e6-43d2-bbcd-3e162e08c4ef`. `public.draw` ficou com 4 linhas —
+      perfect matching sobre os 4 participantes.
+- [x] **Passo 2 (variante)** — A UI foi verificada ponta a ponta por uma pessoa, nos dois
+      papéis: a admin autenticada chegou em `/draw/:groupId/result` e viu o próprio par
+      revelado após clicar no cartão fechado; um participante não-admin (Bruno) também
+      revelou o próprio par com sucesso. O snippet literal de DevTools da Parte A **não
+      foi colado manualmente no console** nesta rodada — a asserção dupla foi verificada
+      pelo caminho SQL equivalente (Parte B), que exercita a mesma policy de RLS. Ver nota
+      na Parte A sobre esta substituição de método.
+- [x] **Passo 3** — Executado Parte B(a)/B(b) via `npx supabase db query --linked`
+      (impersonação de role/claims idêntica ao SQL Editor). Saída: B(a) = **1**, B(b) =
+      **0** — ambos conforme esperado. Colado na Parte B acima.
+- [x] **Passo 4** — Confirmado: o `giver_id` da linha lida pela admin em B(a) é
+      `e02b9bf6-b7cb-425a-b16e-841e3aa52019`, que é o `participant.id` da própria Ana
+      Júlia Souza (a admin) — não de nenhum outro participante.
 
-**Resultado final:** `[pendente]` — este roteiro foi redigido e versionado nesta plan
-(04-05); a execução real contra o projeto Supabase de produção, com um sorteio
-genuinamente disparado via UI (dependente do deploy da Edge Function `run-draw`, Task 2
-desta mesma plan), fica registrada aqui quando executada por uma pessoa com acesso ao
-navegador e a duas contas reais — mesmo padrão de `docs/db-rls-verification.md`, que também
-tem notas "não capturado" onde a evidência bruta não foi colada na rodada em que o
-documento foi escrito.
+**Resultado final: PASS.** A asserção dupla de D-13/DRAW-10 foi comprovada com dados reais
+contra o projeto Supabase de produção (`ccruvfblgdvnjxenezuh`): a admin lê exatamente 1 de
+4 linhas de `draw` (a própria), e 0 linhas ao filtrar pelo `giver_id` de outro participante
+(Bruno). A verificação completa de UI (ambos os lados, admin e não-admin, revelação
+funcionando em `/draw/:groupId/result`) também passou.
+
+**Descoberta durante a verificação (não estava prevista nesta plan):** a primeira
+tentativa de revelação como participante não-admin **falhou** — não havia nenhum link para
+`/draw/:groupId/result` acessível a não-admins; o único link existia em
+`manage-group.page.html`, atrás de uma checagem de admin. Corrigido por uma quick task
+separada (`261015-mbk`, commits `ec415fa`/`f481d18`/`217aa9e`/`4781636`): novo predicado
+puro exportado `podeVerResultadoDoSorteio(status, temParticipante)` + `computed()` em
+`group-view.page.ts`, 5 specs novos (`group-view-reveal-link.spec.ts`), e um botão "Ver meu
+amigo secreto" em `group-view.page.html`, condicionado a
+`status === 'closed' && meuParticipante() !== null`. Suite completa 64/64, eslint e
+`ng build` limpos. Este gap não bloqueou DRAW-08/09 (que já tinham sido entregues e
+verificados na plan 04-04 via rota direta), mas bloqueava a verificação end-to-end real
+desta plan — por isso foi corrigido antes de fechar 04-05, não apenas registrado como item
+adiado.
+
+**Ressalva de ambiente (registrar honestamente, não omitir):** esta execução rodou contra
+o **banco de produção** (`--linked` aponta para o projeto principal, não um ambiente de
+teste isolado). As 4 linhas de `participant` do grupo "Teste2" e os 2 usuários de teste
+criados para esta verificação (`bruno-teste4@exemplo.com`, `carla-teste4@exemplo.com`) são
+linhas reais, com **limpeza pendente** (não realizada nesta sessão). Além disso, **o
+sorteio deste grupo específico é irreversível e já está `closed`** — repetir este roteiro
+exige um grupo novo, não a reexecução deste mesmo grupo.
 
 ## Resumo por requisito
 
 | Requisito | Descrição | Resultado |
 |-----------|-----------|-----------|
-| DRAW-10 (a) | O admin, participante do próprio sorteio (D-01), lê exatamente 1 de N linhas de `draw` — a própria, nunca 0, nunca mais de 1 | `[pendente]` |
-| DRAW-10 (b) | O admin não lê nenhuma linha de `draw` cujo `giver_id` seja de outro participante do mesmo grupo | `[pendente]` |
+| DRAW-10 (a) | O admin, participante do próprio sorteio (D-01), lê exatamente 1 de N linhas de `draw` — a própria, nunca 0, nunca mais de 1 | **PASS** — grupo "Teste2", 1 de 4 linhas |
+| DRAW-10 (b) | O admin não lê nenhuma linha de `draw` cujo `giver_id` seja de outro participante do mesmo grupo | **PASS** — 0 linhas ao filtrar pelo `giver_id` de Bruno |
 | — | Policy de `draw` citada verbatim de `supabase/migrations/0003_rls_policies.sql`, sem referência a `admin_id` | PASS (verificado por leitura do arquivo) |
 | — | Prova herdada da Fase 1 (`docs/db-rls-verification.md` Parte D) permanece válida pós-D-01/D-02 | PASS (citada, não reexecutada) |
+| — | Revelação end-to-end via UI, nos dois papéis (admin e não-admin), em `/draw/:groupId/result` | **PASS** — após correção do gap de link para não-admins (ver Parte D) |
+
+**Limitações registradas honestamente:** a execução rodou contra o banco de produção
+(limpeza das linhas de teste pendente) e o grupo usado está `closed` de forma irreversível
+(não é reexecutável — um roteiro futuro precisa de um grupo novo). Ver Parte D para o
+detalhe completo.
