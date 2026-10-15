@@ -1,0 +1,52 @@
+<main class="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center p-4">
+  <div hlmCard class="w-full">
+    <div hlmCardHeader>
+      <h1 hlmCardTitle>Entrar</h1>
+      <p hlmCardDescription>Acesse sua conta do UTF-Secret.</p>
+    </div>
+    <div hlmCardContent>
+      <form [formGroup]="form" (ngSubmit)="enviar()" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="email">E-mail</label>
+          <input hlmInput id="email" type="email" formControlName="email" autocomplete="email" />
+          @if (form.controls.email.invalid && (form.controls.email.touched || submetido())) {
+            <p class="text-sm text-destructive">
+              @if (form.controls.email.hasError('required')) {
+                Informe seu e-mail.
+              } @else {
+                Informe um e-mail válido.
+              }
+            </p>
+          }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="senha">Senha</label>
+          <input hlmInput id="senha" type="password" formControlName="senha" autocomplete="current-password" />
+          @if (form.controls.senha.invalid && (form.controls.senha.touched || submetido())) {
+            <p class="text-sm text-destructive">
+              @if (form.controls.senha.hasError('required')) {
+                Informe sua senha.
+              } @else {
+                A senha precisa ter pelo menos 6 caracteres.
+              }
+            </p>
+          }
+        </div>
+
+        @if (erroApi()) {
+          <p class="text-sm text-destructive" role="alert">{{ erroApi() }}</p>
+        }
+
+        <button hlmBtn type="submit" class="w-full" [disabled]="form.invalid || enviando()">
+          {{ enviando() ? 'Entrando...' : 'Entrar' }}
+        </button>
+      </form>
+
+      <p class="mt-4 text-center text-sm text-muted-foreground">
+        Não tem conta?
+        <a hlmBtn variant="link" size="sm" routerLink="/register">Criar conta</a>
+      </p>
+    </div>
+  </div>
+</main>
