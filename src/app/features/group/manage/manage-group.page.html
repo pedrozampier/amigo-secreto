@@ -1,9 +1,9 @@
 <div class="flex flex-col gap-4">
   <div hlmCard class="w-full">
     <div hlmCardHeader>
-      <h1 hlmCardTitle>{{ group().name }}</h1>
+      <h1 hlmCardTitle>{{ grupoAtual().name }}</h1>
       <p hlmCardDescription>
-        @switch (group().status) {
+        @switch (grupoAtual().status) {
           @case ('open') { Status: aberto para novos participantes. }
           @case ('drawing') { Status: sorteio em andamento. }
           @case ('closed') { Status: fechado. }
@@ -20,6 +20,40 @@
             {{ copiado() ? 'Copiado!' : 'Copiar link' }}
           </button>
         </div>
+
+        @if (grupoAtual().status === 'open') {
+          <div class="mt-3 flex flex-col gap-1.5 border-t pt-3">
+            @if (!podeSortear()) {
+              <p class="text-sm text-muted-foreground">
+                Faltam {{ faltamParaSortear() }} participante{{ faltamParaSortear() === 1 ? '' : 's' }}
+                para sortear (mínimo 3).
+              </p>
+            }
+            @if (confirmandoSorteio()) {
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-muted-foreground">
+                  Tem certeza? Esta ação é irreversível.
+                </span>
+                <button hlmBtn variant="destructive" size="sm" type="button"
+                        [disabled]="sorteando()" (click)="confirmarSorteio()">
+                  {{ sorteando() ? 'Sorteando...' : 'Sim, sortear' }}
+                </button>
+                <button hlmBtn variant="outline" size="sm" type="button"
+                        [disabled]="sorteando()" (click)="cancelarSorteio()">Não</button>
+              </div>
+            } @else {
+              <button hlmBtn size="sm" type="button" class="w-fit"
+                      [disabled]="!podeSortear()" (click)="pedirSorteio()">
+                Realizar sorteio
+              </button>
+            }
+          </div>
+        } @else if (grupoAtual().status === 'closed' && meuParticipante()) {
+          <a hlmBtn variant="outline" size="sm" class="mt-3 w-fit"
+             [routerLink]="['/draw', id(), 'result']">
+            Ver meu amigo secreto
+          </a>
+        }
       }
     </div>
   </div>
@@ -33,9 +67,12 @@
         <p class="text-sm text-muted-foreground">Carregando participantes...</p>
       } @else {
         @for (p of participantes(); track p.id) {
+          <!-- D-04: o admin não remove a própria linha — limitação de UI, não de banco
+               (a policy de DELETE em `participant` continua permitindo; ver V2-02 item c
+               em REQUIREMENTS.md, não implementar trigger nesta fase). -->
           <app-participant-row
             [participant]="p"
-            [podeRemover]="souAdmin()"
+            [podeRemover]="souAdmin() && p.user_id !== grupoAtual().admin_id"
             [confirmando]="removendoId() === p.id"
             (pedirRemocao)="pedirRemocao($event)"
             (confirmarRemocao)="confirmarRemocao($event)"
