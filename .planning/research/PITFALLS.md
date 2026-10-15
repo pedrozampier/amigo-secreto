@@ -25,11 +25,18 @@ Instalar `@angular-eslint` e ativar como **erro** (não apenas sugestão) as seg
 |:------|:-------|:-----------|:--------|
 | `@angular-eslint/template/prefer-control-flow` | `eslint-plugin-template` | `*ngIf`, `[ngIf]`, `*ngFor`, `[ngForOf]`, `*ngSwitch`/`[ngSwitch]` — exige `@if`/`@for`/`@switch` | Não documentado como fixable automático |
 | `@angular-eslint/prefer-signals` | `eslint-plugin` | `@Input()`, `@Output()`, `@ViewChild()`, `@ViewChildren()`, `@ContentChild()`, `@ContentChildren()` — exige `input()`, `output()`, `viewChild()`, etc. | Sim (`--fix`) |
+| `@angular-eslint/prefer-output-emitter-ref` | `eslint-plugin` | `@Output()` especificamente — exige `output()` | Não confirmado como fixable |
 | `@angular-eslint/prefer-inject` | `eslint-plugin` | Qualquer parâmetro de construtor injetado (com ou sem `@Inject()`/`@Optional()`/`@Self()`/`@SkipSelf()`/`@Host()`) em classe decorada (`@Component`, `@Injectable`, etc.) — exige `inject()` | Não confirmado |
 | `@angular-eslint/prefer-standalone` | `eslint-plugin` | Qualquer `standalone: false` explícito — ajuda a impedir regressão para `NgModule` | Sim (`--fix`), mas há issue aberta pedindo para desabilitar o autofix nesse caso específico |
 | `@angular-eslint/prefer-signal-model` | `eslint-plugin` | Padrão `input()` + `output()` com nome `xChange` que deveria ser `model()` — ajuda a cumprir ID11 nos casos em que o par input/output existe | Sim (`--fix`) |
 | `@angular-eslint/template/banana-in-box` | `eslint-plugin-template` | Sintaxe incorreta de two-way binding (`([ngModel])` em vez de `[(ngModel)]`) — não impede o uso de `ngModel`, só corrige a sintaxe se usado | — |
 | `@angular-eslint/template/use-track-by-function` | `eslint-plugin-template` | É a regra para o `trackBy` do **antigo** `*ngFor`; não se aplica ao `@for` novo (ver limitação abaixo) | — |
+
+> **Correção (2026-10-14, verificada contra os plugins instalados).** Uma versão anterior deste
+> documento afirmava que `@Output()` era coberto apenas indiretamente, via `prefer-signals`.
+> Isso está incorreto: a regra dedicada `@angular-eslint/prefer-output-emitter-ref` existe,
+> não está deprecada, e sinaliza o decorator `@Output()` diretamente. Ela está incluída na
+> configuração do projeto como `"error"`.
 
 **Limitações importantes (honestidade sobre o que NÃO é coberto por lint):**
 - **`track` obrigatório em `@for`:** não precisa de ESLint — é **erro de compilação do próprio Angular** (`NG5002: @for loop must have a "track" expression`). Ou seja, é impossível fazer build de produção sem `track`. Isso é uma rede de segurança gratuita; ainda assim, vale confirmar rodando `ng build` localmente antes de cada PR.
@@ -42,6 +49,7 @@ Instalar `@angular-eslint` e ativar como **erro** (não apenas sugestão) as seg
 rules: {
   '@angular-eslint/prefer-standalone': 'error',
   '@angular-eslint/prefer-signals': 'error',
+  '@angular-eslint/prefer-output-emitter-ref': 'error',
   '@angular-eslint/prefer-inject': 'error',
   '@angular-eslint/prefer-signal-model': 'error',
   '@angular-eslint/template/prefer-control-flow': 'error',
