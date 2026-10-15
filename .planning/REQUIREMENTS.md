@@ -75,10 +75,10 @@
 > o único lugar onde os interceptors funcionais (ID22) podem legitimamente atuar, já que o
 > `supabase-js` usa `fetch` próprio e nunca passa pelo `HttpClient`.
 
-- [ ] **API-01**: Aplicação consome `GET https://brasilapi.com.br/api/feriados/v1/{ano}` via `HttpClient`
-- [ ] **API-02**: Interface exibe quantos dias faltam para o Natal, derivado da resposta da API
-- [ ] **API-03**: Interceptor funcional de erro trata falhas dessa chamada de forma centralizada
-- [ ] **API-04**: Resposta é convertida de Observable para Signal via `toSignal()`
+- [x] **API-01**: Aplicação consome `GET https://brasilapi.com.br/api/feriados/v1/{ano}` via `HttpClient`
+- [x] **API-02**: Interface exibe quantos dias faltam para o Natal, derivado da resposta da API
+- [x] **API-03**: Interceptor funcional de erro trata falhas dessa chamada de forma centralizada
+- [x] **API-04**: Resposta é convertida de Observable para Signal via `toSignal()`
 
 ### Interface e PWA (UI)
 

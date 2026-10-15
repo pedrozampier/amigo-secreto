@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
+status: executing
 stopped_at: Phase 3 context gathered
-last_updated: "2026-10-15T04:24:38.257Z"
-last_activity: 2026-10-15
+last_updated: "2026-10-15T12:28:19.754Z"
+last_activity: 2026-10-15 -- Phase 03 execution started
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 13
+  completed_plans: 9
   percent: 40
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-14)
 
 **Core value:** O sorteio é privado de verdade — garantido pelo banco (RLS), não pela interface — e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código entregue.
-**Current focus:** Phase 03 — grupos, participantes, wishlist e API pública
+**Current focus:** Phase 03 — grupos-participantes-wishlist-e-api-p-blica
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
-Status: Phase 2 complete and verified (5/5 must-haves passed) — ready to plan Phase 3
-Last activity: 2026-10-15
+Phase: 03 (grupos-participantes-wishlist-e-api-p-blica) — EXECUTING
+Plan: 1 of 5
+Status: Executing Phase 03
+Last activity: 2026-10-15 -- Phase 03 execution started
 
 Progress: [████░░░░░░] 40%
 
@@ -59,6 +59,7 @@ Progress: [████░░░░░░] 40%
 | Phase 02 P02 | 10min | 2 tasks | 6 files |
 | Phase 02 P01 | 25min | 2 tasks | 4 files |
 | Phase 02 P03 | 20min | 3 tasks | 13 files |
+| Phase 03 P02 | 3min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,7 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 02]: Login/register stub components are structurally required in plan 02-03 because tsc resolves loadComponent statically; without them the route tree fails TS2307
 - [Phase 02-autentica-o-end-to-end]: 02-04 complete — human browser/SQL checkpoint approved 2026-10-15, all 6 steps passed and profile.display_name confirmed correct (D-13 chain proven end to end)
 - [Phase 02-autentica-o-end-to-end]: D-20 ("Confirm email" desabilitado) era falso no projeto real — signUp devolvia session: null sem erro e o redirect para /dashboard era revertido pelo authGuard em silencio. Resolvido desativando "Confirm email" no Supabase (escolha do usuario, Opcao A); fragilidade residual no codigo registrada em deferred-items.md
+- [Phase 03]: [Phase 03-02]: HolidayService exposes diasAteONatal/natal as raw signal references (no trailing call) on ChristmasCountdownCard fields to avoid freezing a one-time read; year for the countdown is sourced from the BrasilAPI response's own date field rather than new Date(), keeping the public GET load-bearing (D-14)
 
 ### Pending Todos
 
