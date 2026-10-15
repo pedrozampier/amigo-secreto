@@ -38,3 +38,25 @@ export interface GroupPreview {
   name: string;
   status: GroupStatus;
 }
+
+/**
+ * Contrato de `draw` — copiado de `docs/sdd.md` §4. `giver_id`/`receiver_id` apontam
+ * para `participant.id`, NUNCA para `user_id`/`profile.id` (ver STATE.md).
+ */
+export interface Draw {
+  id: string;
+  group_id: string;
+  giver_id: string;
+  receiver_id: string;
+  created_at: string;
+}
+
+/**
+ * Formato devolvido por `DrawService.getMyResult()` — a projeção do join embedado de
+ * D-07 (`draw` + `participant!draw_receiver_id_fkey`). Só os campos que a revelação
+ * precisa: nome de quem foi tirado e a wishlist dessa pessoa (DRAW-08/09).
+ */
+export interface DrawResult {
+  id: string;
+  receiver: Pick<Participant, 'display_name' | 'wish_list'>;
+}

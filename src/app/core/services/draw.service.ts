@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { GENERIC_DRAW_ERROR, translateDrawError } from '../draw-error-messages';
+import type { DrawResult } from '../models/group.model';
 import { SupabaseClientService } from './supabase-client.service';
 
 /**
@@ -30,5 +31,33 @@ export class DrawService {
     }
     // FunctionsRelayError / FunctionsFetchError — falha de rede/infra, sem `code` para traduzir.
     return { error: GENERIC_DRAW_ERROR };
+  }
+
+  /**
+   * D-07/DRAW-09: busca o par do usuário logado com nome e wishlist de quem ele tirou,
+   * numa única query com join embedado. A FK é nomeada EXPLICITAMENTE
+   * (`participant!draw_receiver_id_fkey`) porque `draw` tem DUAS foreign keys para
+   * `participant` (giver_id e receiver_id) — `participant(...)` sozinho é ambíguo e o
+   * supabase-js recusa a query.
+   *
+   * `.eq('group_id', groupId)` é redundante com a RLS (a policy de `draw` já restringe
+   * a `giver_id in (select private.my_participant_ids())`), mas mantém a intenção
+   * explícita e permite `.maybeSingle()` resolver corretamente quando o usuário está em
+   * vários grupos — mesmo estilo de `updateWishList()` em `GroupService`.
+   *
+   * DRAW-10 não é tocado aqui: a privacidade vem inteiramente da policy de SELECT em
+   * `draw` (0003_rls_policies.sql) — nunca adicionar um filtro extra "escondendo" o
+   * próprio par do admin, isso já é garantido pelo banco.
+   */
+  async getMyResult(groupId: string): Promise<{ result: DrawResult | null; error: string | null }> {
+    const { data, error } = await this.supabase
+      .from('draw')
+      .select('id, receiver:participant!draw_receiver_id_fkey(display_name, wish_list)')
+      .eq('group_id', groupId)
+      .maybeSingle();
+    if (error) {
+      return { result: null, error: 'Não foi possível carregar seu resultado.' };
+    }
+    return { result: data as DrawResult | null, error: null };
   }
 }
