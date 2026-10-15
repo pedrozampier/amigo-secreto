@@ -10,9 +10,30 @@ import {
   HlmCardTitle,
 } from '@spartan-ng/helm/card';
 import { HlmLabel } from '@spartan-ng/helm/label';
+import { GroupStatus } from '../../../core/models/group.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { GroupService } from '../../../core/services/group.service';
 import { ParticipantRow } from '../manage/participant-row';
+
+/**
+ * DRAW-08/09: quem pode abrir `/draw/:groupId/result`.
+ *
+ * Duas condições, não uma: o grupo precisa estar `closed` (os pares só existem
+ * depois do sorteio) E o usuário precisa ser participante. A segunda existe porque
+ * o `memberGuard` libera `/group/:id` para admin OU participante, então um admin
+ * que não participa do próprio grupo chega aqui — e para ele o `drawResultResolver`
+ * devolve `missing`. Link que sempre rebate é péssima UX (mesma razão de os cards do
+ * dashboard não linkarem para /manage).
+ *
+ * Função pura e exportada para ser testável sem TestBed, no padrão dos demais specs
+ * do projeto (RA8-ID32).
+ */
+export function podeVerResultadoDoSorteio(
+  status: GroupStatus | undefined,
+  temParticipante: boolean,
+): boolean {
+  return status === 'closed' && temParticipante;
+}
 
 /**
  * WISH-01/02 (fechamento de gap da Fase 3): a tela do PARTICIPANTE em
@@ -65,6 +86,10 @@ export class GroupViewPage {
   protected readonly meuParticipante = this.groups.meuParticipante;
   protected readonly souAdmin = computed(
     () => this.grupo()?.admin_id === this.auth.user()?.id,
+  );
+  /** DRAW-08/09: afordance de revelação para o participante (ver predicado acima). */
+  protected readonly podeVerResultado = computed(() =>
+    podeVerResultadoDoSorteio(this.grupo()?.status, this.meuParticipante() !== null),
   );
 
   protected readonly carregando = signal(true);
