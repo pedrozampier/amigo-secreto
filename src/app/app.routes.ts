@@ -29,6 +29,21 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/dashboard.page').then((m) => m.DashboardPage),
       },
+      // D-07 / RA5-ID17: bloco /group com rotas filhas aninhadas.
+      {
+        path: 'group',
+        loadChildren: () =>
+          import('./features/group/group.routes').then((m) => m.groupRoutes),
+      },
+      // D-07: /join/:token fica FLAT, não sob /group — quem abre o convite ainda
+      // não é membro, e renderizar o layout de um grupo que a pessoa não integra
+      // seria incoerente. Continua dentro do layout autenticado, então o authGuard
+      // (com returnUrl, D-21 da Fase 2) cobre o deep link de quem não está logado.
+      {
+        path: 'join/:token',
+        loadComponent: () =>
+          import('./features/group/join/join-group.page').then((m) => m.JoinGroupPage),
+      },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },
