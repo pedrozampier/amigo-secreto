@@ -22,12 +22,23 @@ import { GroupService } from '../services/group.service';
  * `adminGuard` exige `admin_id === auth.uid()`. `/group/:id` usa este,
  * `/group/:id/manage` continua usando aquele, e os dois coexistem sem se
  * sobrepor.
+ *
+ * POR QUE O GUARD ACEITA DOIS NOMES DE PARAM (`id` OU `groupId`): este mesmo
+ * guard é reusado em `/draw/:groupId/result` (Fase 4, D-08) — a rota de
+ * revelação do par. `/group/:id` e `/draw/:groupId/result` nomeiam a MESMA
+ * coisa (o id do grupo) com spellings diferentes, porque `groupId` é mais
+ * legível naquela rota. O guard autoriza "sou admin ou participante deste
+ * grupo" independentemente de como a URL soletra o parâmetro — generalizar
+ * aqui evita duplicar o guard inteiro só por causa do nome do param. Sem este
+ * `??`, `route.paramMap.get('id')` é sempre `null` em `/draw/:groupId/result` e
+ * TODO participante (admin incluído) seria redirecionado para `/dashboard`
+ * antes do `drawResultResolver` sequer rodar.
  */
 export const memberGuard: CanActivateFn = async (route) => {
   const groups = inject(GroupService);
   const router = inject(Router);
 
-  const id = route.paramMap.get('id');
+  const id = route.paramMap.get('id') ?? route.paramMap.get('groupId');
   if (!id) {
     return router.createUrlTree(['/dashboard']);
   }
