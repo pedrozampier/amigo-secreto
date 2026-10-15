@@ -96,7 +96,7 @@
 - [ ] **ENG-02**: Testes unitários (`.spec.ts`) cobrindo o algoritmo de sorteio: ausência de autossorteio e *perfect matching*
 - [ ] **ENG-03**: Teste cobrindo a rejeição da segunda invocação do sorteio
 - [x] **ENG-04**: Build de produção executa sem erros nem warnings de lint
-- [ ] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
+- [x] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
 - [x] **ENG-06**: Gitflow mantido (`main` + `develop`) com integrações via Pull Request
 - [ ] **ENG-07**: README consolida o PRD (diagrama ER em Mermaid + design system)
 - [x] **ENG-08**: User stories cadastradas como Issues em um Kanban no GitHub Projects
@@ -188,17 +188,17 @@ Preenchido durante a criação do roadmap.
 | AUTH-04 | Fase 2 | Pendente |
 | AUTH-05 | Fase 2 | Pendente |
 | AUTH-06 | Fase 2 | Pendente |
-| DB-01 | Fase 1 | Pendente |
-| DB-02 | Fase 1 | Pendente |
-| DB-03 | Fase 1 | Pendente |
-| DB-04 | Fase 1 | Pendente |
-| DB-05 | Fase 1 | Pendente |
-| DB-06 | Fase 1 | Pendente |
-| DB-07 | Fase 1 | Pendente |
-| DB-08 | Fase 1 | Pendente |
-| DB-09 | Fase 1 | Pendente |
-| DB-10 | Fase 1 | Pendente |
-| DB-11 | Fase 1 | Pendente |
+| DB-01 | Fase 1 | Completo |
+| DB-02 | Fase 1 | Completo |
+| DB-03 | Fase 1 | Completo |
+| DB-04 | Fase 1 | Completo |
+| DB-05 | Fase 1 | Completo |
+| DB-06 | Fase 1 | Completo |
+| DB-07 | Fase 1 | Completo |
+| DB-08 | Fase 1 | Completo |
+| DB-09 | Fase 1 | Completo |
+| DB-10 | Fase 1 | Completo |
+| DB-11 | Fase 1 | Completo |
 | GRP-01 | Fase 3 | Pendente |
 | GRP-02 | Fase 3 | Pendente |
 | GRP-03 | Fase 3 | Pendente |
@@ -225,23 +225,23 @@ Preenchido durante a criação do roadmap.
 | API-02 | Fase 3 | Pendente |
 | API-03 | Fase 3 | Pendente |
 | API-04 | Fase 3 | Pendente |
-| UI-01 | Fase 1 | Pendente |
-| UI-02 | Fase 1 | Pendente |
+| UI-01 | Fase 1 | Completo |
+| UI-02 | Fase 1 | Completo |
 | UI-03 | Fase 5 | Pendente |
 | UI-04 | Fase 5 | Pendente |
 | UI-05 | Fase 5 | Pendente |
 | UI-06 | Fase 5 | Pendente |
 | UI-07 | Fase 5 | Pendente |
-| ENG-01 | Fase 1 | Pendente |
+| ENG-01 | Fase 1 | Completo |
 | ENG-02 | Fase 4 | Pendente |
 | ENG-03 | Fase 4 | Pendente |
-| ENG-04 | Fase 1 | Pendente |
-| ENG-05 | Fase 1 | Pendente |
-| ENG-06 | Fase 1 | Pendente |
+| ENG-04 | Fase 1 | Completo |
+| ENG-05 | Fase 1 | Completo |
+| ENG-06 | Fase 1 | Completo |
 | ENG-07 | Fase 5 | Pendente |
-| ENG-08 | Fase 1 | Pendente |
+| ENG-08 | Fase 1 | Completo |
 | ENG-09 | Fase 5 | Pendente |
-| ENG-10 | Fase 1 | Pendente |
+| ENG-10 | Fase 1 | Completo |
 
 ---
 *Requisitos definidos em: 2026-10-14*
