@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 Phase: 04 (sorteio-e-revela-o) — EXECUTING
 Plan: 5 of 5
 Status: Ready to execute
-Last activity: 2026-10-15
+Last activity: 2026-10-15 - Completed quick task 261015-mbk: link de revelacao para participantes nao-admin
 
 Progress: [████░░░░░░] 40%
 
@@ -133,6 +133,12 @@ Nenhum ainda.
 - ENG-06 (Gitflow/PRs) e ENG-08 (Kanban) são contínuos desde a Fase 1 — não tratar como tarefas de fechamento
 - Supabase "Confirm email" DEVE permanecer desativado (mailer_autoconfirm: true): com ele ligado, signUp devolve session: null sem erro e register.page.ts navega para /dashboard so para o authGuard devolver ao /login, sem mensagem alguma. Correcao robusta (signUp expor needsConfirmation) registrada em deferred-items.md
 - Plan 04-02 marcou DRAW-04 completo seguindo seu frontmatter, mas o texto de DRAW-04 em REQUIREMENTS.md (bloqueio com menos de 3 participantes) nao corresponde ao que 04-02 entregou (admin entra no proprio grupo via RPC create_group); revisar mapeamento de requisito em /gsd:transition da Fase 4
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 261015-mbk | Adicionar link para a tela de revelacao do par em group-view para participantes nao-admin quando o grupo esta fechado | 2026-10-15 | 217aa9e | [261015-mbk-adicionar-link-para-a-tela-de-revelacao-](./quick/261015-mbk-adicionar-link-para-a-tela-de-revelacao-/) |
 
 ## Session Continuity
 
