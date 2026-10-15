@@ -120,7 +120,7 @@ Plans:
   2. Clicar duas vezes (ou duas abas) no botão de sorteio produz exatamente N pares, nunca duplicados — a segunda invocação é rejeitada e o grupo muda para `status = 'closed'` só uma vez
   3. Testes `.spec.ts` comprovam automaticamente: ausência de autossorteio, *perfect matching* (cada pessoa dá e recebe exatamente uma vez), e rejeição da segunda invocação
   4. Cada participante revela o próprio par com uma ação deliberada (cartão flip controlado por Signal) e, através desse par, vê a lista de desejos de quem tirou
-  5. Autenticando como o administrador e tentando ler a tabela `draw` de outro participante via chamada direta ao client (DevTools/console), o resultado vem vazio — prova prática, não só de UI, de que o admin não acessa os pares
+  5. Autenticando como o administrador (que agora participa do próprio sorteio, D-01) e lendo a tabela `draw` via chamada direta ao client (DevTools/console): o resultado traz exatamente 1 linha — a própria — de N existentes; filtrando por um `giver_id` de outro participante, o resultado vem vazio. A dupla assert (lê a própria, não lê a de outro) é a prova prática de que o admin não acessa os pares de ninguém além do seu, documentada em `docs/draw-privacy-verification.md`
 
 **Plans**: 5 plans (4 waves)
 
