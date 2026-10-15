@@ -2,7 +2,7 @@
 phase: 02-autentica-o-end-to-end
 plan: 04
 subsystem: auth-ui
-tags: [reactive-forms, angular-router, signals, spartan-ui, checkpoint-pending]
+tags: [reactive-forms, angular-router, signals, spartan-ui, checkpoint-approved]
 
 # Dependency graph
 requires:
@@ -49,11 +49,11 @@ completed: 2026-10-15
 
 # Phase 2 Plan 4: Login/Register Forms + End-to-End Verification Summary
 
-**Two validated Reactive Forms (`/login`, `/register`) replacing the plan 02-03 stubs wholesale, confirmed by `tsc`/`lint`/`build`/Vitest after real Supabase credentials were supplied — browser and database verification (display_name correctness, F5 flash, logout) still requires human confirmation.**
+**Two validated Reactive Forms (`/login`, `/register`) replacing the plan 02-03 stubs wholesale, confirmed by `tsc`/`lint`/`build`/Vitest after real Supabase credentials were supplied, and approved by human browser + SQL verification on 2026-10-15 (all 6 steps passed, `profile.display_name` confirmed correct).**
 
 ## Performance
 
-- **Tasks:** 3 (2 complete and verified; 1 partially complete — automated portion done, human portion pending)
+- **Tasks:** 3 (all complete and verified — Task 3's human browser/SQL portion approved 2026-10-15)
 - **Completed:** 2026-10-15
 
 ## Accomplishments
@@ -93,7 +93,20 @@ new source-code commits for Tasks 1-2 (re-verification only):
 1. **Task 1: Login page Reactive Form, returnUrl** — `5c5c987` (feat) — prior session
 2. **Task 2: Register page, display_name wiring** — `cd139b6` (feat) — prior session
 3. **Task 3: Browser/SQL checkpoint** — automated portion re-confirmed this session;
-   human portion still pending (no commit — nothing to commit for an unexecuted manual step)
+   human portion APPROVED by the user on 2026-10-15. All 6 checklist steps passed
+   (guard redirect with returnUrl, signup landing on /dashboard with the correct
+   display name, no F5 login flash, effective logout, disabled-submit + PT-BR field
+   validation, PT-BR API error) and the SQL check confirmed
+   `public.profile.display_name` = the submitted name, not the e-mail local-part —
+   proving the D-13 trigger chain end to end.
+
+   Resolving this checkpoint required a project-level fix: Supabase had
+   **"Confirm email" enabled**, which falsified the plan's D-20 assumption that
+   `signUp` returns a session. With confirmation on, `signUp` returned
+   `session: null`, so `register.page.ts`'s unconditional `navigateByUrl('/dashboard')`
+   was bounced straight back by `authGuard` with no error shown. The user disabled
+   "Confirm email" (`mailer_autoconfirm: true`, verified via `/auth/v1/settings`),
+   restoring the D-20 precondition. See Deviations.
 
 ## Files Created/Modified
 
@@ -109,6 +122,34 @@ timing, PT-BR copy, returnUrl handling, post-register destination) follow D-11 t
 D-21 in `02-CONTEXT.md` exactly as written in the plan's prescribed code.
 
 ## Deviations from Plan
+
+### D-20 assumption falsified: Supabase "Confirm email" was enabled
+
+The plan's D-20 recorded "Confirm email desabilitado ⇒ signUp já devolve sessão ⇒ entra
+direto", and `register.page.ts:68` encodes that assumption as an unconditional
+`await this.router.navigateByUrl('/dashboard')` after a successful `signUp`.
+
+The actual Supabase project had e-mail confirmation ON (`mailer_autoconfirm: false`,
+read from `GET /auth/v1/settings`). With confirmation on, `signUp` resolves with
+`{ user, session: null }` and **no error** — so the register page saw `error === null`,
+navigated to `/dashboard`, and `authGuard` bounced it straight back to `/login` with
+nothing displayed to the user. Found during human checkpoint verification, not by any
+automated gate: every gate passes either way, because the divergence is in project
+configuration, not in code.
+
+**Resolution (user decision, Option A):** disabled "Confirm email" in the Supabase
+dashboard, restoring the D-20 precondition. Re-verified from the CLI:
+`mailer_autoconfirm: true`. No source-code change. Rationale: D-20 already named this
+as the intended configuration; the rubric grades Reactive Forms (ID23) and the functional
+guard (ID16), not e-mail-confirmation flows; and it keeps the banca demo self-contained
+with no mail round-trip.
+
+**Residual fragility (not fixed here, see deferred-items.md):** `AuthService.signUp`
+discards the returned session, so `register.page.ts` cannot distinguish "signed up and
+signed in" from "signed up, confirmation required". If "Confirm email" is ever re-enabled,
+the same silent bounce returns. The robust form is for `signUp` to surface whether a
+session came back and for the page to branch on it. Out of scope for this plan — it is a
+behavior change, and the user chose the configuration fix.
 
 ### Auto-fixed Issues
 
@@ -141,23 +182,25 @@ session before this checkpoint).
 
 ## Known Stubs / Verification Status
 
-**This plan is NOT fully closed.** Per the plan's own Task 3 design (`type="checkpoint:human-verify"`,
-`gate="blocking"`), the following cannot be machine-verified and require explicit human
-confirmation before Phase 2 can be marked complete:
+**This plan is CLOSED.** Task 3's blocking human checkpoint
+(`type="checkpoint:human-verify"`) was approved by the user on 2026-10-15. All six
+browser/SQL items below were confirmed by the human:
 
 | # | What needs confirming | Automatable? | Status |
 |---|---|---|---|
-| 1 | Guard redirect: unauthenticated visit to `/dashboard` → `/login?returnUrl=%2Fdashboard` | No (browser) | **Awaiting human** |
-| 2 | `public.profile.display_name` contains the typed name, not the e-mail-prefix fallback (D-13 — the one failure mode that is silent) | No (browser + SQL Editor) | **Awaiting human** |
-| 3 | No `/login` flash across 3 consecutive F5 reloads on `/dashboard` | No (browser) | **Awaiting human** |
-| 4 | Logout is effective: after "Sair", visiting `/dashboard` redirects to `/login` again | No (browser) | **Awaiting human** |
-| 5 | Submit disabled on empty form; PT-BR field errors appear only after blur/submit | No (browser) | **Awaiting human** |
-| 6 | Invalid-credential error renders in PT-BR, not the raw English API string | No (browser) | **Awaiting human** |
+| 1 | Guard redirect: unauthenticated visit to `/dashboard` → `/login?returnUrl=%2Fdashboard` | No (browser) | ✓ Approved 2026-10-15 |
+| 2 | `public.profile.display_name` contains the typed name, not the e-mail-prefix fallback (D-13 — the one failure mode that is silent) | No (browser + SQL Editor) | ✓ Approved 2026-10-15 — `display_name` correct |
+| 3 | No `/login` flash across 3 consecutive F5 reloads on `/dashboard` | No (browser) | ✓ Approved 2026-10-15 |
+| 4 | Logout is effective: after "Sair", visiting `/dashboard` redirects to `/login` again | No (browser) | ✓ Approved 2026-10-15 |
+| 5 | Submit disabled on empty form; PT-BR field errors appear only after blur/submit | No (browser) | ✓ Approved 2026-10-15 |
+| 6 | Invalid-credential error renders in PT-BR, not the raw English API string | No (browser) | ✓ Approved 2026-10-15 |
 
 Everything machine-checkable in Task 3's scope (tsc, lint, Vitest, build with real
 credentials, the no-rxjs-state/no-secrets scripts, and the textual D-13 chain via grep)
-is done and green. The remaining items are intrinsically browser/SQL-only — this agent
-has no browser or Supabase SQL Editor access and will not fabricate a result for them.
+is done and green. Item 2 is the load-bearing one: the SQL check proved
+`public.profile.display_name` holds the submitted name rather than the
+`split_part(email, '@', 1)` fallback, which is the D-13 failure mode that produces no
+error of any kind. Reaching this result required the D-20 configuration fix above.
 
 ## Issues Encountered
 
@@ -242,7 +285,7 @@ Se todos os 6 passos passarem, a Fase 2 pode ser considerada concluída.
 *Phase: 02-autentica-o-end-to-end*
 *Completed (automated portion): 2026-10-15*
 
-## Self-Check: PASSED (automated portion only)
+## Self-Check: PASSED
 
 - `src/app/features/auth/login/login.page.ts` — FOUND
 - `src/app/features/auth/login/login.page.html` — FOUND
@@ -254,5 +297,6 @@ Se todos os 6 passos passarem, a Fase 2 pode ser considerada concluída.
   `check:no-rxjs-state` — all exit 0, confirmed in this session
 - `check:no-secrets` — exit 1 due to a documented pre-existing vendor-code false
   positive (see Deviations above), not an actual leak; logged to `deferred-items.md`
-- Browser/SQL steps (Task 3 `<how-to-verify>`) — **NOT executed by this agent**; awaiting
-  human confirmation per the checklist above
+- Browser/SQL steps (Task 3 `<how-to-verify>`) — executed by the human and APPROVED
+  on 2026-10-15; all 6 steps passed, `profile.display_name` confirmed correct. Required
+  disabling Supabase "Confirm email" first (D-20 deviation above).

@@ -40,3 +40,38 @@ that bare literal.
 
 **Status:** Not fixed. No actual secret leak confirmed by manual inspection of `src/` and
 `environment.ts`.
+
+## `signUp` discards the session, so an unconfirmed signup fails silently
+
+**Found during:** 02-04 Task 3 human checkpoint verification (2026-10-15) — the user hit
+"Ele está pedindo pra confirmar email antes de entrar" while running the browser checklist.
+
+**Issue:** `AuthService.signUp` (`src/app/core/services/auth.service.ts:76`) returns only
+`{ error }`, discarding the `data.session` that `supabase.auth.signUp` resolves with.
+`register.page.ts:68` therefore treats "no error" as "signed in" and navigates
+unconditionally to `/dashboard`.
+
+When Supabase's "Confirm email" is enabled, `signUp` resolves with
+`{ user, session: null }` and **no error**. The page navigates, `authGuard` finds no
+session and bounces back to `/login` — showing the user nothing at all. The failure is
+invisible to every automated gate, because the divergence lives in project configuration
+rather than in code.
+
+**Resolved for now by configuration, not code:** the user disabled "Confirm email"
+(`mailer_autoconfirm: true`), restoring the plan's D-20 precondition. Chosen deliberately
+(Option A) — D-20 already named this as the intended configuration, the rubric grades
+Reactive Forms (ID23) and the functional guard (ID16) rather than e-mail confirmation
+flows, and it keeps the banca demo free of a mail round-trip.
+
+**Why deferred, not fixed:** making the page branch on session presence is a behavior
+change beyond this plan's scope, and the user explicitly chose the configuration fix when
+offered both options.
+
+**Suggested fix if "Confirm email" is ever re-enabled** (it would silently reintroduce the
+bug): have `signUp` return whether a session came back —
+`{ error, needsConfirmation: !data.session }` — and have `register.page.ts` show a
+"verifique seu e-mail" state instead of navigating when `needsConfirmation` is true.
+Worth a unit spec asserting the null-session branch does not navigate.
+
+**Status:** Not fixed in code. Mitigated by Supabase configuration; latent if that
+configuration changes.
