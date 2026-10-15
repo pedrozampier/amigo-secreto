@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-10-15T01:58:59.581Z"
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-10-15T02:01:57.686Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 3
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 ## Current Position
 
 Phase: 01 (fundacao-scaffold-banco-rls) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-10-15
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01 P02 | 25 | 2 tasks | 3 files |
 | Phase 01 P01 | 15min | 3 tasks | 4 files |
+| Phase 01 P03 | 35 | 3 tasks | 54 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,9 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 01]: ARCHITECTURE.md had no CREATE TABLE statements — the 4-table DDL was derived fresh from SDD §3.2 ER diagram in plan 01-01 Task 1
 - [Phase 01]: Two pg_policies cells were UI-truncated in Supabase SQL Editor grid; db-rls-verification.md quotes the authoritative full policy text from 0003_rls_policies.sql instead
 - [Phase 01]: SUPABASE_URL and the issued publishable-key scheme were not supplied this session; deferred to plans 01-03/01-04 which consume them
+- [Phase 01]: [Phase 01-03]: angular-eslint v22 (unpinned @angular-eslint/schematics) self-rejects on an Angular v21 workspace; use ng add angular-eslint@21 explicitly, not the generic schematics package
+- [Phase 01]: [Phase 01-03]: npm 10.9.2 arborist crashes on vitest@4's peer graph (edgesOut bug) for every install in this project; --legacy-peer-deps is the required workaround, not a real peer conflict
+- [Phase 01]: [Phase 01-03]: Spartan UI components import from @spartan-ng/helm/<name> (e.g. @spartan-ng/helm/button), the real tsconfig path alias written by the CLI — not a guessed src/app/shared/ui path
 
 ### Pending Todos
 
@@ -89,6 +93,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T01:58:59.579Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-10-15T02:01:57.683Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None

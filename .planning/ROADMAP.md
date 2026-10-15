@@ -38,7 +38,7 @@
 Plans:
 - [x] 01-01-PLAN.md — Schema, constraints, índices, funções `private` SECURITY DEFINER e todas as policies de RLS, provadas com dois usuários no SQL Editor (DB-01..DB-10)
 - [x] 01-02-PLAN.md — Kanban no GitHub Projects com as 11 user stories como Issues, evidência de Gitflow, MCP documentado no SDD (ENG-06, ENG-08, ENG-10)
-- [ ] 01-03-PLAN.md — Scaffold Angular 21 LTS + Tailwind v4 + Spartan UI + ESLint com as 7 regras como `error`, com teste negativo executado (UI-01, UI-02, ENG-01, ENG-04)
+- [x] 01-03-PLAN.md — Scaffold Angular 21 LTS + Tailwind v4 + Spartan UI + ESLint com as 7 regras como `error`, com teste negativo executado (UI-01, UI-02, ENG-01, ENG-04)
 - [ ] 01-04-PLAN.md — Deploy Vercel com rewrite de SPA, gate de CI (lint + grep de secrets), e as PRs que materializam o Gitflow (ENG-05, ENG-06, DB-11)
 
 **Waves**: Wave 1 = 01-01 + 01-02 (paralelos) · Wave 2 = 01-03 (bloqueado por DB-10) · Wave 3 = 01-04

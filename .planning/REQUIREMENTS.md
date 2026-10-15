@@ -36,7 +36,7 @@
 - [x] **DB-08**: Nenhuma policy de INSERT/UPDATE/DELETE em `draw` para o papel `authenticated` — a única escrita vem da Edge Function
 - [x] **DB-09**: Índices criados nas colunas usadas pelas policies (`group_id`, `user_id`, `giver_id`, `admin_id`)
 - [x] **DB-10**: Políticas validadas manualmente no SQL Editor com dois usuários distintos antes de qualquer código de frontend
-- [ ] **DB-11**: A `service_role` / `sb_secret_` key existe apenas no ambiente da Edge Function e nunca no bundle do cliente
+- [x] **DB-11**: A `service_role` / `sb_secret_` key existe apenas no ambiente da Edge Function e nunca no bundle do cliente
 
 ### Gestão de Grupos (GRP)
 
@@ -82,8 +82,8 @@
 
 ### Interface e PWA (UI)
 
-- [ ] **UI-01**: Layout mobile-first funcional a partir de 320px de largura
-- [ ] **UI-02**: Interface construída com Tailwind CSS v4 + componentes Spartan UI
+- [x] **UI-01**: Layout mobile-first funcional a partir de 320px de largura
+- [x] **UI-02**: Interface construída com Tailwind CSS v4 + componentes Spartan UI
 - [ ] **UI-03**: `manifest.webmanifest` configurado com ícones, `theme_color`, `background_color` e `display: standalone`
 - [ ] **UI-04**: Aplicação é instalável como PWA (verificado no Lighthouse/DevTools)
 - [ ] **UI-05**: Estado offline exibe feedback visual ao usuário
@@ -92,10 +92,10 @@
 
 ### Qualidade e Entrega (ENG)
 
-- [ ] **ENG-01**: ESLint configurado com as 5 regras que tornam a rubrica mecanicamente verificável (`prefer-control-flow`, `prefer-signals`, `prefer-inject`, `prefer-standalone`, `prefer-signal-model`)
+- [x] **ENG-01**: ESLint configurado com as 5 regras que tornam a rubrica mecanicamente verificável (`prefer-control-flow`, `prefer-signals`, `prefer-inject`, `prefer-standalone`, `prefer-signal-model`)
 - [ ] **ENG-02**: Testes unitários (`.spec.ts`) cobrindo o algoritmo de sorteio: ausência de autossorteio e *perfect matching*
 - [ ] **ENG-03**: Teste cobrindo a rejeição da segunda invocação do sorteio
-- [ ] **ENG-04**: Build de produção executa sem erros nem warnings de lint
+- [x] **ENG-04**: Build de produção executa sem erros nem warnings de lint
 - [ ] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
 - [x] **ENG-06**: Gitflow mantido (`main` + `develop`) com integrações via Pull Request
 - [ ] **ENG-07**: README consolida o PRD (diagrama ER em Mermaid + design system)
