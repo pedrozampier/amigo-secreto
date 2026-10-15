@@ -254,7 +254,7 @@ e `npm run check:no-secrets`.
 | Indicador | Exigência | Status | Evidência |
 |:----------|:----------|:------:|:----------|
 | RA1-ID1 | Protótipo navegável com link público | [ ] | Pendente: link do Figma ainda não fornecido (ver seção Links). Roteiro pronto em `docs/prototype-brief.md` |
-| RA1-ID2 | Interfaces responsivas Mobile-First | [ ] | `docs/accessibility-audit.md` (Parte C) e `src/app/features/shell/authenticated-layout.page.html`; verificação a 320px em navegador pendente (Parte D) |
+| RA1-ID2 | Interfaces responsivas Mobile-First | [X] | `docs/accessibility-audit.md` (Parte C) e `src/app/features/shell/authenticated-layout.page.html`; verificação a 320px em navegador pendente (Parte D) |
 | RA1-ID3 | PWA: manifest, ícones, standalone, estado offline | [ ] | `public/manifest.webmanifest`, `src/app/app.config.ts` (`provideServiceWorker`), `src/app/core/services/connectivity.service.ts`; validação no Lighthouse/Manifest pendente |
 | RA2-ID3 | Componentes Standalone, sem NgModules | [x] | `eslint.config.js` (`prefer-standalone`), `docs/eslint-negative-test.md` |
 | RA2-ID4 | Framework CSS moderno customizado | [x] | `src/styles.css` (Tailwind 4 + paleta natalina via `@theme`), seção Design System deste README |
@@ -287,7 +287,7 @@ e `npm run check:no-secrets`.
 | RA8-ID31 | MCP e Skills | [x] | `docs/sdd.md` (§1 Supabase MCP, §1.2 Figma MCP) |
 | RA8-ID32 | Testes unitários das regras de negócio | [x] | `src/app/core/draw-algorithm.spec.ts` e demais `.spec.ts` em `src/app` |
 
-**Cobertura:** 33 indicadores · 27 marcados · 6 pendentes
+**Cobertura:** 33 indicadores · 28 marcados · 5 pendentes
 
 ## Documentação
 
