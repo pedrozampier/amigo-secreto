@@ -40,15 +40,15 @@
 
 ### Gestão de Grupos (GRP)
 
-- [ ] **GRP-01**: Administrador cria um grupo informando nome (Reactive Form validado)
-- [ ] **GRP-02**: Sistema gera um `invite_token` único por grupo
+- [x] **GRP-01**: Administrador cria um grupo informando nome (Reactive Form validado)
+- [x] **GRP-02**: Sistema gera um `invite_token` único por grupo
 - [ ] **GRP-03**: Administrador visualiza o link de convite e consegue copiá-lo
-- [ ] **GRP-04**: Administrador vê a lista de participantes do seu grupo
-- [ ] **GRP-05**: Administrador remove um participante do grupo
-- [ ] **GRP-06**: Usuário autenticado entra em um grupo via link de convite
-- [ ] **GRP-07**: Tentativa de entrar duas vezes no mesmo grupo é rejeitada com mensagem clara
-- [ ] **GRP-08**: Grupo com status diferente de `open` não aceita novos participantes
-- [ ] **GRP-09**: Usuário vê no dashboard os grupos que administra e os que participa
+- [x] **GRP-04**: Administrador vê a lista de participantes do seu grupo
+- [x] **GRP-05**: Administrador remove um participante do grupo
+- [x] **GRP-06**: Usuário autenticado entra em um grupo via link de convite
+- [x] **GRP-07**: Tentativa de entrar duas vezes no mesmo grupo é rejeitada com mensagem clara
+- [x] **GRP-08**: Grupo com status diferente de `open` não aceita novos participantes
+- [x] **GRP-09**: Usuário vê no dashboard os grupos que administra e os que participa
 
 ### Sorteio (DRAW)
 
@@ -65,9 +65,9 @@
 
 ### Lista de Desejos (WISH)
 
-- [ ] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
-- [ ] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
-- [ ] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
+- [x] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
+- [x] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
+- [x] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
 
 ### Contexto Externo / API Pública (API)
 

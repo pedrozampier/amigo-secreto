@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-10-15T13:03:40.253Z"
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-10-15T13:08:04.221Z"
 last_activity: 2026-10-15 -- Phase 03 execution started
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 13
-  completed_plans: 10
+  completed_plans: 11
   percent: 40
 ---
 
@@ -61,6 +61,7 @@ Progress: [████░░░░░░] 40%
 | Phase 02 P03 | 20min | 3 tasks | 13 files |
 | Phase 03 P02 | 3min | 2 tasks | 9 files |
 | Phase 03 P01 | 36min | 3 tasks | 5 files |
+| Phase 03 P03 | 8min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 03]: [Phase 03-02]: HolidayService exposes diasAteONatal/natal as raw signal references (no trailing call) on ChristmasCountdownCard fields to avoid freezing a one-time read; year for the countdown is sourced from the BrasilAPI response's own date field rather than new Date(), keeping the public GET load-bearing (D-14)
 - [Phase 03]: [Phase 03-01]: Falso negativo no grep de verificação da Task 1 da plan (conta 3 ocorrências da string de configuração search_path vazio, por causa de um comentário explicativo na própria plan); a migration está correta (confirmado via pg_proc: prosecdef=true em ambas as funções)
 - [Phase 03]: [Phase 03-01]: Verificação da Task 3 (migration 0004) executada pelo orquestrador via CLI do Supabase linkada contra o projeto de produção real, não pelo usuário manualmente no SQL Editor; a migration já estava aplicada remotamente antes desta sessão, e supabase_migrations.schema_migrations não existe no banco -- historico da CLI de migrations esta dissociado do estado real (dívida de processo documentada em docs/db-rls-verification.md)
+- [Phase 03]: [Phase 03-03]: updateWishList ganhou um terceiro parâmetro groupId (não previsto no pseudocódigo da plan) para permitir o refetch exigido por D-05 sem introduzir um signal extra
+- [Phase 03]: [Phase 03-03]: Desvio documentado de D-08 — checagem de admin embutida no groupResolver (devolvendo UrlTree) em vez de um adminGuard separado, porque canActivate roda antes de resolve na mesma rota; padrão a ser reaproveitado pelo drawResultResolver da Fase 4
 
 ### Pending Todos
 
@@ -112,6 +115,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T13:03:40.216Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-10-15T13:08:04.219Z
+Stopped at: Completed 03-03-PLAN.md
 Resume file: None

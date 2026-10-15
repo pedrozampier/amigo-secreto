@@ -96,7 +96,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — Migration `0004` com os RPCs `SECURITY DEFINER` do convite (`join_group_by_token`, `preview_group_by_token`), mapa PT-BR dos códigos de erro e validação com dois usuários (GRP-06..08)
 - [x] 03-02-PLAN.md — Trilha de API pública: `provideHttpClient` + interceptor funcional, `HolidayService` com `toSignal()` e card de contagem do Natal em `@defer` (API-01..04)
-- [ ] 03-03-PLAN.md — Contratos TypeScript, `GroupService` em signals com refetch-após-mutação, e `groupResolver` funcional com a checagem de admin embutida (camada de contrato das telas)
+- [x] 03-03-PLAN.md — Contratos TypeScript, `GroupService` em signals com refetch-após-mutação, e `groupResolver` funcional com a checagem de admin embutida (camada de contrato das telas)
 - [ ] 03-04-PLAN.md — Rotas `/group` aninhadas + `/join/:token` flat, tela de criar grupo com link de convite copiável, dashboard com as duas listas (GRP-01..03, GRP-09)
 - [ ] 03-05-PLAN.md — Tela de gestão (participantes, remoção, wishlist com `model()`), tela de convite, e atualização do `docs/sdd.md` §5.1/§5.2/§5.3 (GRP-04..08, WISH-01..03)
 
