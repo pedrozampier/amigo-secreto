@@ -326,13 +326,26 @@ rota de layout autenticado. `/join/:token` é deliberadamente **flat** (fora de 
 quem abre um convite ainda não é membro, e renderizar o layout de um grupo que a pessoa não
 integra seria incoerente.
 
-**Sobre o `adminGuard` previsto na v1.0.0 deste documento.** Ele não existe. A checagem de
-"só o admin acessa `/group/:id/manage`" vive **dentro do `groupResolver`**, que devolve um
-`UrlTree` para `/dashboard` quando `admin_id` não é o usuário da sessão. Razão mecânica: o
-Angular Router executa os `canActivate` **antes** dos `resolve` da mesma rota, então um guard
-jamais conseguiria ler o grupo buscado pelo resolver — a versão com guard separado exigiria
-uma segunda query por navegação. Devolver `UrlTree` de um `ResolveFn` é comportamento
-oficialmente suportado do Router.
+**Sobre o `adminGuard` previsto na v1.0.0 deste documento.** Ele existe, em
+`core/guards/admin.guard.ts`, e está ligado em `canActivate` na rota `:id/manage`.
+
+Durante a Fase 3 houve uma tentativa de dispensá-lo, pondo a checagem de "só o admin acessa
+`/group/:id/manage`" **dentro do `groupResolver`**, que devolveria um `UrlTree` para
+`/dashboard` quando `admin_id` não fosse o usuário da sessão. O argumento era evitar uma
+segunda query por navegação, já que o Angular Router executa os `canActivate` **antes** dos
+`resolve` da mesma rota e um guard não conseguiria reaproveitar o grupo buscado pelo resolver.
+
+**Isso não funciona, e o defeito foi observado em produção na verificação manual da fase:**
+um `UrlTree` devolvido por um `ResolveFn` **não redireciona**. Ao contrário de
+`CanActivateFn` — onde o `UrlTree` é o contrato oficial de redirecionamento — o valor
+devolvido por um resolver é apenas colocado em `route.data`. A rota ativava normalmente, um
+participante não-admin abria a tela de gestão de um grupo alheio, e o componente recebia um
+`UrlTree` onde esperava um `Group` (daí o cabeçalho renderizando vazio).
+
+A checagem vive agora no `adminGuard` (`CanActivateFn`), que roda antes de a rota ativar. O
+`groupResolver` ficou apenas com o carregamento do grupo. O custo é a tal segunda chamada a
+`loadGroup` por navegação — preço aceito em troca de correção. Coberto por
+`admin.guard.spec.ts` (4 casos), incluindo o do não-admin barrado.
 
 ### 🧠 5.3. Core Services (Singleton)
 

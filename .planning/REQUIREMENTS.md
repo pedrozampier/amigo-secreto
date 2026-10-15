@@ -224,8 +224,8 @@ Preenchido durante a criação do roadmap.
 | DRAW-08 | Fase 4 | Pendente |
 | DRAW-09 | Fase 4 | Pendente |
 | DRAW-10 | Fase 4 | Pendente |
-| WISH-01 | Fase 3 | Completo |
-| WISH-02 | Fase 3 | Completo |
+| WISH-01 | Fase 3 | Pendente (sem tela de participante — ver deferred-items da Fase 3) |
+| WISH-02 | Fase 3 | Pendente (sem tela de participante — ver deferred-items da Fase 3) |
 | WISH-03 | Fase 3 | Completo |
 | API-01 | Fase 3 | Completo |
 | API-02 | Fase 3 | Completo |
