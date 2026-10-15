@@ -2,6 +2,11 @@
 
 ## Não existe tela para o participante não-admin (WISH-01, WISH-02 bloqueados)
 
+**Status: Corrigido na plan 03-06.** A opção 2 abaixo foi a escolhida: rota `/group/:id`
+própria (`GroupViewPage`), protegida por um `memberGuard` novo que admite admin OU
+participante. `WISH-01` e `WISH-02` marcados em `REQUIREMENTS.md`. O restante desta seção
+é mantido como histórico da decisão.
+
 **Descoberto em:** 2026-10-15, na verificação manual do checkpoint da plan 03-05.
 
 **Sintoma:** um usuário que entra num grupo por convite volta ao dashboard, vê o grupo em

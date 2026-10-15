@@ -65,8 +65,8 @@
 
 ### Lista de Desejos (WISH)
 
-- [ ] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
-- [ ] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
+- [x] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
+- [x] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
 - [x] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
 
 ### Contexto Externo / API Pública (API)
@@ -224,8 +224,8 @@ Preenchido durante a criação do roadmap.
 | DRAW-08 | Fase 4 | Pendente |
 | DRAW-09 | Fase 4 | Pendente |
 | DRAW-10 | Fase 4 | Pendente |
-| WISH-01 | Fase 3 | Pendente (sem tela de participante — ver deferred-items da Fase 3) |
-| WISH-02 | Fase 3 | Pendente (sem tela de participante — ver deferred-items da Fase 3) |
+| WISH-01 | Fase 3 | Completo |
+| WISH-02 | Fase 3 | Completo |
 | WISH-03 | Fase 3 | Completo |
 | API-01 | Fase 3 | Completo |
 | API-02 | Fase 3 | Completo |
