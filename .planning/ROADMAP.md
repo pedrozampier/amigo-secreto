@@ -33,7 +33,15 @@
   4. `npx eslint src --max-warnings=0` falha o build se alguém usar `*ngIf`/`*ngFor`, `@Input()`/`@Output()`, DI por construtor ou `standalone: false`
   5. Push na branch `main` dispara deploy automático na Vercel; existe branch `develop`, pelo menos um Pull Request mesclado, um Kanban populado no GitHub Projects, e nenhuma `service_role`/`sb_secret_` key aparece em `grep` no bundle de produção
 
-**Plans**: TBD
+**Plans**: 4 plans (3 waves)
+
+Plans:
+- [ ] 01-01-PLAN.md — Schema, constraints, índices, funções `private` SECURITY DEFINER e todas as policies de RLS, provadas com dois usuários no SQL Editor (DB-01..DB-10)
+- [ ] 01-02-PLAN.md — Kanban no GitHub Projects com as 11 user stories como Issues, evidência de Gitflow, MCP documentado no SDD (ENG-06, ENG-08, ENG-10)
+- [ ] 01-03-PLAN.md — Scaffold Angular 21 LTS + Tailwind v4 + Spartan UI + ESLint com as 7 regras como `error`, com teste negativo executado (UI-01, UI-02, ENG-01, ENG-04)
+- [ ] 01-04-PLAN.md — Deploy Vercel com rewrite de SPA, gate de CI (lint + grep de secrets), e as PRs que materializam o Gitflow (ENG-05, ENG-06, DB-11)
+
+**Waves**: Wave 1 = 01-01 + 01-02 (paralelos) · Wave 2 = 01-03 (bloqueado por DB-10) · Wave 3 = 01-04
 
 **UI hint**: yes
 
@@ -187,7 +195,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Fundação — Scaffold, Banco e RLS | 0/TBD | Not started | - |
+| 1. Fundação — Scaffold, Banco e RLS | 0/4 | Planned | - |
 | 2. Autenticação End-to-End | 0/TBD | Not started | - |
 | 3. Grupos, Participantes, Wishlist e API Pública | 0/TBD | Not started | - |
 | 4. Sorteio e Revelação | 0/TBD | Not started | - |
