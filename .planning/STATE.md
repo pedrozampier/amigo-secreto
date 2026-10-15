@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-10-15T03:31:02.327Z"
+stopped_at: 02-04-PLAN.md Tasks 1-2 done, automated gates re-verified; Task 3 awaiting human browser/SQL checkpoint
+last_updated: "2026-10-15T03:46:24.309Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 
 Phase: 02 (autentica-o-end-to-end) — EXECUTING
 Plan: 4 of 4
-Status: Ready to execute
+Status: Paused at checkpoint (Task 3 of 02-04 — human browser/SQL verification pending)
 Last activity: 2026-10-15
 
 Progress: [░░░░░░░░░░] 0%
@@ -91,6 +91,7 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 02]: [Phase 02-01]: ng test's Vitest builder rejects --run; use ng test --watch=false --include=<glob> to target a single spec
 - [Phase 02]: authGuard applied exactly once on the parent layout route (D-19); provideAppInitializer awaits AuthService.initialize() before first navigation, eliminating the F5 login flash (D-01)
 - [Phase 02]: Login/register stub components are structurally required in plan 02-03 because tsc resolves loadComponent statically; without them the route tree fails TS2307
+- [Phase 02-autentica-o-end-to-end]: 02-04 Tasks 1-2 (LoginPage/RegisterPage) machine-verified complete; Task 3 browser/SQL checkpoint awaits human confirmation before phase closes
 
 ### Pending Todos
 
@@ -101,9 +102,10 @@ Nenhum ainda.
 - Fase 1 é bloqueante para todas as demais — nenhuma linha de frontend antes de RLS testada manualmente com dois usuários distintos (DB-10)
 - Débito técnico aceito e documentado: atomicidade cross-statement entre inserir pares e fechar grupo na Edge Function (ver ARCHITECTURE.md) — não bloqueia a Fase 4, mas deve constar no SDD/README
 - ENG-06 (Gitflow/PRs) e ENG-08 (Kanban) são contínuos desde a Fase 1 — não tratar como tarefas de fechamento
+- Fase 2 plan 02-04 pausada no checkpoint humano da Task 3: aguardando o usuario executar a verificacao de navegador/SQL (6 passos) e confirmar display_name correto em public.profile antes de concluir a fase
 
 ## Session Continuity
 
-Last session: 2026-10-15T03:31:02.321Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-10-15T03:46:24.302Z
+Stopped at: 02-04-PLAN.md Tasks 1-2 done, automated gates re-verified; Task 3 awaiting human browser/SQL checkpoint
 Resume file: None

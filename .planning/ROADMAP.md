@@ -9,7 +9,7 @@
 ## Phases
 
 - [ ] **Phase 1: Fundação — Scaffold, Banco e RLS** - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
-- [ ] **Phase 2: Autenticação End-to-End** - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
+- [ ] **Phase 2: Autenticação End-to-End** - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado (plan 02-04 aguardando checkpoint humano de verificação em navegador/SQL)
 - [ ] **Phase 3: Grupos, Participantes, Wishlist e API Pública** - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
 - [ ] **Phase 4: Sorteio e Revelação** - Sorteio roda uma única vez em Edge Function, sem autossorteio, e cada participante revela e vê apenas o próprio par — provadamente inacessível ao administrador
 - [ ] **Phase 5: PWA, Acessibilidade e Entrega** - Aplicação instalável, responsiva e acessível em produção, com toda a documentação de entrega (PRD/SDD/ER, protótipo Figma, spec técnica) consolidada
@@ -68,7 +68,7 @@ Plans:
 - [x] 02-01-PLAN.md — `SupabaseClientService` injetável, `AuthService` com um signal de sessão e tudo derivado em `computed()`, mapa PT-BR de erros do Auth (AUTH-01..03, AUTH-06)
 - [x] 02-02-PLAN.md — Geração das primitivas Spartan `input` e `label` em `libs/ui/`, sem nenhuma dependência nova, registrada no SDD §2.1 (AUTH-01, AUTH-02)
 - [x] 02-03-PLAN.md — `authGuard` funcional com `returnUrl`, `provideAppInitializer` matando o flash no F5, rotas com layout autenticado aninhado, header com logout e `/dashboard` placeholder (AUTH-03..05)
-- [ ] 02-04-PLAN.md — Reactive Forms de `/login` e `/register` com validação PT-BR e submit condicional, mais o checkpoint que confere `profile.display_name` no banco (AUTH-01, AUTH-02, AUTH-04..06)
+- [~] 02-04-PLAN.md — Reactive Forms de `/login` e `/register` com validação PT-BR e submit condicional, mais o checkpoint que confere `profile.display_name` no banco (AUTH-01, AUTH-02, AUTH-04..06) — Tasks 1-2 verificadas; Task 3 (checkpoint humano) pendente
 
 **Waves**: Wave 1 = 02-01 + 02-02 (paralelos) · Wave 2 = 02-03 · Wave 3 = 02-04 (checkpoint humano)
 
@@ -204,7 +204,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Fundação — Scaffold, Banco e RLS | 0/4 | Planned | - |
-| 2. Autenticação End-to-End | 0/TBD | Not started | - |
+| 2. Autenticação End-to-End | 3.5/4 | Awaiting human checkpoint (02-04 Task 3) | - |
 | 3. Grupos, Participantes, Wishlist e API Pública | 0/TBD | Not started | - |
 | 4. Sorteio e Revelação | 0/TBD | Not started | - |
 | 5. PWA, Acessibilidade e Entrega | 0/TBD | Not started | - |
