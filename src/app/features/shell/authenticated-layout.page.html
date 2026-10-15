@@ -24,7 +24,7 @@
             {{ displayName() }}
           </span>
         }
-        <button hlmBtn variant="outline" size="sm" class="min-h-11" type="button" [disabled]="saindo()" (click)="sair()">
+        <button hlmBtn variant="outline" size="sm" class="min-h-11 border-white/50 bg-transparent text-primary-foreground hover:bg-white/15 hover:text-primary-foreground" type="button" [disabled]="saindo()" (click)="sair()">
           {{ saindo() ? 'Saindo...' : 'Sair' }}
         </button>
       </div>
