@@ -8,11 +8,55 @@
 
 ## 🤖 1. Orquestração e Contexto de IA (MCP)
 
-> Configuração dos servidores Model Context Protocol para a IDE Agêntica.
+> Servidores Model Context Protocol configurados na IDE agêntica (Claude Code).
+> Requisito ENG-10 / indicador RA8-ID31.
 
-* **Figma MCP:** `[LINK DO ARQUIVO FIGMA]` — Ler design tokens, cores, tipografia e hierarquia visual.
-* **Supabase MCP:** Contexto do banco de dados real, schemas e políticas de RLS em tempo real.
-* **GitHub MCP:** Leitura das Issues do Kanban para orientar a implementação (Spec-Driven Development).
+### 1.1. Supabase MCP (obrigatório)
+
+Servidor oficial hospedado, autenticação por OAuth — não há processo local para rodar.
+
+```bash
+claude mcp add --transport http supabase \
+  "https://mcp.supabase.com/mcp?project_ref=<PROJECT_REF>&read_only=true"
+```
+
+- `project_ref` restringe o servidor a **um único** projeto Supabase; com o escopo definido, as
+  ferramentas de gestão de conta (criar/apagar outros projetos) ficam desabilitadas.
+- `read_only=true` é o padrão de segurança que a própria Supabase recomenda e é a configuração
+  do projeto entregue: permite inspecionar schema, policies de RLS e logs sem poder executar
+  migrations destrutivas pelo canal MCP.
+- **Caveat de segurança (documentado deliberadamente):** conceder a um agente acesso de escrita
+  ao banco via MCP significa que qualquer prompt injection que atinja a sessão do agente — vindo
+  de conteúdo web buscado, da descrição de uma Pull Request, ou de qualquer texto não confiável
+  que o agente leia — pode tentar emitir SQL pela conexão MCP. O escopo de um único projeto
+  somado a `read_only=true` é a mitigação, não a eliminação do risco. A conexão MCP deve ser
+  tratada com a mesma desconfiança de qualquer credencial com raio de alcance, e nunca deve
+  apontar para um projeto de produção com escrita habilitada por padrão.
+
+### 1.2. Figma MCP (obrigatório)
+
+Servidor oficial remoto (não exige o app desktop do Figma):
+
+```bash
+claude mcp add --transport http figma "https://mcp.figma.com/mcp"
+```
+
+Uso: copiar o link de um frame/layer no modo Dev do Figma e colar no contexto do agente para
+extrair design tokens, cores, tipografia e hierarquia visual. O arquivo do protótipo é o mesmo
+linkado no README por UI-07.
+
+### 1.3. Angular CLI MCP (opcional, adicional)
+
+Embutido no próprio Angular CLI — não é um pacote separado:
+
+```bash
+npx @angular/cli mcp --read-only
+```
+
+Expõe `list_projects`, `run_target` (build/test/lint), `search_documentation` e
+`get_best_practices`. Não é exigido pelo ENG-10 (que nomeia Supabase e Figma), mas é
+diretamente relevante num projeto avaliado pelo uso correto das APIs modernas do Angular.
+Flags `--read-only` e `--local-only` disponíveis para limitar o alcance.
 
 ---
 
@@ -22,14 +66,48 @@
 
 | Categoria | Tecnologia | Versão |
 |:----------|:-----------|:-------|
-| **Core** | Angular (Standalone + Signals) | 17+ |
+| **Core** | Angular (Standalone + Signals) | **^21.x (LTS)** |
 | **BaaS & Auth** | Supabase JS | ^2.x |
-| **Estilização** | Tailwind CSS | ^3.x |
-| **UI Components** | Spartan UI (HLM) | latest |
-| **Ícones** | Lucide Angular | latest |
+| **Estilização** | Tailwind CSS | **^4.x** |
+| **UI Components** | Spartan UI (HLM) | ^1.7.x |
+| **UI Primitives** | Angular CDK (peer do Spartan) | ^21.x |
+| **Ícones** | Lucide Angular | ^1.x |
 | **Utilitários** | date-fns (datas) | ^3.x |
 | **Validação** | Zod (schemas) | ^3.x |
+| **Testes** | Vitest (padrão do Angular 21+) | — |
 | **Deploy** | Vercel | — |
+| **Utilitários (peer do Spartan)** | clsx (composição de classes) | ^2.x |
+| **Datas (peer do Spartan)** | luxon (uso interno dos componentes de data do Spartan) | ^3.x |
+| **Animações (peer do Spartan)** | tw-animate-css | ^1.x |
+
+### 2.1. Changelog de Versões (decisões tomadas em 2026-10-14)
+
+As versões acima foram revisadas contra o registry do npm. Duas mudanças em relação à
+v1.0.0 deste documento, ambas decididas deliberadamente:
+
+| Item | Antes | Agora | Motivo |
+|:-----|:------|:------|:-------|
+| Angular | `17+` | `^21.x` (LTS) | O ID31 do checklist pede "Skills de Angular 20+", e o Spartan UI exige `@angular/core >=21 <23`. A v21 é o LTS mais recente que satisfaz ambos e evita o conflito de peer do `lucide-angular` (que declara suporte até a 21.x). Em v21+ o projeto nasce *zoneless* e com **Vitest** no lugar do Karma. |
+| Tailwind CSS | `^3.x` | `^4.x` | **Conflito bloqueante:** `@spartan-ng/brain@1.7.0` declara `peerDependencies.tailwindcss: ">=4.0.0"`. Manter o Tailwind 3 tornaria impossível instalar o Spartan UI (`ERESOLVE`). O guia oficial do Angular também só documenta o setup do v4. O ID4 do checklist pede apenas "um framework CSS moderno", então a troca não afeta a avaliação. |
+
+**Consequência prática do Tailwind v4:** não existe mais `tailwind.config.js`. A
+configuração passa a ser *CSS-first*: `@import "tailwindcss";` no `styles.css` e o tema
+definido em um bloco `@theme { ... }`. O PostCSS usa o plugin `@tailwindcss/postcss`.
+
+**Observação:** o Spartan UI também traz `luxon` como peer dependency. Isso convive sem
+problema com o `date-fns` já adotado — o `luxon` é usado internamente por componentes de
+data do Spartan, enquanto o `date-fns` continua sendo a biblioteca de datas da aplicação.
+
+**Peers transitivos do Spartan UI (adicionados em 2026-10-14).** O `@spartan-ng/brain@1.7.0`
+declara `clsx >=2.0.0`, `luxon >=3.0.0` e `tw-animate-css >=1.0.0` como peer dependencies.
+Elas entram na tabela acima por força da regra "nenhuma dependência sem refletir aqui". O
+`luxon` convive com o `date-fns` sem conflito: o `luxon` serve aos componentes de data internos
+do Spartan, e o `date-fns` continua sendo a biblioteca de datas da aplicação. Nota de instalação
+(plan 01-03): `luxon` está marcado `peerDependenciesMeta.optional: true` no `@spartan-ng/brain@1.7.0`
+instalado — como a Fase 1 só gerou `button` e `card` (nenhum componente de data do Spartan), o
+npm não o instalou automaticamente. Ele será instalado quando a primeira fase que usa um
+componente de data do Spartan (ex. date-picker/calendar) o exigir; a entrada na tabela já
+documenta a dependência com antecedência, conforme a regra do SDD.
 
 ---
 

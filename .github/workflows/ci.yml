@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  qualidade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+
+      - name: Lint (ENG-01/ENG-04) — falha com qualquer warning
+        run: npx eslint src --max-warnings=0
+
+      - name: Estado em Signals, nunca RxJS (ID9 — sem regra de lint equivalente)
+        run: npm run check:no-rxjs-state
+
+      - name: Nenhuma secret key no código-fonte (DB-11, lado source)
+        run: |
+          if grep -rEi 'service_role|sb_secret_|SERVICE_ROLE' src/; then
+            echo "::error::Secret key encontrada no código-fonte"
+            exit 1
+          fi
+          echo "fonte limpa"
+
+      - name: Build de produção
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: npm run build
+
+      - name: Nenhuma secret key no bundle (DB-11, lado bundle)
+        run: |
+          if grep -rEi 'service_role|sb_secret_' dist/; then
+            echo "::error::VAZAMENTO: secret key no bundle de produção — bloquear deploy"
+            exit 1
+          fi
+          echo "bundle limpo"
+
+      - name: Nenhum NgModule (RA2-ID3)
+        run: |
+          if [ -n "$(find src -iname '*.module.ts')" ]; then
+            echo "::error::Arquivo *.module.ts encontrado"
+            exit 1
+          fi
+          echo "zero NgModule"
+
+      - name: Testes unitários
+        run: npm test --passWithNoTests
