@@ -1,4 +1,5 @@
 import type { Routes } from '@angular/router';
+import { adminGuard } from '../../core/guards/admin.guard';
 import { groupResolver } from '../../core/resolvers/group.resolver';
 
 /**
@@ -18,11 +19,12 @@ export const groupRoutes: Routes = [
           import('./create/create-group.page').then((m) => m.CreateGroupPage),
       },
       {
-        // RA5-ID18: resolver funcional. Ele busca o grupo UMA vez e devolve um
-        // UrlTree para /dashboard se quem navega não é o admin — a checagem de
-        // admin vive no resolver porque guards rodam ANTES de resolvers na mesma
-        // rota (desvio documentado de D-08, ver plan 03-03).
+        // RA5-ID18: guard funcional + resolver funcional. O `adminGuard` barra
+        // quem não é admin ANTES de a rota ativar — um UrlTree devolvido por um
+        // resolver não redireciona, só vira o valor em route.data (ver o
+        // comentário em admin.guard.ts). O resolver então só carrega o grupo.
         path: ':id/manage',
+        canActivate: [adminGuard],
         resolve: { group: groupResolver },
         loadComponent: () =>
           import('./manage/manage-group.page').then((m) => m.ManageGroupPage),

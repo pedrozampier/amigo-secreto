@@ -39,7 +39,7 @@ function criarRota(id: string | null) {
 }
 
 describe('groupResolver', () => {
-  it('devolve o Group quando admin_id é igual ao usuário logado', async () => {
+  it('devolve o Group quando o grupo existe', async () => {
     configurar({ group: GRUPO_BASE, userId: 'admin-1' });
     const route = criarRota('g1');
     const state = {} as RouterStateSnapshot;
@@ -49,18 +49,8 @@ describe('groupResolver', () => {
     expect(resultado).toEqual(GRUPO_BASE);
   });
 
-  it('devolve um UrlTree para /dashboard quando admin_id é diferente do usuário logado', async () => {
-    const router = configurar({ group: GRUPO_BASE, userId: 'outro-usuario' });
-    const route = criarRota('g1');
-    const state = {} as RouterStateSnapshot;
-
-    const resultado = await TestBed.runInInjectionContext(() => groupResolver(route, state));
-
-    const serializado = router.serializeUrl(
-      resultado as Parameters<typeof router.serializeUrl>[0],
-    );
-    expect(serializado.startsWith('/dashboard')).toBe(true);
-  });
+  // A checagem de admin saiu daqui para o `adminGuard` — ver admin.guard.spec.ts.
+  // Um UrlTree devolvido por um ResolveFn nao redireciona, so vira route.data.
 
   it('devolve um UrlTree para /dashboard quando o grupo é null (inexistente ou invisível pela RLS)', async () => {
     const router = configurar({ group: null, userId: 'admin-1' });
