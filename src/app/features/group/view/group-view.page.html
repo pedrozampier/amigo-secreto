@@ -10,10 +10,18 @@
         }
       </p>
     </div>
-    <div hlmCardContent>
+    <div hlmCardContent class="flex flex-col items-start gap-2">
       @if (souAdmin()) {
         <a hlmBtn variant="outline" size="sm" [routerLink]="['/group', id(), 'manage']">
           Gerenciar grupo
+        </a>
+      }
+      <!-- DRAW-08/09: o caminho do participante até o próprio par. Antes desta
+           mudança o único link para esta rota vivia em manage-group.page.html,
+           atrás do adminGuard — a revelação era inalcançável para um não-admin. -->
+      @if (podeVerResultado()) {
+        <a hlmBtn size="sm" [routerLink]="['/draw', id(), 'result']">
+          Ver meu amigo secreto
         </a>
       }
     </div>
