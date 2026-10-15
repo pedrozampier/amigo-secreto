@@ -1,0 +1,60 @@
+<div class="flex flex-col gap-4">
+  <div hlmCard class="w-full">
+    <div hlmCardHeader>
+      <h1 hlmCardTitle>{{ grupo()?.name }}</h1>
+      <p hlmCardDescription>
+        @switch (grupo()?.status) {
+          @case ('open') { Status: aberto para novos participantes. }
+          @case ('drawing') { Status: sorteio em andamento. }
+          @case ('closed') { Status: fechado. }
+        }
+      </p>
+    </div>
+    <div hlmCardContent>
+      @if (souAdmin()) {
+        <a hlmBtn variant="outline" size="sm" [routerLink]="['/group', id(), 'manage']">
+          Gerenciar grupo
+        </a>
+      }
+    </div>
+  </div>
+
+  <div hlmCard class="w-full">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>Participantes</h2>
+    </div>
+    <div hlmCardContent>
+      @if (carregando()) {
+        <p class="text-sm text-muted-foreground">Carregando participantes...</p>
+      } @else {
+        @for (p of participantes(); track p.id) {
+          <app-participant-row [participant]="p" [podeRemover]="false" />
+        } @empty {
+          <p class="text-sm text-muted-foreground">Nenhum participante ainda.</p>
+        }
+      }
+    </div>
+  </div>
+
+  @if (meuParticipante()) {
+    <div hlmCard class="w-full">
+      <div hlmCardHeader>
+        <h2 hlmCardTitle>Minha lista de desejos</h2>
+      </div>
+      <div hlmCardContent>
+        <label hlmLabel for="wishlist">O que você gostaria de receber</label>
+        <textarea id="wishlist" rows="4" [(ngModel)]="wishList"
+                  class="mt-1.5 w-full rounded-md border border-input bg-background p-2 text-sm"
+                  placeholder="Escreva o que você gostaria de receber (opcional)."></textarea>
+        <button hlmBtn size="sm" type="button" class="mt-2"
+                [disabled]="salvandoWishlist()" (click)="salvarWishList()">
+          {{ salvandoWishlist() ? 'Salvando...' : wishlistSalva() ? 'Salvo!' : 'Salvar lista' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (erro()) {
+    <p class="text-sm text-destructive" role="alert">{{ erro() }}</p>
+  }
+</div>
