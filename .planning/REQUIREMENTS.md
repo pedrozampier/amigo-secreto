@@ -40,15 +40,15 @@
 
 ### Gestão de Grupos (GRP)
 
-- [ ] **GRP-01**: Administrador cria um grupo informando nome (Reactive Form validado)
+- [x] **GRP-01**: Administrador cria um grupo informando nome (Reactive Form validado)
 - [x] **GRP-02**: Sistema gera um `invite_token` único por grupo
-- [ ] **GRP-03**: Administrador visualiza o link de convite e consegue copiá-lo
+- [x] **GRP-03**: Administrador visualiza o link de convite e consegue copiá-lo
 - [ ] **GRP-04**: Administrador vê a lista de participantes do seu grupo
 - [ ] **GRP-05**: Administrador remove um participante do grupo
 - [ ] **GRP-06**: Usuário autenticado entra em um grupo via link de convite
 - [ ] **GRP-07**: Tentativa de entrar duas vezes no mesmo grupo é rejeitada com mensagem clara
 - [ ] **GRP-08**: Grupo com status diferente de `open` não aceita novos participantes
-- [ ] **GRP-09**: Usuário vê no dashboard os grupos que administra e os que participa
+- [x] **GRP-09**: Usuário vê no dashboard os grupos que administra e os que participa
 
 ### Sorteio (DRAW)
 

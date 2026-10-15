@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-03-PLAN.md
-last_updated: "2026-10-15T13:08:04.221Z"
+stopped_at: Completed 03-04-PLAN.md
+last_updated: "2026-10-15T13:13:32.778Z"
 last_activity: 2026-10-15 -- Phase 03 execution started
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 12
   percent: 40
 ---
 
@@ -62,6 +62,7 @@ Progress: [████░░░░░░] 40%
 | Phase 03 P02 | 3min | 2 tasks | 9 files |
 | Phase 03 P01 | 36min | 3 tasks | 5 files |
 | Phase 03 P03 | 8min | 2 tasks | 4 files |
+| Phase 03 P04 | 12min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 03]: [Phase 03-01]: Verificação da Task 3 (migration 0004) executada pelo orquestrador via CLI do Supabase linkada contra o projeto de produção real, não pelo usuário manualmente no SQL Editor; a migration já estava aplicada remotamente antes desta sessão, e supabase_migrations.schema_migrations não existe no banco -- historico da CLI de migrations esta dissociado do estado real (dívida de processo documentada em docs/db-rls-verification.md)
 - [Phase 03]: [Phase 03-03]: updateWishList ganhou um terceiro parâmetro groupId (não previsto no pseudocódigo da plan) para permitir o refetch exigido por D-05 sem introduzir um signal extra
 - [Phase 03]: [Phase 03-03]: Desvio documentado de D-08 — checagem de admin embutida no groupResolver (devolvendo UrlTree) em vez de um adminGuard separado, porque canActivate roda antes de resolve na mesma rota; padrão a ser reaproveitado pelo drawResultResolver da Fase 4
+- [Phase 03]: [Phase 03-04]: ManageGroupPage e JoinGroupPage criados como esqueletos estruturais nesta plan (não na 03-05) porque tsc resolve loadComponent estaticamente; sem eles a árvore de rotas não compila
+- [Phase 03]: [Phase 03-04]: Cards de grupos participados no dashboard não linkam para /manage — o groupResolver redirecionaria o não-admin de volta, e um link que sempre rebate é péssima UX
 
 ### Pending Todos
 
@@ -115,6 +118,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T13:08:04.219Z
-Stopped at: Completed 03-03-PLAN.md
+Last session: 2026-10-15T13:13:32.776Z
+Stopped at: Completed 03-04-PLAN.md
 Resume file: None
