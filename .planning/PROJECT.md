@@ -28,15 +28,15 @@ e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código e
 - [x] Participante entra no grupo via link de convite — *validado na Fase 3*
 - [x] Administrador vê e remove participantes do seu grupo — *validado na Fase 3*
 - [x] Participante cadastra e edita a própria lista de desejos — *validado na Fase 3*
+- [x] Sorteio executado em Edge Function, uma única vez, sem auto-sorteio — *validado na Fase 4*
+- [x] Participante vê o próprio par sorteado de forma oculta (revelação deliberada) — *validado na Fase 4*
+- [x] Participante vê a lista de desejos de quem tirou — *validado na Fase 4*
+- [x] Testes unitários (`.spec.ts`) cobrindo as regras de negócio do sorteio — *validado na Fase 4*
 
 ### Ativos
 
-- [ ] Sorteio executado em Edge Function, uma única vez, sem auto-sorteio
-- [ ] Participante vê o próprio par sorteado de forma oculta (revelação deliberada)
-- [ ] Participante vê a lista de desejos de quem tirou
 - [ ] PWA instalável (manifest, ícones, tema, standalone, estado offline)
 - [ ] Interface mobile-first responsiva a partir de 320px, acessível (WCAG 2.1 AA)
-- [ ] Testes unitários (`.spec.ts`) cobrindo as regras de negócio do sorteio
 - [ ] Protótipo navegável no Figma com link público no repositório
 - [ ] README consolidando o PRD (diagrama ER em Mermaid + design system)
 - [ ] User stories cadastradas como Issues em um Kanban no GitHub Projects
@@ -138,4 +138,4 @@ Este documento evolui nas transições de fase e nos limites de milestone.
 4. Atualizar Contexto com o estado atual
 
 ---
-*Última atualização: 2026-10-15 após conclusão da Fase 3 (Grupos, Participantes, Wishlist e API Pública) — Fases 1 a 3 completas e verificadas; 14 plans executados (6 na Fase 3, incluindo o gap closure 03-06 que abriu a rota do participante `/group/:id` com `memberGuard`); pendente de verificação humana: responsividade em 320px e roteiro end-to-end com duas contas (`03-HUMAN-UAT.md`); próximo: Fase 4 (Sorteio e Revelação)*
+*Última atualização: 2026-10-15 após conclusão da Fase 4 (Sorteio e Revelação) — Fases 1 a 4 completas e verificadas (5/5 critérios da Fase 4); 19 plans executados. O core value está PROVADO na prática, não só no código: a Edge Function `run-draw` está deployada e ACTIVE, um sorteio real rodou num grupo de 4 participantes, e a dupla assert de DRAW-10 foi medida em SQL com RLS ativa — a admin (que participa do próprio grupo desde a migration 0006) lê exatamente 1 das 4 linhas de `draw` (a própria) e 0 linhas ao filtrar pelo `giver_id` de outro participante. Evidência real em `docs/draw-privacy-verification.md`. Um gap de alcançabilidade (a tela de revelação não tinha link para não-admins) foi encontrado pelo smoke test humano — não pela suíte verde — e corrigido na quick task 261015-mbk. Pendente de verificação humana: responsividade em 320px e roteiro end-to-end com duas contas (`03-HUMAN-UAT.md`); pendente de limpeza: dados de teste no banco de produção (ver `deferred-items.md` da Fase 4); próximo: Fase 5 (PWA, Acessibilidade e Entrega)*
