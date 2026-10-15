@@ -65,8 +65,8 @@
 
 ### Lista de Desejos (WISH)
 
-- [x] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
-- [x] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
+- [ ] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
+- [ ] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
 - [x] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
 
 ### Contexto Externo / API Pública (API)
