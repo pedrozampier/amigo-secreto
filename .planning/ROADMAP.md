@@ -62,7 +62,15 @@ Plans:
   4. Usuário faz logout a partir de qualquer página autenticada e a sessão é encerrada de fato (nova tentativa de acessar rota protegida redireciona para `/login`)
   5. Visitante não autenticado que tenta acessar uma rota protegida é redirecionado para `/login` pelo guard funcional
 
-**Plans**: TBD
+**Plans**: 4 plans (3 waves)
+
+Plans:
+- [ ] 02-01-PLAN.md — `SupabaseClientService` injetável, `AuthService` com um signal de sessão e tudo derivado em `computed()`, mapa PT-BR de erros do Auth (AUTH-01..03, AUTH-06)
+- [ ] 02-02-PLAN.md — Geração das primitivas Spartan `input` e `label` em `libs/ui/`, sem nenhuma dependência nova, registrada no SDD §2.1 (AUTH-01, AUTH-02)
+- [ ] 02-03-PLAN.md — `authGuard` funcional com `returnUrl`, `provideAppInitializer` matando o flash no F5, rotas com layout autenticado aninhado, header com logout e `/dashboard` placeholder (AUTH-03..05)
+- [ ] 02-04-PLAN.md — Reactive Forms de `/login` e `/register` com validação PT-BR e submit condicional, mais o checkpoint que confere `profile.display_name` no banco (AUTH-01, AUTH-02, AUTH-04..06)
+
+**Waves**: Wave 1 = 02-01 + 02-02 (paralelos) · Wave 2 = 02-03 · Wave 3 = 02-04 (checkpoint humano)
 
 **UI hint**: yes
 
