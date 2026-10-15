@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { HlmButton } from '@spartan-ng/helm/button';
 import {
@@ -33,11 +33,21 @@ export class JoinGroupPage {
   protected readonly entrando = signal(false);
 
   constructor() {
-    void this.carregarPreview();
+    // `effect` e nao o constructor: um `input.required()` ainda NAO esta
+    // populado quando o constructor roda, entao `this.token()` lancaria ali e a
+    // promise rejeitada (silenciada por `void`) deixaria `carregando` em true
+    // para sempre. O effect roda depois dos inputs resolvidos e reexecuta se o
+    // token mudar sem destruir o componente.
+    effect(() => {
+      void this.carregarPreview(this.token());
+    });
   }
 
-  private async carregarPreview(): Promise<void> {
-    const { preview, error } = await this.groups.previewByToken(this.token());
+  private async carregarPreview(token: string): Promise<void> {
+    this.carregando.set(true);
+    this.erro.set(null);
+    this.preview.set(null);
+    const { preview, error } = await this.groups.previewByToken(token);
     if (error) {
       this.erro.set(error);
     } else if (!preview) {

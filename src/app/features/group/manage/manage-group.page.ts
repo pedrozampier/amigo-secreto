@@ -74,7 +74,13 @@ export class ManageGroupPage {
   );
 
   constructor() {
-    void this.carregar();
+    // `effect` e nao o constructor: `id` e um input.required() e ainda nao esta
+    // populado quando o constructor roda — le-lo ali lancaria, e a promise
+    // rejeitada (silenciada por `void`) deixaria `carregando` em true para
+    // sempre. Mesmo motivo do effect em join-group.page.ts.
+    effect(() => {
+      void this.carregar(this.id());
+    });
 
     effect(() => {
       const p = this.meuParticipante();
@@ -85,8 +91,10 @@ export class ManageGroupPage {
     });
   }
 
-  private async carregar(): Promise<void> {
-    const { error } = await this.groups.refreshParticipants(this.id());
+  private async carregar(groupId: string): Promise<void> {
+    this.carregando.set(true);
+    this.erro.set(null);
+    const { error } = await this.groups.refreshParticipants(groupId);
     if (error) {
       this.erro.set(error);
     }
