@@ -67,10 +67,25 @@ O sistema permite que um administrador crie um grupo online, convide participant
 2. O sorteio é **irreversível**: uma vez iniciado, não pode ser desfeito.
 3. Nenhum participante pode ser sorteado para si mesmo.
 4. O **administrador não tem acesso** aos pares sorteados — apenas cada participante vê o próprio resultado.
-5. Um participante só pode pertencer a um grupo por convite; o link de convite é de **uso único por e-mail**.
+5. Um participante só pode entrar **uma única vez** em cada grupo. O link de convite é
+   **único por grupo** (não nominal por e-mail) — ver nota de implementação abaixo.
 6. O sorteio só pode ser iniciado **uma única vez** por grupo.
 7. Após o sorteio, novos participantes **não podem mais entrar** no grupo.
 8. A lista de desejos é **opcional** e pode ser editada a qualquer momento antes do encerramento do grupo.
+
+> **Nota de implementação sobre a RN5 (revisada em 2026-10-14).**
+> A redação original — "link de convite de uso único por e-mail" — não é implementável com
+> o schema definido no SDD, que possui um único `invite_token` por grupo e não associa o
+> token a nenhum e-mail. Não há como saber qual e-mail já "consumiu" um token compartilhado.
+>
+> A garantia de negócio que a regra realmente protege é *"ninguém entra duas vezes no mesmo
+> grupo"*, e isso é obtido no banco com a constraint `UNIQUE (group_id, user_id)` na tabela
+> `participant` — uma linha de SQL, sem entidade nova.
+>
+> A alternativa (uma tabela `invite` com um token por e-mail convidado e controle de status)
+> entregaria a leitura literal da regra, mas somaria entidade, telas e políticas de RLS,
+> contrariando a diretriz de simplicidade do projeto. Decisão: **manter o convite por link
+> de grupo + constraint de unicidade.**
 
 ---
 

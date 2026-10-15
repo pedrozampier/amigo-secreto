@@ -22,14 +22,34 @@
 
 | Categoria | Tecnologia | Versão |
 |:----------|:-----------|:-------|
-| **Core** | Angular (Standalone + Signals) | 17+ |
+| **Core** | Angular (Standalone + Signals) | **^21.x (LTS)** |
 | **BaaS & Auth** | Supabase JS | ^2.x |
-| **Estilização** | Tailwind CSS | ^3.x |
-| **UI Components** | Spartan UI (HLM) | latest |
-| **Ícones** | Lucide Angular | latest |
+| **Estilização** | Tailwind CSS | **^4.x** |
+| **UI Components** | Spartan UI (HLM) | ^1.7.x |
+| **UI Primitives** | Angular CDK (peer do Spartan) | ^21.x |
+| **Ícones** | Lucide Angular | ^1.x |
 | **Utilitários** | date-fns (datas) | ^3.x |
 | **Validação** | Zod (schemas) | ^3.x |
+| **Testes** | Vitest (padrão do Angular 21+) | — |
 | **Deploy** | Vercel | — |
+
+### 2.1. Changelog de Versões (decisões tomadas em 2026-10-14)
+
+As versões acima foram revisadas contra o registry do npm. Duas mudanças em relação à
+v1.0.0 deste documento, ambas decididas deliberadamente:
+
+| Item | Antes | Agora | Motivo |
+|:-----|:------|:------|:-------|
+| Angular | `17+` | `^21.x` (LTS) | O ID31 do checklist pede "Skills de Angular 20+", e o Spartan UI exige `@angular/core >=21 <23`. A v21 é o LTS mais recente que satisfaz ambos e evita o conflito de peer do `lucide-angular` (que declara suporte até a 21.x). Em v21+ o projeto nasce *zoneless* e com **Vitest** no lugar do Karma. |
+| Tailwind CSS | `^3.x` | `^4.x` | **Conflito bloqueante:** `@spartan-ng/brain@1.7.0` declara `peerDependencies.tailwindcss: ">=4.0.0"`. Manter o Tailwind 3 tornaria impossível instalar o Spartan UI (`ERESOLVE`). O guia oficial do Angular também só documenta o setup do v4. O ID4 do checklist pede apenas "um framework CSS moderno", então a troca não afeta a avaliação. |
+
+**Consequência prática do Tailwind v4:** não existe mais `tailwind.config.js`. A
+configuração passa a ser *CSS-first*: `@import "tailwindcss";` no `styles.css` e o tema
+definido em um bloco `@theme { ... }`. O PostCSS usa o plugin `@tailwindcss/postcss`.
+
+**Observação:** o Spartan UI também traz `luxon` como peer dependency. Isso convive sem
+problema com o `date-fns` já adotado — o `luxon` é usado internamente por componentes de
+data do Spartan, enquanto o `date-fns` continua sendo a biblioteca de datas da aplicação.
 
 ---
 
