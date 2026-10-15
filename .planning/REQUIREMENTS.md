@@ -26,17 +26,17 @@
 
 ### Banco de Dados e Segurança (DB)
 
-- [ ] **DB-01**: Schema criado com as 4 tabelas (`profile`, `group`, `participant`, `draw`) conforme SDD §3
-- [ ] **DB-02**: Constraint `UNIQUE (group_id, user_id)` em `participant` impede entrada dupla no mesmo grupo
-- [ ] **DB-03**: Constraints `UNIQUE (group_id, giver_id)` e `UNIQUE (group_id, receiver_id)` em `draw` provam no banco que o resultado é um *perfect matching*
-- [ ] **DB-04**: Constraint `CHECK (giver_id <> receiver_id)` em `draw` como defesa em profundidade contra autossorteio
-- [ ] **DB-05**: Funções `private.my_group_ids()` e `private.my_participant_ids()` criadas como `SECURITY DEFINER` com `search_path = ''` em schema `private` (evita recursão 42P17 e não é exposta na Data API)
-- [ ] **DB-06**: RLS habilitada nas 4 tabelas, sem nenhuma policy permissiva `using (true)`
-- [ ] **DB-07**: Policy de `draw` permite SELECT **apenas** da própria linha como `giver`, sem nenhuma exceção para `admin_id`
-- [ ] **DB-08**: Nenhuma policy de INSERT/UPDATE/DELETE em `draw` para o papel `authenticated` — a única escrita vem da Edge Function
-- [ ] **DB-09**: Índices criados nas colunas usadas pelas policies (`group_id`, `user_id`, `giver_id`, `admin_id`)
-- [ ] **DB-10**: Políticas validadas manualmente no SQL Editor com dois usuários distintos antes de qualquer código de frontend
-- [ ] **DB-11**: A `service_role` / `sb_secret_` key existe apenas no ambiente da Edge Function e nunca no bundle do cliente
+- [x] **DB-01**: Schema criado com as 4 tabelas (`profile`, `group`, `participant`, `draw`) conforme SDD §3
+- [x] **DB-02**: Constraint `UNIQUE (group_id, user_id)` em `participant` impede entrada dupla no mesmo grupo
+- [x] **DB-03**: Constraints `UNIQUE (group_id, giver_id)` e `UNIQUE (group_id, receiver_id)` em `draw` provam no banco que o resultado é um *perfect matching*
+- [x] **DB-04**: Constraint `CHECK (giver_id <> receiver_id)` em `draw` como defesa em profundidade contra autossorteio
+- [x] **DB-05**: Funções `private.my_group_ids()` e `private.my_participant_ids()` criadas como `SECURITY DEFINER` com `search_path = ''` em schema `private` (evita recursão 42P17 e não é exposta na Data API)
+- [x] **DB-06**: RLS habilitada nas 4 tabelas, sem nenhuma policy permissiva `using (true)`
+- [x] **DB-07**: Policy de `draw` permite SELECT **apenas** da própria linha como `giver`, sem nenhuma exceção para `admin_id`
+- [x] **DB-08**: Nenhuma policy de INSERT/UPDATE/DELETE em `draw` para o papel `authenticated` — a única escrita vem da Edge Function
+- [x] **DB-09**: Índices criados nas colunas usadas pelas policies (`group_id`, `user_id`, `giver_id`, `admin_id`)
+- [x] **DB-10**: Políticas validadas manualmente no SQL Editor com dois usuários distintos antes de qualquer código de frontend
+- [x] **DB-11**: A `service_role` / `sb_secret_` key existe apenas no ambiente da Edge Function e nunca no bundle do cliente
 
 ### Gestão de Grupos (GRP)
 
@@ -82,8 +82,8 @@
 
 ### Interface e PWA (UI)
 
-- [ ] **UI-01**: Layout mobile-first funcional a partir de 320px de largura
-- [ ] **UI-02**: Interface construída com Tailwind CSS v4 + componentes Spartan UI
+- [x] **UI-01**: Layout mobile-first funcional a partir de 320px de largura
+- [x] **UI-02**: Interface construída com Tailwind CSS v4 + componentes Spartan UI
 - [ ] **UI-03**: `manifest.webmanifest` configurado com ícones, `theme_color`, `background_color` e `display: standalone`
 - [ ] **UI-04**: Aplicação é instalável como PWA (verificado no Lighthouse/DevTools)
 - [ ] **UI-05**: Estado offline exibe feedback visual ao usuário
@@ -92,16 +92,16 @@
 
 ### Qualidade e Entrega (ENG)
 
-- [ ] **ENG-01**: ESLint configurado com as 5 regras que tornam a rubrica mecanicamente verificável (`prefer-control-flow`, `prefer-signals`, `prefer-inject`, `prefer-standalone`, `prefer-signal-model`)
+- [x] **ENG-01**: ESLint configurado com as 5 regras que tornam a rubrica mecanicamente verificável (`prefer-control-flow`, `prefer-signals`, `prefer-inject`, `prefer-standalone`, `prefer-signal-model`)
 - [ ] **ENG-02**: Testes unitários (`.spec.ts`) cobrindo o algoritmo de sorteio: ausência de autossorteio e *perfect matching*
 - [ ] **ENG-03**: Teste cobrindo a rejeição da segunda invocação do sorteio
-- [ ] **ENG-04**: Build de produção executa sem erros nem warnings de lint
+- [x] **ENG-04**: Build de produção executa sem erros nem warnings de lint
 - [ ] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
-- [ ] **ENG-06**: Gitflow mantido (`main` + `develop`) com integrações via Pull Request
+- [x] **ENG-06**: Gitflow mantido (`main` + `develop`) com integrações via Pull Request
 - [ ] **ENG-07**: README consolida o PRD (diagrama ER em Mermaid + design system)
-- [ ] **ENG-08**: User stories cadastradas como Issues em um Kanban no GitHub Projects
+- [x] **ENG-08**: User stories cadastradas como Issues em um Kanban no GitHub Projects
 - [ ] **ENG-09**: Documento de especificação técnica (`.spec.md`) detalhando componentes Standalone e Services
-- [ ] **ENG-10**: Servidores MCP configurados na IDE (Supabase e/ou Figma) documentados no SDD
+- [x] **ENG-10**: Servidores MCP configurados na IDE (Supabase e/ou Figma) documentados no SDD
 
 ---
 

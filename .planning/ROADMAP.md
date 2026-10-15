@@ -8,17 +8,17 @@
 
 ## Phases
 
-- [ ] **Fase 1: Fundação — Scaffold, Banco e RLS** - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
-- [ ] **Fase 2: Autenticação End-to-End** - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
-- [ ] **Fase 3: Grupos, Participantes, Wishlist e API Pública** - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
-- [ ] **Fase 4: Sorteio e Revelação** - Sorteio roda uma única vez em Edge Function, sem autossorteio, e cada participante revela e vê apenas o próprio par — provadamente inacessível ao administrador
-- [ ] **Fase 5: PWA, Acessibilidade e Entrega** - Aplicação instalável, responsiva e acessível em produção, com toda a documentação de entrega (PRD/SDD/ER, protótipo Figma, spec técnica) consolidada
+- [ ] **Phase 1: Fundação — Scaffold, Banco e RLS** - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
+- [ ] **Phase 2: Autenticação End-to-End** - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
+- [ ] **Phase 3: Grupos, Participantes, Wishlist e API Pública** - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
+- [ ] **Phase 4: Sorteio e Revelação** - Sorteio roda uma única vez em Edge Function, sem autossorteio, e cada participante revela e vê apenas o próprio par — provadamente inacessível ao administrador
+- [ ] **Phase 5: PWA, Acessibilidade e Entrega** - Aplicação instalável, responsiva e acessível em produção, com toda a documentação de entrega (PRD/SDD/ER, protótipo Figma, spec técnica) consolidada
 
 ---
 
 ## Phase Details
 
-### Fase 1: Fundação — Scaffold, Banco e RLS
+### Phase 1: Fundação — Scaffold, Banco e RLS
 
 **Goal**: Existe uma base técnica completa e comprovadamente segura sobre a qual toda feature subsequente é construída — banco com privacidade garantida por RLS (não por UI), e um pipeline de qualidade que torna a rubrica mecanicamente verificável desde o primeiro commit.
 
@@ -33,13 +33,21 @@
   4. `npx eslint src --max-warnings=0` falha o build se alguém usar `*ngIf`/`*ngFor`, `@Input()`/`@Output()`, DI por construtor ou `standalone: false`
   5. Push na branch `main` dispara deploy automático na Vercel; existe branch `develop`, pelo menos um Pull Request mesclado, um Kanban populado no GitHub Projects, e nenhuma `service_role`/`sb_secret_` key aparece em `grep` no bundle de produção
 
-**Plans**: TBD
+**Plans**: 4 plans (3 waves)
+
+Plans:
+- [x] 01-01-PLAN.md — Schema, constraints, índices, funções `private` SECURITY DEFINER e todas as policies de RLS, provadas com dois usuários no SQL Editor (DB-01..DB-10)
+- [x] 01-02-PLAN.md — Kanban no GitHub Projects com as 11 user stories como Issues, evidência de Gitflow, MCP documentado no SDD (ENG-06, ENG-08, ENG-10)
+- [x] 01-03-PLAN.md — Scaffold Angular 21 LTS + Tailwind v4 + Spartan UI + ESLint com as 7 regras como `error`, com teste negativo executado (UI-01, UI-02, ENG-01, ENG-04)
+- [ ] 01-04-PLAN.md — Deploy Vercel com rewrite de SPA, gate de CI (lint + grep de secrets), e as PRs que materializam o Gitflow (ENG-05, ENG-06, DB-11)
+
+**Waves**: Wave 1 = 01-01 + 01-02 (paralelos) · Wave 2 = 01-03 (bloqueado por DB-10) · Wave 3 = 01-04
 
 **UI hint**: yes
 
 ---
 
-### Fase 2: Autenticação End-to-End
+### Phase 2: Autenticação End-to-End
 
 **Goal**: Qualquer pessoa consegue criar conta, entrar, permanecer logada e sair — com o estado de sessão como única fonte de verdade reativa (Signal), nunca um booleano ingênuo nem uma tela "piscando" para login no F5.
 
@@ -60,7 +68,7 @@
 
 ---
 
-### Fase 3: Grupos, Participantes, Wishlist e API Pública
+### Phase 3: Grupos, Participantes, Wishlist e API Pública
 
 **Goal**: Um administrador consegue montar um grupo de ponta a ponta (criar, convidar, gerenciar participantes) e qualquer participante mantém sua própria lista de desejos — e, em paralelo, a aplicação prova que sabe consumir uma API HTTP externa com todo o ferramental moderno do Angular (`HttpClient`, interceptors funcionais, `toSignal()`).
 
@@ -81,7 +89,7 @@
 
 ---
 
-### Fase 4: Sorteio e Revelação
+### Phase 4: Sorteio e Revelação
 
 **Goal**: O sorteio acontece uma única vez, de forma matematicamente livre de autossorteio, rodando inteiramente fora do alcance do administrador — e cada participante revela deliberadamente apenas o próprio par, nunca o de outra pessoa. Esta é a fase que prova o core value do projeto.
 
@@ -102,7 +110,7 @@
 
 ---
 
-### Fase 5: PWA, Acessibilidade e Entrega
+### Phase 5: PWA, Acessibilidade e Entrega
 
 **Goal**: O produto é instalável, usável em qualquer tela a partir de 320px, acessível, e toda a documentação exigida pela rubrica de processo/entrega está consolidada e publicamente verificável — prontos para a banca.
 
@@ -187,7 +195,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Fundação — Scaffold, Banco e RLS | 0/TBD | Not started | - |
+| 1. Fundação — Scaffold, Banco e RLS | 0/4 | Planned | - |
 | 2. Autenticação End-to-End | 0/TBD | Not started | - |
 | 3. Grupos, Participantes, Wishlist e API Pública | 0/TBD | Not started | - |
 | 4. Sorteio e Revelação | 0/TBD | Not started | - |

@@ -1,0 +1,18 @@
+<main class="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center justify-center gap-4 p-4">
+  @if (titulo()) {
+    <h1 class="text-2xl font-bold text-foreground">{{ titulo() }}</h1>
+  }
+  <div hlmCard class="w-full">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>Fundação técnica</h2>
+      <p hlmCardDescription>Angular 21, Tailwind v4 e Spartan UI prontos.</p>
+    </div>
+    <div hlmCardContent>
+      <p class="text-center text-sm text-muted-foreground">
+        Sistema de Amigo Secreto online — o sorteio é privado de verdade.
+      </p>
+    </div>
+  </div>
+  <button hlmBtn>Começar</button>
+  <router-outlet />
+</main>
