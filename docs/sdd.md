@@ -76,6 +76,9 @@ Flags `--read-only` e `--local-only` disponíveis para limitar o alcance.
 | **Validação** | Zod (schemas) | ^3.x |
 | **Testes** | Vitest (padrão do Angular 21+) | — |
 | **Deploy** | Vercel | — |
+| **Utilitários (peer do Spartan)** | clsx (composição de classes) | ^2.x |
+| **Datas (peer do Spartan)** | luxon (uso interno dos componentes de data do Spartan) | ^3.x |
+| **Animações (peer do Spartan)** | tw-animate-css | ^1.x |
 
 ### 2.1. Changelog de Versões (decisões tomadas em 2026-10-14)
 
@@ -94,6 +97,17 @@ definido em um bloco `@theme { ... }`. O PostCSS usa o plugin `@tailwindcss/post
 **Observação:** o Spartan UI também traz `luxon` como peer dependency. Isso convive sem
 problema com o `date-fns` já adotado — o `luxon` é usado internamente por componentes de
 data do Spartan, enquanto o `date-fns` continua sendo a biblioteca de datas da aplicação.
+
+**Peers transitivos do Spartan UI (adicionados em 2026-10-14).** O `@spartan-ng/brain@1.7.0`
+declara `clsx >=2.0.0`, `luxon >=3.0.0` e `tw-animate-css >=1.0.0` como peer dependencies.
+Elas entram na tabela acima por força da regra "nenhuma dependência sem refletir aqui". O
+`luxon` convive com o `date-fns` sem conflito: o `luxon` serve aos componentes de data internos
+do Spartan, e o `date-fns` continua sendo a biblioteca de datas da aplicação. Nota de instalação
+(plan 01-03): `luxon` está marcado `peerDependenciesMeta.optional: true` no `@spartan-ng/brain@1.7.0`
+instalado — como a Fase 1 só gerou `button` e `card` (nenhum componente de data do Spartan), o
+npm não o instalou automaticamente. Ele será instalado quando a primeira fase que usa um
+componente de data do Spartan (ex. date-picker/calendar) o exigir; a entrada na tabela já
+documenta a dependência com antecedência, conforme a regra do SDD.
 
 ---
 
