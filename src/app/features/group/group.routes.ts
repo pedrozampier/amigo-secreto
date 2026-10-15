@@ -1,5 +1,6 @@
 import type { Routes } from '@angular/router';
 import { adminGuard } from '../../core/guards/admin.guard';
+import { memberGuard } from '../../core/guards/member.guard';
 import { groupResolver } from '../../core/resolvers/group.resolver';
 
 /**
@@ -28,6 +29,16 @@ export const groupRoutes: Routes = [
         resolve: { group: groupResolver },
         loadComponent: () =>
           import('./manage/manage-group.page').then((m) => m.ManageGroupPage),
+      },
+      {
+        // Gap closure WISH-01/02: a rota do PARTICIPANTE. `memberGuard` admite
+        // admin OU participante — `adminGuard` (em :id/manage) continua exigindo
+        // ser o admin. Sem resolver: o memberGuard ja chamou loadGroup na mesma
+        // navegacao e o componente le GroupService.currentGroup.
+        path: ':id',
+        canActivate: [memberGuard],
+        loadComponent: () =>
+          import('./view/group-view.page').then((m) => m.GroupViewPage),
       },
     ],
   },

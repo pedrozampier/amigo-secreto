@@ -274,7 +274,8 @@ src/
 │   │   │   └── draw.service.ts           # Fase 4
 │   │   ├── guards/
 │   │   │   ├── auth.guard.ts
-│   │   │   └── admin.guard.ts            # só o admin abre /group/:id/manage
+│   │   │   ├── admin.guard.ts            # só o admin abre /group/:id/manage
+│   │   │   └── member.guard.ts           # qualquer membro abre /group/:id
 │   │   ├── resolvers/
 │   │   │   └── group.resolver.ts
 │   │   ├── interceptors/
@@ -292,7 +293,8 @@ src/
 │   │   │   ├── group.routes.ts
 │   │   │   ├── group-layout/
 │   │   │   ├── create/
-│   │   │   ├── manage/                   # manage-group.page + participant-row
+│   │   │   ├── view/                     # group-view.page — tela do PARTICIPANTE
+│   │   │   ├── manage/                   # manage-group.page + participant-row (admin)
 │   │   │   └── join/
 │   │   └── draw/
 │   │       └── result/                   # Fase 4
@@ -317,6 +319,7 @@ src/
 | └ `/dashboard` | `features/dashboard/dashboard.page.ts` | herda `authGuard` |
 | └ `/group` *(layout)* | `features/group/group-layout/group-layout.page.ts` | herda `authGuard` |
 | &nbsp;&nbsp;&nbsp;└ `/group/create` | `features/group/create/create-group.page.ts` | herda `authGuard` |
+| &nbsp;&nbsp;&nbsp;└ `/group/:id` | `features/group/view/group-view.page.ts` | herda `authGuard` + **`memberGuard`** (`canActivate`) |
 | &nbsp;&nbsp;&nbsp;└ `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | herda `authGuard` + **`adminGuard`** (`canActivate`) + **`groupResolver`** (`resolve`) |
 | └ `/join/:token` | `features/group/join/join-group.page.ts` | herda `authGuard` (deep link via `returnUrl`) |
 | └ `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | Fase 4 |
@@ -326,6 +329,26 @@ src/
 rota de layout autenticado. `/join/:token` é deliberadamente **flat** (fora de `/group`):
 quem abre um convite ainda não é membro, e renderizar o layout de um grupo que a pessoa não
 integra seria incoerente.
+
+**Duas rotas de grupo, dois papéis (fechamento da Fase 3).** `/group/:id` é a tela do
+**participante** (`GroupViewPage`: nome do grupo, lista de colegas e a própria lista de
+desejos) e `/group/:id/manage` é a tela do **administrador** (`ManageGroupPage`: link de
+convite e remoção de participantes). Guards distintos: `memberGuard` admite qualquer
+membro — admin ou participante — enquanto o `adminGuard` exige
+`group.admin_id === auth.uid()`.
+
+A alternativa avaliada e rejeitada foi afrouxar o `adminGuard` e esconder os controles do
+admin com `@if (souAdmin())` dentro de `ManageGroupPage`. Dois papéis no mesmo componente
+fariam de um `@if` de template a única barreira visual entre eles; a proteção real
+continuaria nas policies, mas a tela ficaria fácil de quebrar por engano. Um admin que
+também é participante do próprio grupo abre `/group/:id` normalmente (é lá que ele edita
+a própria wishlist) e encontra ali um link para `/manage`.
+
+`memberGuard` não consulta `participant`: as duas policies de `SELECT` em `group` são
+ORed pela RLS (`admin_id = auth.uid()` OU `id in (select private.my_group_ids())`), então
+"a RLS devolveu a linha" já é equivalente a "sou membro ou admin", e um estranho recebe
+`null`. `/group/:id` também dispensa o `groupResolver`: o guard já chamou `loadGroup`, que
+popula `GroupService.currentGroup`, de onde o componente lê — uma query por navegação.
 
 **Sobre o `adminGuard` previsto na v1.0.0 deste documento.** Ele existe, em
 `core/guards/admin.guard.ts`, e está ligado em `canActivate` na rota `:id/manage`.

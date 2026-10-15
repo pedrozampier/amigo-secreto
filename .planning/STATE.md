@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-04-PLAN.md
-last_updated: "2026-10-15T13:44:24.250Z"
+stopped_at: Completed 03-06-PLAN.md
+last_updated: "2026-10-15T14:16:44.585Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 13
-  completed_plans: 13
+  total_plans: 14
+  completed_plans: 14
   percent: 40
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 ## Current Position
 
 Phase: 03 (grupos-participantes-wishlist-e-api-p-blica) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-10-15
 
@@ -63,6 +63,7 @@ Progress: [████░░░░░░] 40%
 | Phase 03 P01 | 36min | 3 tasks | 5 files |
 | Phase 03 P03 | 8min | 2 tasks | 4 files |
 | Phase 03 P04 | 12min | 3 tasks | 12 files |
+| Phase 03 P06 | 20min | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 03]: [Phase 03-03]: Desvio documentado de D-08 — checagem de admin embutida no groupResolver (devolvendo UrlTree) em vez de um adminGuard separado, porque canActivate roda antes de resolve na mesma rota; padrão a ser reaproveitado pelo drawResultResolver da Fase 4
 - [Phase 03]: [Phase 03-04]: ManageGroupPage e JoinGroupPage criados como esqueletos estruturais nesta plan (não na 03-05) porque tsc resolve loadComponent estaticamente; sem eles a árvore de rotas não compila
 - [Phase 03]: [Phase 03-04]: Cards de grupos participados no dashboard não linkam para /manage — o groupResolver redirecionaria o não-admin de volta, e um link que sempre rebate é péssima UX
+- [Phase 03]: [Phase 03-06]: memberGuard admite admin OU participante checando apenas group !== null (RLS ja faz OR das duas policies de SELECT) — sem query extra em participant, sem comparar admin_id
+- [Phase 03]: [Phase 03-06]: GroupViewPage e ManageGroupPage ficam como dois componentes separados por papel (participante vs admin) em vez de afrouxar adminGuard com @if (souAdmin()) espalhado; admin-que-tambem-e-participante entra em /group/:id sem redirect e ve um link para /manage
 
 ### Pending Todos
 
@@ -118,6 +121,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T13:13:32.776Z
-Stopped at: Completed 03-04-PLAN.md
+Last session: 2026-10-15T14:16:44.582Z
+Stopped at: Completed 03-06-PLAN.md
 Resume file: None

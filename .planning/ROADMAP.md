@@ -99,7 +99,7 @@ Plans:
 - [x] 03-03-PLAN.md — Contratos TypeScript, `GroupService` em signals com refetch-após-mutação, e `groupResolver` funcional com a checagem de admin embutida (camada de contrato das telas)
 - [x] 03-04-PLAN.md — Rotas `/group` aninhadas + `/join/:token` flat, tela de criar grupo com link de convite copiável, dashboard com as duas listas (GRP-01..03, GRP-09)
 - [x] 03-05-PLAN.md — Tela de gestão (participantes, remoção, wishlist com `model()`), tela de convite, e atualização do `docs/sdd.md` §5.1/§5.2/§5.3 (GRP-04..08, WISH-01..03)
-- [ ] 03-06-PLAN.md — **Gap closure:** `memberGuard` + rota `/group/:id` com tela do participante (colegas + própria wishlist), `routerLink` no dashboard e SDD §5.1/§5.2 reconciliados (WISH-01, WISH-02)
+- [x] 03-06-PLAN.md — **Gap closure:** `memberGuard` + rota `/group/:id` com tela do participante (colegas + própria wishlist), `routerLink` no dashboard e SDD §5.1/§5.2 reconciliados (WISH-01, WISH-02)
 
 **Waves**: Wave 1 = 03-01 + 03-02 (paralelos: trilhas Supabase e API são independentes, D-21) · Wave 2 = 03-03 · Wave 3 = 03-04 · Wave 4 = 03-05 (checkpoint humano final) · Wave 5 = 03-06 (gap closure de WISH-01/02, planejada após a verificação da fase)
 
