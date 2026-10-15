@@ -2,6 +2,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { AuthService } from '../../core/services/auth.service';
+import { ConnectivityService } from '../../core/services/connectivity.service';
 
 /**
  * Layout das rotas autenticadas (D-19). A rota PAI aplica o authGuard uma única
@@ -17,6 +18,9 @@ import { AuthService } from '../../core/services/auth.service';
 export class AuthenticatedLayoutPage {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly connectivity = inject(ConnectivityService);
+
+  protected readonly online = this.connectivity.online;
 
   protected readonly displayName = this.auth.displayName;
   protected readonly saindo = signal(false);

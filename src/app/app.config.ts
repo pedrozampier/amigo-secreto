@@ -1,10 +1,12 @@
 import {
   ApplicationConfig,
   inject,
+  isDevMode,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideServiceWorker } from '@angular/service-worker';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
@@ -24,5 +26,12 @@ export const appConfig: ApplicationConfig = {
     // É isto que elimina o flash de /login no F5 (PITFALLS.md Pitfall 8) e permite
     // que o authGuard seja um `if` síncrono.
     provideAppInitializer(() => inject(AuthService).initialize()),
+    // D-01 / RA1-ID3: service worker ativo apenas em produção. É o registro do SW que faz o
+    // Lighthouse marcar o app como instalável de fato — sem ele o manifest sozinho não basta.
+    // Em dev fica desabilitado de propósito: um build cacheado mascararia edições locais.
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };

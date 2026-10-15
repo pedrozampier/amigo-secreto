@@ -285,7 +285,8 @@ src/
 │   │   │   ├── auth.service.ts
 │   │   │   ├── group.service.ts
 │   │   │   ├── holiday.service.ts        # BrasilAPI (API-01..04)
-│   │   │   └── draw.service.ts           # Fase 4
+│   │   │   ├── draw.service.ts           # Fase 4
+│   │   │   └── connectivity.service.ts   # Fase 5 - status online/offline (UI-05, RA3-ID12)
 │   │   ├── guards/
 │   │   │   ├── auth.guard.ts
 │   │   │   ├── admin.guard.ts            # só o admin abre /group/:id/manage
@@ -317,6 +318,9 @@ src/
 │       └── pipes/                        # houver reuso real, nenhum até a Fase 3
 ├── environments/
 └── styles.css
+public/
+├── manifest.webmanifest              # Fase 5 - PWA (UI-03)
+└── icons/                            # icon-192x192, icon-512x512, icon-512x512-maskable
 ```
 
 ### 🚦 5.2. Mapa de Rotas e Páginas (Features)

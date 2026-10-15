@@ -1,0 +1,1 @@
+- `npm run check:no-secrets` fails on production build: grep matches `sb_secret_` inside bundled supabase-js (key-prefix validation), a false positive independent of plan 05-02. Gate regex needs refining (e.g. match `sb_secret_[A-Za-z0-9]{10,}`).

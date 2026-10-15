@@ -1,4 +1,13 @@
 <div class="flex min-h-dvh flex-col">
+  @if (!online()) {
+    <div
+      class="sticky top-0 z-50 bg-foreground px-4 py-2 text-center text-sm font-medium text-background"
+      role="status"
+      aria-live="polite"
+    >
+      Você está offline. Algumas ações podem falhar.
+    </div>
+  }
   <header class="border-b">
     <div class="mx-auto flex w-full max-w-md items-center justify-between gap-2 p-4">
       <span class="text-sm font-semibold text-foreground">UTF-Secret</span>
