@@ -90,6 +90,17 @@ describe('memberGuard', () => {
       );
       expect(serializado.startsWith('/dashboard')).toBe(true);
     });
+
+    it('libera a rota quando o param se chama groupId em vez de id (rota /draw/:groupId/result)', async () => {
+      configurar({ group: GRUPO_BASE });
+
+      const route = {
+        paramMap: convertToParamMap({ groupId: 'g1' }),
+      } as ActivatedRouteSnapshot;
+      const resultado = await executar(route);
+
+      expect(resultado).toBe(true);
+    });
   });
 
   /**
@@ -157,6 +168,34 @@ describe('memberGuard', () => {
       expect(activatedComponent).toBeInstanceOf(DummyGroupViewComponent);
       const router = TestBed.inject(Router);
       expect(router.url).toBe('/group/g1');
+    });
+
+    it('chega na rota e instancia o componente quando o path usa :groupId em vez de :id', async () => {
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([
+            {
+              path: 'draw/:groupId/result',
+              canActivate: [memberGuard],
+              component: DummyGroupViewComponent,
+            },
+            { path: 'dashboard', component: DummyDashboardComponent },
+          ]),
+          {
+            provide: GroupService,
+            useValue: {
+              loadGroup: vi.fn().mockResolvedValue({ group: GRUPO_BASE, error: null }),
+            },
+          },
+        ],
+      });
+
+      const harness = await RouterTestingHarness.create();
+      const activatedComponent = await harness.navigateByUrl('/draw/g1/result');
+
+      expect(activatedComponent).toBeInstanceOf(DummyGroupViewComponent);
+      const router = TestBed.inject(Router);
+      expect(router.url).toBe('/draw/g1/result');
     });
   });
 });
