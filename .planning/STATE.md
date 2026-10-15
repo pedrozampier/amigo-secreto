@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-10-15T01:37:30.433Z"
+last_activity: 2026-10-15
+progress:
+  total_phases: 5
+  completed_phases: 0
+  total_plans: 4
+  completed_plans: 1
+  percent: 0
+---
+
 # Project State
 
 ## Project Reference
@@ -5,20 +21,21 @@
 See: .planning/PROJECT.md (updated 2026-10-14)
 
 **Core value:** O sorteio é privado de verdade — garantido pelo banco (RLS), não pela interface — e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código entregue.
-**Current focus:** Fase 1 — Fundação (Scaffold, Banco e RLS)
+**Current focus:** Phase 01 — fundacao-scaffold-banco-rls
 
 ## Current Position
 
-Phase: 1 of 5 (Fundação — Scaffold, Banco e RLS)
-Plan: 0 of 4 in current phase
-Status: Planned — pronto para executar
-Last activity: 2026-10-14 — Fase 1 pesquisada e planejada (4 plans em 3 waves); plan-checker aprovou na 1ª iteração
+Phase: 01 (fundacao-scaffold-banco-rls) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-10-15
 
 Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 0
 - Average duration: — min
 - Total execution time: 0 horas
@@ -30,10 +47,12 @@ Progress: [░░░░░░░░░░] 0%
 | - | - | - | - |
 
 **Recent Trend:**
+
 - Last 5 plans: —
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 01 P02 | 25 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -51,6 +70,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - `@angular-eslint/prefer-output-emitter-ref` existe e pega `@Output()` direto — PITFALLS.md dizia o contrário (correção planejada na plan 01-02). Os 7 rules do rubric foram verificados carregando os plugins instalados.
 - `@spartan-ng/brain@1.7.0` exige `clsx`, `luxon` e `tw-animate-css`, ausentes da tabela §2 do SDD — plan 01-03 as adiciona (regra de não instalar dependência fora da tabela).
 - ARCHITECTURE.md não tinha `CREATE TABLE` nenhum (só `ALTER`/constraints/índices/policies); o DDL das 4 tabelas foi escrito na plan 01-01 a partir do ER do SDD §3.2.
+- [Phase 01]: Kanban reuses pre-existing Issues #1-11 (matching the 11 PRD stories) instead of duplicates; closed 11 duplicate Issues created mid-task as not-planned
+- [Phase 01]: Supabase MCP documented in SDD §1 with project_ref + read_only=true scoping and an explicit prompt-injection caveat
 
 ### Pending Todos
 
@@ -64,6 +85,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-14
-Stopped at: Fase 1 planejada — 01-RESEARCH.md + 4 PLAN.md em `.planning/phases/01-fundacao-scaffold-banco-rls/`, na branch `gsd/phase-01-fundacao-scaffold-banco-rls`; aguardando `/gsd:execute-phase 1`
+Last session: 2026-10-15T01:37:30.431Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
