@@ -5,9 +5,11 @@
 
 > **Nota sobre a numeração do checklist.** Os indicadores de `docs/checklist.md` são
 > numerados **por RA**, não globalmente. Existem **dois ID3 distintos**: `RA1-ID3` (PWA /
-> `manifest.webmanifest`) e `RA2-ID3` (componentes Standalone). São 34 itens no total, não
-> 32. Neste documento eles aparecem sempre com o prefixo do RA para que nenhum dos dois
-> seja perdido por ambiguidade.
+> `manifest.webmanifest`) e `RA2-ID3` (componentes Standalone). Contando RA1(3) + RA2(6) +
+> RA3(4) + RA4(2) + RA5(4) + RA6(6) + RA7(3) + RA8(5), o total real é **33 indicadores**
+> (correção feita na criação do roadmap: uma versão anterior deste documento citava 34 por
+> engano de soma). Neste documento eles aparecem sempre com o prefixo do RA para que nenhum
+> dos dois ID3 seja perdido por ambiguidade.
 
 ---
 
@@ -144,7 +146,7 @@ a tabela que garante o pedido central do usuário: **cumprir o checklist inteiro
 | **RA8-ID31** | MCP + Skills de Angular 20+ configurados na IDE | ENG-10 (+ stack fixada em Angular ^21) |
 | **RA8-ID32** | Testes unitários (`.spec.ts`) nas regras de negócio | ENG-02, ENG-03 |
 
-**Cobertura:** 34 indicadores · 34 mapeados · 0 sem requisito correspondente ✓
+**Cobertura:** 33 indicadores · 33 mapeados · 0 sem requisito correspondente ✓
 
 ---
 
@@ -180,7 +182,66 @@ Preenchido durante a criação do roadmap.
 
 | Requisito | Fase | Status |
 |-----------|------|--------|
-| (a ser preenchido pelo roadmapper) | — | Pendente |
+| AUTH-01 | Fase 2 | Pendente |
+| AUTH-02 | Fase 2 | Pendente |
+| AUTH-03 | Fase 2 | Pendente |
+| AUTH-04 | Fase 2 | Pendente |
+| AUTH-05 | Fase 2 | Pendente |
+| AUTH-06 | Fase 2 | Pendente |
+| DB-01 | Fase 1 | Pendente |
+| DB-02 | Fase 1 | Pendente |
+| DB-03 | Fase 1 | Pendente |
+| DB-04 | Fase 1 | Pendente |
+| DB-05 | Fase 1 | Pendente |
+| DB-06 | Fase 1 | Pendente |
+| DB-07 | Fase 1 | Pendente |
+| DB-08 | Fase 1 | Pendente |
+| DB-09 | Fase 1 | Pendente |
+| DB-10 | Fase 1 | Pendente |
+| DB-11 | Fase 1 | Pendente |
+| GRP-01 | Fase 3 | Pendente |
+| GRP-02 | Fase 3 | Pendente |
+| GRP-03 | Fase 3 | Pendente |
+| GRP-04 | Fase 3 | Pendente |
+| GRP-05 | Fase 3 | Pendente |
+| GRP-06 | Fase 3 | Pendente |
+| GRP-07 | Fase 3 | Pendente |
+| GRP-08 | Fase 3 | Pendente |
+| GRP-09 | Fase 3 | Pendente |
+| DRAW-01 | Fase 4 | Pendente |
+| DRAW-02 | Fase 4 | Pendente |
+| DRAW-03 | Fase 4 | Pendente |
+| DRAW-04 | Fase 4 | Pendente |
+| DRAW-05 | Fase 4 | Pendente |
+| DRAW-06 | Fase 4 | Pendente |
+| DRAW-07 | Fase 4 | Pendente |
+| DRAW-08 | Fase 4 | Pendente |
+| DRAW-09 | Fase 4 | Pendente |
+| DRAW-10 | Fase 4 | Pendente |
+| WISH-01 | Fase 3 | Pendente |
+| WISH-02 | Fase 3 | Pendente |
+| WISH-03 | Fase 3 | Pendente |
+| API-01 | Fase 3 | Pendente |
+| API-02 | Fase 3 | Pendente |
+| API-03 | Fase 3 | Pendente |
+| API-04 | Fase 3 | Pendente |
+| UI-01 | Fase 1 | Pendente |
+| UI-02 | Fase 1 | Pendente |
+| UI-03 | Fase 5 | Pendente |
+| UI-04 | Fase 5 | Pendente |
+| UI-05 | Fase 5 | Pendente |
+| UI-06 | Fase 5 | Pendente |
+| UI-07 | Fase 5 | Pendente |
+| ENG-01 | Fase 1 | Pendente |
+| ENG-02 | Fase 4 | Pendente |
+| ENG-03 | Fase 4 | Pendente |
+| ENG-04 | Fase 1 | Pendente |
+| ENG-05 | Fase 1 | Pendente |
+| ENG-06 | Fase 1 | Pendente |
+| ENG-07 | Fase 5 | Pendente |
+| ENG-08 | Fase 1 | Pendente |
+| ENG-09 | Fase 5 | Pendente |
+| ENG-10 | Fase 1 | Pendente |
 
 ---
 *Requisitos definidos em: 2026-10-14*
