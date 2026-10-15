@@ -91,7 +91,7 @@ Plans:
   4. Participante cadastra e edita a própria lista de desejos a qualquer momento antes do encerramento, mas não consegue editar a de outra pessoa
   5. A tela exibe quantos dias faltam até o Natal, obtidos de um `GET` real à `BrasilAPI` via `HttpClient`, convertidos de Observable para Signal (`toSignal()`), com falhas de rede tratadas por um interceptor funcional centralizado
 
-**Plans**: 5 plans (4 waves)
+**Plans**: 6 plans (5 waves)
 
 Plans:
 - [x] 03-01-PLAN.md — Migration `0004` com os RPCs `SECURITY DEFINER` do convite (`join_group_by_token`, `preview_group_by_token`), mapa PT-BR dos códigos de erro e validação com dois usuários (GRP-06..08)
@@ -99,8 +99,9 @@ Plans:
 - [x] 03-03-PLAN.md — Contratos TypeScript, `GroupService` em signals com refetch-após-mutação, e `groupResolver` funcional com a checagem de admin embutida (camada de contrato das telas)
 - [x] 03-04-PLAN.md — Rotas `/group` aninhadas + `/join/:token` flat, tela de criar grupo com link de convite copiável, dashboard com as duas listas (GRP-01..03, GRP-09)
 - [x] 03-05-PLAN.md — Tela de gestão (participantes, remoção, wishlist com `model()`), tela de convite, e atualização do `docs/sdd.md` §5.1/§5.2/§5.3 (GRP-04..08, WISH-01..03)
+- [ ] 03-06-PLAN.md — **Gap closure:** `memberGuard` + rota `/group/:id` com tela do participante (colegas + própria wishlist), `routerLink` no dashboard e SDD §5.1/§5.2 reconciliados (WISH-01, WISH-02)
 
-**Waves**: Wave 1 = 03-01 + 03-02 (paralelos: trilhas Supabase e API são independentes, D-21) · Wave 2 = 03-03 · Wave 3 = 03-04 · Wave 4 = 03-05 (checkpoint humano final)
+**Waves**: Wave 1 = 03-01 + 03-02 (paralelos: trilhas Supabase e API são independentes, D-21) · Wave 2 = 03-03 · Wave 3 = 03-04 · Wave 4 = 03-05 (checkpoint humano final) · Wave 5 = 03-06 (gap closure de WISH-01/02, planejada após a verificação da fase)
 
 **UI hint**: yes
 
@@ -214,7 +215,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Fundação — Scaffold, Banco e RLS | 4/4 | Complete | 2026-10-14 |
 | 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
-| 3. Grupos, Participantes, Wishlist e API Pública | 0/5 | Planned | - |
+| 3. Grupos, Participantes, Wishlist e API Pública | 5/6 | Gap closure planned | - |
 | 4. Sorteio e Revelação | 0/TBD | Not started | - |
 | 5. PWA, Acessibilidade e Entrega | 0/TBD | Not started | - |
 
