@@ -1,9 +1,10 @@
+<h1 class="sr-only">Meu amigo secreto</h1>
 @switch (resultado().status) {
   @case ('not-drawn') {
     <div hlmCard class="w-full">
       <div hlmCardContent class="flex flex-col items-center gap-3 py-8 text-center">
         <p class="text-sm text-muted-foreground">O sorteio deste grupo ainda não aconteceu.</p>
-        <a hlmBtn variant="outline" size="sm" [routerLink]="['/group', groupId()]">
+        <a hlmBtn variant="outline" size="sm" class="min-h-11" [routerLink]="['/group', groupId()]">
           Voltar para o grupo
         </a>
       </div>
@@ -15,7 +16,7 @@
         <p class="text-sm text-muted-foreground">
           Não encontramos seu resultado. Tente novamente mais tarde.
         </p>
-        <a hlmBtn variant="outline" size="sm" [routerLink]="['/group', groupId()]">
+        <a hlmBtn variant="outline" size="sm" class="min-h-11" [routerLink]="['/group', groupId()]">
           Voltar para o grupo
         </a>
       </div>
