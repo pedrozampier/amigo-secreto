@@ -35,3 +35,13 @@ const out = path.join('src', 'environments', 'environment.prod.ts');
 fs.mkdirSync(path.dirname(out), { recursive: true });
 fs.writeFileSync(out, content);
 console.log('[generate-env] escrito', out);
+
+// environment.ts também é ignorado pelo git, então não existe num clone limpo (Vercel).
+// O esbuild resolve o import antes de aplicar o fileReplacements, então o arquivo
+// substituído precisa existir. Copia o exemplo (sem segredos) só se estiver ausente,
+// para nunca sobrescrever o environment.ts local do desenvolvedor.
+const devOut = path.join('src', 'environments', 'environment.ts');
+if (!fs.existsSync(devOut)) {
+  fs.copyFileSync(path.join('src', 'environments', 'environment.example.ts'), devOut);
+  console.log('[generate-env] escrito', devOut, '(a partir de environment.example.ts)');
+}

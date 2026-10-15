@@ -79,6 +79,8 @@ Flags `--read-only` e `--local-only` disponíveis para limitar o alcance.
 | **Utilitários (peer do Spartan)** | clsx (composição de classes) | ^2.x |
 | **Datas (peer do Spartan)** | luxon (uso interno dos componentes de data do Spartan) | ^3.x |
 | **Animações (peer do Spartan)** | tw-animate-css | ^1.x |
+| **PWA** | @angular/service-worker (Service Worker + manifest) | **^21.x** |
+| **Build de ícones (dev)** | @resvg/resvg-js (rasterização SVG -> PNG, devDependency) | ^2.x |
 
 ### 2.1. Changelog de Versões (decisões tomadas em 2026-10-14)
 
@@ -108,6 +110,31 @@ instalado — como a Fase 1 só gerou `button` e `card` (nenhum componente de da
 npm não o instalou automaticamente. Ele será instalado quando a primeira fase que usa um
 componente de data do Spartan (ex. date-picker/calendar) o exigir; a entrada na tabela já
 documenta a dependência com antecedência, conforme a regra do SDD.
+
+**Primitivas Spartan UI geradas (atualizado na Fase 2).** O `libs/ui/` contém apenas as
+primitivas efetivamente usadas, geradas sob demanda por `ng g @spartan-ng/cli:ui <nome>`:
+`utils`, `button` e `card` (Fase 1) e `input` + `label` (Fase 2, para os Reactive Forms de
+login e cadastro). Isso é **geração de código local**, não instalação de dependência: as
+`peerDependencies` de `input` e `label` são apenas `@angular/core`, `@angular/forms` e
+`@spartan-ng/brain`, todas já presentes na tabela §2 — `package.json` não muda ao gerá-las.
+
+A primitiva `field` (o "form field" do Spartan) foi deliberadamente **não** gerada: ela
+depende de `separator` e puxa `@ng-icons/core` + `@ng-icons/lucide` como peers, que não
+constam da §2. Rótulo (`hlmLabel`) + campo (`hlmInput`) + um parágrafo de mensagem de erro
+já atendem o ID23 do checklist sem ampliar a árvore de dependências.
+
+**Fase 3 não gerou nenhuma primitiva Spartan nova.** A confirmação de remoção de
+participante (GRP-05) foi deliberadamente implementada como uma confirmação inline em dois
+passos (um signal guardando o id em confirmação, alternando botões via `@if`), em vez da
+primitiva `dialog`: `dialog` arrastaria `@ng-icons/core` + `@ng-icons/lucide` como peers,
+ausentes da tabela §2 — exatamente a mesma razão que levou a não gerar `field` acima.
+
+#### Adições da Fase 5 (2026-10-15)
+
+| Item | Decisão | Motivo |
+|:-----|:--------|:-------|
+| `@angular/service-worker` | Adicionado (D-01 da Fase 5) | É o único caminho em que o Lighthouse marca o app como *Installable* sem ressalva, que é literalmente o critério 1 do ROADMAP da fase. Pinado na linha **21**, igual a `@angular/core` e `@angular/cdk`, para não repetir o conflito de peers da Fase 1. |
+| `@resvg/resvg-js` | Adicionado como **devDependency** (D-04 da Fase 5) | O Lighthouse exige ícones **PNG** reais (192x192, 512x512 e um 512x512 `maskable` separado); SVG no manifest não é honrado de forma confiável por iOS Safari nem por vários launchers Android. O `jsdom` já instalado **não** rasteriza — `HTMLCanvasElement.getContext('2d')` lança `Not implemented... without installing the canvas npm package`, verificado empiricamente neste projeto — logo uma dependência nova era inevitável. Escolhido em vez de `sharp` por ser zero-dependency (Rust/napi-rs, binários pré-compilados) e de propósito único. Usado **apenas** por um script de build em `scripts/`, nunca importado por código da aplicação nem enviado ao bundle do browser. |
 
 ---
 
@@ -228,10 +255,15 @@ export interface ParticipantWithProfile extends Participant {
   profile: Profile;
 }
 
-export interface MyDrawResult {
+export interface DrawResult {
+  id: string;
   receiver: Pick<Participant, 'display_name' | 'wish_list'>;
 }
 ```
+
+> Nota (plan 04-04): o nome real no código é `DrawResult`, não `MyDrawResult` — e
+> inclui `id` (o id da própria linha de `draw`), usado só para `track` no `@for`/debug.
+> Divergência mínima registrada aqui em vez de renomear o contrato já em uso.
 
 ---
 
@@ -239,58 +271,134 @@ export interface MyDrawResult {
 
 ### 📂 5.1. Estrutura de Pastas Base
 
+> Atualizado ao final da Fase 3 (D-07) para refletir a árvore real em disco
+> (`find src/app -type d`), não a previsão original da v1.0.0.
+
 ```
 src/
 ├── app/
 │   ├── core/
+│   │   ├── models/
+│   │   │   └── group.model.ts            # Group, Participant, JoinResult, GroupPreview (§4)
 │   │   ├── services/
+│   │   │   ├── supabase-client.service.ts
 │   │   │   ├── auth.service.ts
 │   │   │   ├── group.service.ts
-│   │   │   └── draw.service.ts
+│   │   │   ├── holiday.service.ts        # BrasilAPI (API-01..04)
+│   │   │   ├── draw.service.ts           # Fase 4
+│   │   │   └── connectivity.service.ts   # Fase 5 - status online/offline (UI-05, RA3-ID12)
 │   │   ├── guards/
-│   │   │   └── auth.guard.ts
-│   │   └── interceptors/
-│   │       └── error.interceptor.ts
+│   │   │   ├── auth.guard.ts
+│   │   │   ├── admin.guard.ts            # só o admin abre /group/:id/manage
+│   │   │   └── member.guard.ts           # qualquer membro abre /group/:id
+│   │   ├── resolvers/
+│   │   │   └── group.resolver.ts
+│   │   ├── interceptors/
+│   │   │   └── error.interceptor.ts
+│   │   ├── auth-error-messages.ts
+│   │   ├── join-error-messages.ts
+│   │   └── dias-ate-natal.ts
 │   ├── features/
 │   │   ├── auth/
 │   │   │   ├── login/
 │   │   │   └── register/
-│   │   ├── dashboard/
+│   │   ├── shell/                        # authenticated-layout.page (rota pai, authGuard)
+│   │   ├── dashboard/                    # dashboard.page + christmas-countdown.card
 │   │   ├── group/
+│   │   │   ├── group.routes.ts
+│   │   │   ├── group-layout/
 │   │   │   ├── create/
-│   │   │   ├── manage/
+│   │   │   ├── view/                     # group-view.page — tela do PARTICIPANTE
+│   │   │   ├── manage/                   # manage-group.page + participant-row (admin)
 │   │   │   └── join/
 │   │   └── draw/
-│   │       └── result/
-│   └── shared/
-│       ├── components/
-│       │   ├── button/
-│       │   ├── card/
-│       │   └── modal/
-│       └── pipes/
+│   │       └── result/                   # Fase 4
+│   └── shared/                           # components/ e pipes/ existem como pastas
+│       ├── components/                   # vazias (só .gitkeep) — criadas quando
+│       └── pipes/                        # houver reuso real, nenhum até a Fase 3
 ├── environments/
-└── styles/
+└── styles.css
+public/
+├── manifest.webmanifest              # Fase 5 - PWA (UI-03)
+└── icons/                            # icon-192x192, icon-512x512, icon-512x512-maskable
 ```
 
 ### 🚦 5.2. Mapa de Rotas e Páginas (Features)
 
-| Rota | Page Component | Functional Guard |
+> Atualizado ao final da Fase 3 (D-07): a tabela da v1.0.0 listava tudo "flat", o que
+> havia divergido da árvore real de rotas aninhadas. Abaixo, a hierarquia real e onde
+> cada guard/resolver atua.
+
+| Rota | Page Component | Guard / Resolver |
 |:-----|:---------------|:-----------------|
 | `/login` | `features/auth/login/login.page.ts` | Público |
 | `/register` | `features/auth/register/register.page.ts` | Público |
-| `/dashboard` | `features/dashboard/dashboard.page.ts` | `authGuard` |
-| `/group/create` | `features/group/create/create-group.page.ts` | `authGuard` |
-| `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | `authGuard` + `adminGuard` |
-| `/join/:token` | `features/group/join/join-group.page.ts` | `authGuard` |
-| `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | `authGuard` |
+| *(rota pai sem path)* | `features/shell/authenticated-layout.page.ts` | **`authGuard`** — aplicado UMA vez; todas as rotas abaixo herdam |
+| └ `/dashboard` | `features/dashboard/dashboard.page.ts` | herda `authGuard` |
+| └ `/group` *(layout)* | `features/group/group-layout/group-layout.page.ts` | herda `authGuard` |
+| &nbsp;&nbsp;&nbsp;└ `/group/create` | `features/group/create/create-group.page.ts` | herda `authGuard` |
+| &nbsp;&nbsp;&nbsp;└ `/group/:id` | `features/group/view/group-view.page.ts` | herda `authGuard` + **`memberGuard`** (`canActivate`) |
+| &nbsp;&nbsp;&nbsp;└ `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | herda `authGuard` + **`adminGuard`** (`canActivate`) + **`groupResolver`** (`resolve`) |
+| └ `/join/:token` | `features/group/join/join-group.page.ts` | herda `authGuard` (deep link via `returnUrl`) |
+| └ `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | herda `authGuard` + **`memberGuard`** (`canActivate`) + **`drawResultResolver`** (`resolve`) |
+
+**Hierarquia de layout (RA5-ID17).** `/group/create` e `/group/:id/manage` são rotas
+**filhas** de um `GroupLayoutPage` com `<router-outlet>` próprio, que por sua vez é filho da
+rota de layout autenticado. `/join/:token` é deliberadamente **flat** (fora de `/group`):
+quem abre um convite ainda não é membro, e renderizar o layout de um grupo que a pessoa não
+integra seria incoerente.
+
+**Duas rotas de grupo, dois papéis (fechamento da Fase 3).** `/group/:id` é a tela do
+**participante** (`GroupViewPage`: nome do grupo, lista de colegas e a própria lista de
+desejos) e `/group/:id/manage` é a tela do **administrador** (`ManageGroupPage`: link de
+convite e remoção de participantes). Guards distintos: `memberGuard` admite qualquer
+membro — admin ou participante — enquanto o `adminGuard` exige
+`group.admin_id === auth.uid()`.
+
+A alternativa avaliada e rejeitada foi afrouxar o `adminGuard` e esconder os controles do
+admin com `@if (souAdmin())` dentro de `ManageGroupPage`. Dois papéis no mesmo componente
+fariam de um `@if` de template a única barreira visual entre eles; a proteção real
+continuaria nas policies, mas a tela ficaria fácil de quebrar por engano. Um admin que
+também é participante do próprio grupo abre `/group/:id` normalmente (é lá que ele edita
+a própria wishlist) e encontra ali um link para `/manage`.
+
+`memberGuard` não consulta `participant`: as duas policies de `SELECT` em `group` são
+ORed pela RLS (`admin_id = auth.uid()` OU `id in (select private.my_group_ids())`), então
+"a RLS devolveu a linha" já é equivalente a "sou membro ou admin", e um estranho recebe
+`null`. `/group/:id` também dispensa o `groupResolver`: o guard já chamou `loadGroup`, que
+popula `GroupService.currentGroup`, de onde o componente lê — uma query por navegação.
+
+**Sobre o `adminGuard` previsto na v1.0.0 deste documento.** Ele existe, em
+`core/guards/admin.guard.ts`, e está ligado em `canActivate` na rota `:id/manage`.
+
+Durante a Fase 3 houve uma tentativa de dispensá-lo, pondo a checagem de "só o admin acessa
+`/group/:id/manage`" **dentro do `groupResolver`**, que devolveria um `UrlTree` para
+`/dashboard` quando `admin_id` não fosse o usuário da sessão. O argumento era evitar uma
+segunda query por navegação, já que o Angular Router executa os `canActivate` **antes** dos
+`resolve` da mesma rota e um guard não conseguiria reaproveitar o grupo buscado pelo resolver.
+
+**Isso não funciona, e o defeito foi observado em produção na verificação manual da fase:**
+um `UrlTree` devolvido por um `ResolveFn` **não redireciona**. Ao contrário de
+`CanActivateFn` — onde o `UrlTree` é o contrato oficial de redirecionamento — o valor
+devolvido por um resolver é apenas colocado em `route.data`. A rota ativava normalmente, um
+participante não-admin abria a tela de gestão de um grupo alheio, e o componente recebia um
+`UrlTree` onde esperava um `Group` (daí o cabeçalho renderizando vazio).
+
+A checagem vive agora no `adminGuard` (`CanActivateFn`), que roda antes de a rota ativar. O
+`groupResolver` ficou apenas com o carregamento do grupo. O custo é a tal segunda chamada a
+`loadGroup` por navegação — preço aceito em troca de correção. Coberto por
+`admin.guard.spec.ts` (4 casos), incluindo o do não-admin barrado.
 
 ### 🧠 5.3. Core Services (Singleton)
+
+> Linha do `GroupService` e `HolidayService` atualizadas ao final da Fase 3 (D-07).
 
 | Service | Arquivo | Responsabilidade Macro |
 |:--------|:--------|:-----------------------|
 | `AuthService` | `core/services/auth.service.ts` | Gerenciar sessão Supabase, estado do usuário logado (Signal) e fluxos de login/logout. |
-| `GroupService` | `core/services/group.service.ts` | CRUD de grupos, geração de invite token, listagem de participantes. |
-| `DrawService` | `core/services/draw.service.ts` | Executar algoritmo de sorteio, consultar par sorteado do usuário autenticado. |
+| `GroupService` | `core/services/group.service.ts` | CRUD de grupos, listagem/remoção de participantes, atualização da própria wishlist e os RPCs de `public`: `create_group` (0006 — cria o grupo E insere o admin como participante na mesma transação, D-01/D-02 da Fase 4), `join_group_by_token` e `preview_group_by_token` (0004). Estado em `signal()`, re-buscado após cada mutação. Não escreve `group.status` — isso pertence à Edge Function do sorteio. |
+| `HolidayService` | `core/services/holiday.service.ts` | `GET` à BrasilAPI via `HttpClient`, ponte Observable→Signal com `toSignal()` e cálculo de dias até o Natal. Único tráfego do projeto que passa por `HttpClient` e, portanto, pelos interceptors. |
+| `DrawService` | `core/services/draw.service.ts` | Invoca a Edge Function `run-draw` via `supabase.functions.invoke()` (DRAW-01/02) e traduz os códigos estáveis de erro com `draw-error-messages.ts` (D-12). Nenhuma lógica de sorteio vive no cliente. `getMyResult(groupId)` (plan 04-04, D-07/DRAW-09) busca o par do usuário numa única query com join FK-nomeado (`participant!draw_receiver_id_fkey`), consumida por `drawResultResolver`. |
 
 ---
 

@@ -52,3 +52,6 @@ Thumbs.db
 .env.*
 !.env.example
 /supabase/.env.local
+
+# Supabase CLI local runtime cache (project link state, pooler URL) — never commit
+/supabase/.temp/

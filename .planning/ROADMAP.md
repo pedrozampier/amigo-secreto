@@ -8,9 +8,9 @@
 
 ## Phases
 
-- [ ] **Phase 1: Fundação — Scaffold, Banco e RLS** - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
-- [ ] **Phase 2: Autenticação End-to-End** - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
-- [ ] **Phase 3: Grupos, Participantes, Wishlist e API Pública** - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
+- [x] **Phase 1: Fundação — Scaffold, Banco e RLS** (concluída 2026-10-14) - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
+- [x] **Phase 2: Autenticação End-to-End** (concluída 2026-10-15) - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
+- [x] **Phase 3: Grupos, Participantes, Wishlist e API Pública** (concluída 2026-10-15) - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
 - [ ] **Phase 4: Sorteio e Revelação** - Sorteio roda uma única vez em Edge Function, sem autossorteio, e cada participante revela e vê apenas o próprio par — provadamente inacessível ao administrador
 - [ ] **Phase 5: PWA, Acessibilidade e Entrega** - Aplicação instalável, responsiva e acessível em produção, com toda a documentação de entrega (PRD/SDD/ER, protótipo Figma, spec técnica) consolidada
 
@@ -27,6 +27,7 @@
 **Requirements**: DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07, DB-08, DB-09, DB-10, DB-11, UI-01, UI-02, ENG-01, ENG-04, ENG-05, ENG-06, ENG-08, ENG-10
 
 **Success Criteria** (o que precisa ser OBSERVAVELMENTE verdadeiro):
+
   1. O scaffold Angular `^21.x` standalone + Tailwind `^4.x` + Spartan UI compila e roda (`ng serve`) sem nenhum componente `NgModule`
   2. As 4 tabelas (`profile`, `group`, `participant`, `draw`) existem no Supabase com todas as constraints (`UNIQUE`, `CHECK`) e índices, e RLS está habilitada nas 4 — verificável por `SELECT tablename, rowsecurity FROM pg_tables`
   3. Testando manualmente no SQL Editor com dois usuários distintos (antes de qualquer código de frontend): usuário B não lê/escreve linhas de `draw`/`participant`/`group` pertencentes a usuário A — nenhuma policy usa `using (true)` nem recursiona (42P17)
@@ -36,6 +37,7 @@
 **Plans**: 4 plans (3 waves)
 
 Plans:
+
 - [x] 01-01-PLAN.md — Schema, constraints, índices, funções `private` SECURITY DEFINER e todas as policies de RLS, provadas com dois usuários no SQL Editor (DB-01..DB-10)
 - [x] 01-02-PLAN.md — Kanban no GitHub Projects com as 11 user stories como Issues, evidência de Gitflow, MCP documentado no SDD (ENG-06, ENG-08, ENG-10)
 - [x] 01-03-PLAN.md — Scaffold Angular 21 LTS + Tailwind v4 + Spartan UI + ESLint com as 7 regras como `error`, com teste negativo executado (UI-01, UI-02, ENG-01, ENG-04)
@@ -56,13 +58,23 @@ Plans:
 **Requirements**: AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05, AUTH-06
 
 **Success Criteria**:
+
   1. Visitante cria conta com e-mail/senha e a tabela `profile` é populada automaticamente (trigger), sem nenhuma chamada extra do frontend
   2. Usuário loga com e-mail/senha e recebe uma sessão JWT válida, refletida imediatamente num Signal de estado (`'loading' | 'authenticated' | 'unauthenticated'`)
   3. Ao recarregar a página (F5) em uma rota autenticada, a sessão é restaurada sem flash de redirecionamento para `/login`
   4. Usuário faz logout a partir de qualquer página autenticada e a sessão é encerrada de fato (nova tentativa de acessar rota protegida redireciona para `/login`)
   5. Visitante não autenticado que tenta acessar uma rota protegida é redirecionado para `/login` pelo guard funcional
 
-**Plans**: TBD
+**Plans**: 4 plans (3 waves)
+
+Plans:
+
+- [x] 02-01-PLAN.md — `SupabaseClientService` injetável, `AuthService` com um signal de sessão e tudo derivado em `computed()`, mapa PT-BR de erros do Auth (AUTH-01..03, AUTH-06)
+- [x] 02-02-PLAN.md — Geração das primitivas Spartan `input` e `label` em `libs/ui/`, sem nenhuma dependência nova, registrada no SDD §2.1 (AUTH-01, AUTH-02)
+- [x] 02-03-PLAN.md — `authGuard` funcional com `returnUrl`, `provideAppInitializer` matando o flash no F5, rotas com layout autenticado aninhado, header com logout e `/dashboard` placeholder (AUTH-03..05)
+- [~] 02-04-PLAN.md — Reactive Forms de `/login` e `/register` com validação PT-BR e submit condicional, mais o checkpoint que confere `profile.display_name` no banco (AUTH-01, AUTH-02, AUTH-04..06) — Tasks 1-2 verificadas; Task 3 (checkpoint humano) pendente
+
+**Waves**: Wave 1 = 02-01 + 02-02 (paralelos) · Wave 2 = 02-03 · Wave 3 = 02-04 (checkpoint humano)
 
 **UI hint**: yes
 
@@ -77,13 +89,25 @@ Plans:
 **Requirements**: GRP-01, GRP-02, GRP-03, GRP-04, GRP-05, GRP-06, GRP-07, GRP-08, GRP-09, WISH-01, WISH-02, WISH-03, API-01, API-02, API-03, API-04
 
 **Success Criteria**:
+
   1. Administrador cria um grupo (Reactive Form validado), recebe um link de convite único e único clique copia esse link
   2. Administrador vê a lista de participantes do grupo e consegue remover qualquer um; tentar entrar duas vezes no mesmo grupo é rejeitado com mensagem clara, e um grupo não `open` para de aceitar novos participantes
   3. Usuário autenticado entra em um grupo abrindo o link de convite diretamente (deep link), e o dashboard mostra separadamente os grupos que administra e os que participa
   4. Participante cadastra e edita a própria lista de desejos a qualquer momento antes do encerramento, mas não consegue editar a de outra pessoa
   5. A tela exibe quantos dias faltam até o Natal, obtidos de um `GET` real à `BrasilAPI` via `HttpClient`, convertidos de Observable para Signal (`toSignal()`), com falhas de rede tratadas por um interceptor funcional centralizado
 
-**Plans**: TBD
+**Plans**: 6 plans (5 waves)
+
+Plans:
+
+- [x] 03-01-PLAN.md — Migration `0004` com os RPCs `SECURITY DEFINER` do convite (`join_group_by_token`, `preview_group_by_token`), mapa PT-BR dos códigos de erro e validação com dois usuários (GRP-06..08)
+- [x] 03-02-PLAN.md — Trilha de API pública: `provideHttpClient` + interceptor funcional, `HolidayService` com `toSignal()` e card de contagem do Natal em `@defer` (API-01..04)
+- [x] 03-03-PLAN.md — Contratos TypeScript, `GroupService` em signals com refetch-após-mutação, e `groupResolver` funcional com a checagem de admin embutida (camada de contrato das telas)
+- [x] 03-04-PLAN.md — Rotas `/group` aninhadas + `/join/:token` flat, tela de criar grupo com link de convite copiável, dashboard com as duas listas (GRP-01..03, GRP-09)
+- [x] 03-05-PLAN.md — Tela de gestão (participantes, remoção, wishlist com `model()`), tela de convite, e atualização do `docs/sdd.md` §5.1/§5.2/§5.3 (GRP-04..08, WISH-01..03)
+- [x] 03-06-PLAN.md — **Gap closure:** `memberGuard` + rota `/group/:id` com tela do participante (colegas + própria wishlist), `routerLink` no dashboard e SDD §5.1/§5.2 reconciliados (WISH-01, WISH-02)
+
+**Waves**: Wave 1 = 03-01 + 03-02 (paralelos: trilhas Supabase e API são independentes, D-21) · Wave 2 = 03-03 · Wave 3 = 03-04 · Wave 4 = 03-05 (checkpoint humano final) · Wave 5 = 03-06 (gap closure de WISH-01/02, planejada após a verificação da fase)
 
 **UI hint**: yes
 
@@ -98,13 +122,24 @@ Plans:
 **Requirements**: DRAW-01, DRAW-02, DRAW-03, DRAW-04, DRAW-05, DRAW-06, DRAW-07, DRAW-08, DRAW-09, DRAW-10, ENG-02, ENG-03
 
 **Success Criteria**:
+
   1. Administrador aciona o sorteio pela tela de gestão do grupo e ele roda inteiramente na Edge Function (nunca no cliente); com menos de 3 participantes, a ação é bloqueada com mensagem explicativa
   2. Clicar duas vezes (ou duas abas) no botão de sorteio produz exatamente N pares, nunca duplicados — a segunda invocação é rejeitada e o grupo muda para `status = 'closed'` só uma vez
   3. Testes `.spec.ts` comprovam automaticamente: ausência de autossorteio, *perfect matching* (cada pessoa dá e recebe exatamente uma vez), e rejeição da segunda invocação
   4. Cada participante revela o próprio par com uma ação deliberada (cartão flip controlado por Signal) e, através desse par, vê a lista de desejos de quem tirou
-  5. Autenticando como o administrador e tentando ler a tabela `draw` de outro participante via chamada direta ao client (DevTools/console), o resultado vem vazio — prova prática, não só de UI, de que o admin não acessa os pares
+  5. Autenticando como o administrador (que agora participa do próprio sorteio, D-01) e lendo a tabela `draw` via chamada direta ao client (DevTools/console): o resultado traz exatamente 1 linha — a própria — de N existentes; filtrando por um `giver_id` de outro participante, o resultado vem vazio. A dupla assert (lê a própria, não lê a de outro) é a prova prática de que o admin não acessa os pares de ninguém além do seu, documentada em `docs/draw-privacy-verification.md`
 
-**Plans**: TBD
+**Plans**: 5 plans (4 waves)
+
+Plans:
+
+- [x] 04-01-PLAN.md — Algoritmo puro de sorteio (Fisher-Yates + pareamento circular) duplicado para Deno/Vitest, specs de ENG-02, e a Edge Function run-draw completa (DRAW-02, DRAW-03, DRAW-05, DRAW-06, DRAW-07, ENG-02)
+- [x] 04-02-PLAN.md — Migration 0006 com o RPC transacional create_group (admin participa do próprio sorteio, D-01/D-02) e GroupService.createGroup() atualizado (DRAW-04)
+- [x] 04-03-PLAN.md — DrawService.runDraw() + mapa de erros + botão de sorteio na tela de gestão com confirmação, contador e refetch, e D-04 (admin não se remove) (DRAW-01, ENG-03)
+- [x] 04-04-PLAN.md — Tela de revelação `/draw/:groupId/result` com @defer (on interaction), resolver funcional e join FK-nomeado (DRAW-08, DRAW-09)
+- [x] 04-05-PLAN.md — Roteiro de verificação de DRAW-10, correção do critério 5 deste roadmap, e deploy real da Edge Function (DRAW-10)
+
+**Waves**: Wave 1 = 04-01 + 04-02 (paralelos, sem dependência entre si) · Wave 2 = 04-03 (depende da Edge Function de 04-01 e do RPC de 04-02) · Wave 3 = 04-04 (depende de DrawService criado em 04-03) · Wave 4 = 04-05 (checkpoint humano de deploy + prova de privacidade, depende de todo o resto)
 
 **UI hint**: yes
 
@@ -119,13 +154,36 @@ Plans:
 **Requirements**: UI-03, UI-04, UI-05, UI-06, UI-07, ENG-07, ENG-09
 
 **Success Criteria**:
+
   1. A aplicação em produção (Vercel) é instalável como PWA, confirmado pelo Lighthouse/DevTools sem erros de manifest, com `manifest.webmanifest` completo (ícones, `theme_color`, `background_color`, `display: standalone`)
   2. Perder a conexão exibe feedback visual claro de estado offline
   3. O layout funciona a partir de 320px de largura e os fluxos principais passam auditoria WCAG 2.1 AA (contraste, foco visível, labels, navegação por teclado)
   4. O README consolida o PRD (incluindo diagrama ER em Mermaid e design system) e linka um protótipo Figma navegável e público
   5. Existe um `.spec.md` detalhando os componentes Standalone e Services do projeto
 
-**Plans**: TBD
+**Plans**: 6 plans (5 waves)
+
+Plans:
+**Wave 1**
+
+- [x] 05-01-PLAN.md — Paleta natalina nos dois temas, foco 1.4.11 e ícones PWA gerados por script (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [x] 05-02-PLAN.md — Manifest, service worker, ConnectivityService (effect) e banner offline (wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [x] 05-03-PLAN.md — Correções WCAG: skip link funcional, aria-live (inclui "Sorteando..."), headings, labels, alvos de toque, D-12 (wave 3)
+- [x] 05-04-PLAN.md — README com PRD/ER/Design System, .spec.md e roteiro do protótipo (wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [x] 05-06-PLAN.md — Documento de auditoria de acessibilidade com contraste calculado (wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [ ] 05-05-PLAN.md — Checkpoint humano (PR + preview Vercel, Lighthouse, 320px, Figma), reconciliação D-17 e tabela RA1–RA8 (wave 5)
 
 **UI hint**: yes
 
@@ -195,11 +253,11 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Fundação — Scaffold, Banco e RLS | 0/4 | Planned | - |
-| 2. Autenticação End-to-End | 0/TBD | Not started | - |
-| 3. Grupos, Participantes, Wishlist e API Pública | 0/TBD | Not started | - |
-| 4. Sorteio e Revelação | 0/TBD | Not started | - |
-| 5. PWA, Acessibilidade e Entrega | 0/TBD | Not started | - |
+| 1. Fundação — Scaffold, Banco e RLS | 4/4 | Complete | 2026-10-14 |
+| 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
+| 3. Grupos, Participantes, Wishlist e API Pública | 6/6 | Complete | 2026-10-15 |
+| 4. Sorteio e Revelação | 2/5 | In Progress|  |
+| 5. PWA, Acessibilidade e Entrega | 5/6 | In Progress|  |
 
 ---
 *Roadmap criado em: 2026-10-14*

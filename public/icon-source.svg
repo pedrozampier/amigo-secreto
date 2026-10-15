@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#16452a"/>
+  <!-- caixa do presente (dentro da zona segura 51..461) -->
+  <rect x="116" y="236" width="280" height="180" rx="14" fill="#fafafa"/>
+  <rect x="96" y="190" width="320" height="64" rx="14" fill="#fafafa"/>
+  <!-- fita vertical -->
+  <rect x="226" y="190" width="60" height="226" fill="#e4b750"/>
+  <!-- laco -->
+  <path d="M256 190 C 200 90, 130 110, 160 160 C 180 192, 230 190, 256 190 Z" fill="#e4b750"/>
+  <path d="M256 190 C 312 90, 382 110, 352 160 C 332 192, 282 190, 256 190 Z" fill="#e4b750"/>
+  <circle cx="256" cy="190" r="26" fill="#e4b750" stroke="#16452a" stroke-width="6"/>
+</svg>

@@ -21,23 +21,22 @@ e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código e
 
 ### Validados
 
-(Nenhum ainda — é preciso entregar para validar)
+- [x] Scaffold Angular 17+ standalone funcionando, com Tailwind e deploy na Vercel — *validado na Fase 1*
+- [x] Banco Supabase modelado (`profile`, `group`, `participant`, `draw`) com RLS ativa — *validado na Fase 1*
+- [x] Autenticação completa via Supabase Auth (cadastro, login, sessão persistente, logout) — *validado na Fase 2*
+- [x] Administrador cria grupo e gera link de convite — *validado na Fase 3*
+- [x] Participante entra no grupo via link de convite — *validado na Fase 3*
+- [x] Administrador vê e remove participantes do seu grupo — *validado na Fase 3*
+- [x] Participante cadastra e edita a própria lista de desejos — *validado na Fase 3*
+- [x] Sorteio executado em Edge Function, uma única vez, sem auto-sorteio — *validado na Fase 4*
+- [x] Participante vê o próprio par sorteado de forma oculta (revelação deliberada) — *validado na Fase 4*
+- [x] Participante vê a lista de desejos de quem tirou — *validado na Fase 4*
+- [x] Testes unitários (`.spec.ts`) cobrindo as regras de negócio do sorteio — *validado na Fase 4*
 
 ### Ativos
 
-- [ ] Scaffold Angular 17+ standalone funcionando, com Tailwind e deploy na Vercel
-- [ ] Autenticação completa via Supabase Auth (cadastro, login, sessão persistente, logout)
-- [ ] Banco Supabase modelado (`profile`, `group`, `participant`, `draw`) com RLS ativa
-- [ ] Administrador cria grupo e gera link de convite
-- [ ] Participante entra no grupo via link de convite
-- [ ] Administrador vê e remove participantes do seu grupo
-- [ ] Sorteio executado em Edge Function, uma única vez, sem auto-sorteio
-- [ ] Participante vê o próprio par sorteado de forma oculta (revelação deliberada)
-- [ ] Participante cadastra e edita a própria lista de desejos
-- [ ] Participante vê a lista de desejos de quem tirou
 - [ ] PWA instalável (manifest, ícones, tema, standalone, estado offline)
 - [ ] Interface mobile-first responsiva a partir de 320px, acessível (WCAG 2.1 AA)
-- [ ] Testes unitários (`.spec.ts`) cobrindo as regras de negócio do sorteio
 - [ ] Protótipo navegável no Figma com link público no repositório
 - [ ] README consolidando o PRD (diagrama ER em Mermaid + design system)
 - [ ] User stories cadastradas como Issues em um Kanban no GitHub Projects
@@ -117,7 +116,9 @@ Indicadores que impõem APIs obrigatórias:
 | RLS como mecanismo de privacidade (não a UI) | Esconder na interface não é segurança; a política no banco é verificável e demonstrável | — Pendente |
 | Granularidade grossa (poucas fases amplas) | Pedido explícito do usuário: simples e fácil de explicar | — Pendente |
 | Pares circulares (Fisher-Yates + rotação) | Garante matematicamente que ninguém tira a si mesmo, sem retentativas; trivial de explicar numa banca | — Pendente |
-| Sem login social no MVP | PRD define e-mail/senha; OAuth não demonstra nenhum indicador adicional | — Pendente |
+| Sem login social no MVP | PRD define e-mail/senha; OAuth não demonstra nenhum indicador adicional | ✓ Validado na Fase 2 — AUTH-01/02 entregues com e-mail/senha |
+| Sessão como Signal tri-estado (`loading`/`authenticated`/`unauthenticated`), não booleano | Um booleano não distingue "ainda carregando" de "deslogado", o que é exatamente a causa do flash de `/login` no F5 | ✓ Validado na Fase 2 — `provideAppInitializer` aguarda `initialize()`, tornando o flash estruturalmente impossível |
+| "Confirm email" desativado no Supabase | Sem ele, `signUp` devolve `session: null` sem erro e o redirect para `/dashboard` é revertido em silêncio pelo guard; e a banca não deve depender de round-trip de e-mail | ✓ Decidido na Fase 2 (D-20) — `mailer_autoconfirm: true`; fragilidade residual registrada em `deferred-items.md` |
 
 ## Evolução
 
@@ -137,4 +138,4 @@ Este documento evolui nas transições de fase e nos limites de milestone.
 4. Atualizar Contexto com o estado atual
 
 ---
-*Última atualização: 2026-10-14 após inicialização*
+*Última atualização: 2026-10-15 após conclusão da Fase 4 (Sorteio e Revelação) — Fases 1 a 4 completas e verificadas (5/5 critérios da Fase 4); 19 plans executados. O core value está PROVADO na prática, não só no código: a Edge Function `run-draw` está deployada e ACTIVE, um sorteio real rodou num grupo de 4 participantes, e a dupla assert de DRAW-10 foi medida em SQL com RLS ativa — a admin (que participa do próprio grupo desde a migration 0006) lê exatamente 1 das 4 linhas de `draw` (a própria) e 0 linhas ao filtrar pelo `giver_id` de outro participante. Evidência real em `docs/draw-privacy-verification.md`. Um gap de alcançabilidade (a tela de revelação não tinha link para não-admins) foi encontrado pelo smoke test humano — não pela suíte verde — e corrigido na quick task 261015-mbk. Pendente de verificação humana: responsividade em 320px e roteiro end-to-end com duas contas (`03-HUMAN-UAT.md`); pendente de limpeza: dados de teste no banco de produção (ver `deferred-items.md` da Fase 4); próximo: Fase 5 (PWA, Acessibilidade e Entrega)*
