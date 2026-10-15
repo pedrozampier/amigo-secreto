@@ -127,7 +127,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md — Algoritmo puro de sorteio (Fisher-Yates + pareamento circular) duplicado para Deno/Vitest, specs de ENG-02, e a Edge Function run-draw completa (DRAW-02, DRAW-03, DRAW-05, DRAW-06, DRAW-07, ENG-02)
 - [x] 04-02-PLAN.md — Migration 0006 com o RPC transacional create_group (admin participa do próprio sorteio, D-01/D-02) e GroupService.createGroup() atualizado (DRAW-04)
-- [ ] 04-03-PLAN.md — DrawService.runDraw() + mapa de erros + botão de sorteio na tela de gestão com confirmação, contador e refetch, e D-04 (admin não se remove) (DRAW-01, ENG-03)
+- [x] 04-03-PLAN.md — DrawService.runDraw() + mapa de erros + botão de sorteio na tela de gestão com confirmação, contador e refetch, e D-04 (admin não se remove) (DRAW-01, ENG-03)
 - [ ] 04-04-PLAN.md — Tela de revelação `/draw/:groupId/result` com @defer (on interaction), resolver funcional e join FK-nomeado (DRAW-08, DRAW-09)
 - [ ] 04-05-PLAN.md — Roteiro de verificação de DRAW-10, correção do critério 5 deste roadmap, e deploy real da Edge Function (DRAW-10)
 

@@ -52,7 +52,7 @@
 
 ### Sorteio (DRAW)
 
-- [ ] **DRAW-01**: Administrador aciona o sorteio a partir da tela de gestão do grupo
+- [x] **DRAW-01**: Administrador aciona o sorteio a partir da tela de gestão do grupo
 - [x] **DRAW-02**: Sorteio roda em Supabase Edge Function, nunca no cliente
 - [x] **DRAW-03**: Edge Function valida que o chamador é o `admin_id` do grupo
 - [x] **DRAW-04**: Sorteio é bloqueado com menos de 3 participantes, com mensagem explicativa
@@ -94,7 +94,7 @@
 
 - [x] **ENG-01**: ESLint configurado com as 5 regras que tornam a rubrica mecanicamente verificável (`prefer-control-flow`, `prefer-signals`, `prefer-inject`, `prefer-standalone`, `prefer-signal-model`)
 - [x] **ENG-02**: Testes unitários (`.spec.ts`) cobrindo o algoritmo de sorteio: ausência de autossorteio e *perfect matching*
-- [ ] **ENG-03**: Teste cobrindo a rejeição da segunda invocação do sorteio
+- [x] **ENG-03**: Teste cobrindo a rejeição da segunda invocação do sorteio
 - [x] **ENG-04**: Build de produção executa sem erros nem warnings de lint
 - [x] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
 - [x] **ENG-06**: Gitflow mantido (`main` + `develop`) com integrações via Pull Request

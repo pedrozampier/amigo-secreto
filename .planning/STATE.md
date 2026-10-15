@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-10-15T18:38:41.739Z"
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-10-15T18:45:44.435Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 19
-  completed_plans: 16
+  completed_plans: 17
   percent: 40
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 ## Current Position
 
 Phase: 04 (sorteio-e-revela-o) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-10-15
 
@@ -66,6 +66,7 @@ Progress: [████░░░░░░] 40%
 | Phase 03 P06 | 20min | 3 tasks | 9 files |
 | Phase 04 P01 | 3min | 2 tasks | 5 files |
 | Phase 04-sorteio-e-revela-o P02 | 12min | 2 tasks | 3 files |
+| Phase 04-sorteio-e-revela-o P03 | 6min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 04]: [Phase 04-01]: check:no-secrets validado com dist/ limpo — stale dist/ local continha a string service_role interna ao SDK supabase-js, nao um secret real; CI sempre builda fresh e dist/ e gitignored, logo nao e regressao
 - [Phase 04-sorteio-e-revela-o]: D-01: admin participa do próprio sorteio — createGroup agora insere o admin como participant na mesma transação do grupo (RPC create_group, migration 0006)
 - [Phase 04-sorteio-e-revela-o]: D-02: atomicidade group+participant implementada via RPC plpgsql SECURITY DEFINER único, não via dois .insert() separados do cliente
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-03]: grupoAtual() = GroupService.currentGroup() ?? group() introduzido em ManageGroupPage porque group() (input.required do groupResolver) e congelado na navegacao e nao reflete loadGroup() chamado pelo proprio componente apos o sorteio (D-11)
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-03]: D-04 (admin nao remove a propria linha) e UI-only, mantendo a policy de DELETE em participant inalterada no banco - adiado como V2-02 item c
 
 ### Pending Todos
 
@@ -128,6 +131,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T18:37:03.124Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-10-15T18:45:36.894Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
