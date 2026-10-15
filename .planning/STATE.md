@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-10-15T03:25:55.972Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-10-15T03:31:02.327Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 8
-  completed_plans: 6
+  completed_plans: 7
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 ## Current Position
 
 Phase: 02 (autentica-o-end-to-end) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-10-15
 
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-fundacao-scaffold-banco-rls P04 | 25min | 2 tasks | 5 files |
 | Phase 02 P02 | 10min | 2 tasks | 6 files |
 | Phase 02 P01 | 25min | 2 tasks | 4 files |
+| Phase 02 P03 | 20min | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: npm requires --legacy-peer-deps in CI too (vitest@4/npm 10.9.2 arborist bug), consistent with plan 01-03
 - [Phase 02]: [Phase 02-02]: Generated only input and label Spartan primitives, not field — field pulls separator + @ng-icons peers absent from docs/sdd.md §2
 - [Phase 02]: [Phase 02-01]: ng test's Vitest builder rejects --run; use ng test --watch=false --include=<glob> to target a single spec
+- [Phase 02]: authGuard applied exactly once on the parent layout route (D-19); provideAppInitializer awaits AuthService.initialize() before first navigation, eliminating the F5 login flash (D-01)
+- [Phase 02]: Login/register stub components are structurally required in plan 02-03 because tsc resolves loadComponent statically; without them the route tree fails TS2307
 
 ### Pending Todos
 
@@ -101,6 +104,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T03:25:55.966Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-10-15T03:31:02.321Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
