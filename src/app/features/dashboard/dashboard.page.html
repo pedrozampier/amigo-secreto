@@ -24,7 +24,7 @@
 </div>
 
 @if (carregando()) {
-  <p class="mt-4 text-sm text-muted-foreground">Carregando seus grupos...</p>
+  <p role="status" aria-live="polite" class="mt-4 text-sm text-muted-foreground">Carregando seus grupos...</p>
 } @else if (erro()) {
   <p class="mt-4 text-sm text-destructive" role="alert">{{ erro() }}</p>
 } @else {

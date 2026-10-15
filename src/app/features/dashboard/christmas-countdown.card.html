@@ -5,7 +5,7 @@
   </div>
   <div hlmCardContent>
     @if (dias() === undefined) {
-      <p class="text-sm text-muted-foreground">Carregando feriados...</p>
+      <p role="status" aria-live="polite" class="text-sm text-muted-foreground">Carregando feriados...</p>
     } @else if (dias() === null) {
       <!-- D-14: estado de erro discreto e visível. Nada de fallback calculando
            25/12 local — isso tornaria o GET à API pública decorativo. -->

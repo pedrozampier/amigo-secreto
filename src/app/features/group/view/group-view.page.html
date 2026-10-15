@@ -33,7 +33,7 @@
     </div>
     <div hlmCardContent>
       @if (carregando()) {
-        <p class="text-sm text-muted-foreground">Carregando participantes...</p>
+        <p role="status" aria-live="polite" class="text-sm text-muted-foreground">Carregando participantes...</p>
       } @else {
         @for (p of participantes(); track p.id) {
           <app-participant-row [participant]="p" [podeRemover]="false" />

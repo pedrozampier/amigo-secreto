@@ -4,7 +4,7 @@
   </div>
   <div hlmCardContent>
     @if (carregando()) {
-      <p class="text-sm text-muted-foreground">Carregando convite...</p>
+      <p role="status" aria-live="polite" class="text-sm text-muted-foreground">Carregando convite...</p>
     } @else {
       @if (preview(); as grupo) {
         <p class="text-base text-foreground">

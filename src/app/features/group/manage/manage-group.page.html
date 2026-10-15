@@ -29,6 +29,13 @@
                 para sortear (mínimo 3).
               </p>
             }
+            <!-- D-11c: região viva persistente (fora do @if). Troca de texto dentro de botão
+                 desabilitado não é anunciada de forma confiável por leitores de tela. -->
+            <p class="sr-only" role="status" aria-live="polite">
+              @if (sorteando()) {
+                Sorteando...
+              }
+            </p>
             @if (confirmandoSorteio()) {
               <div class="flex items-center gap-2">
                 <span class="text-xs text-muted-foreground">
@@ -64,7 +71,7 @@
     </div>
     <div hlmCardContent>
       @if (carregando()) {
-        <p class="text-sm text-muted-foreground">Carregando participantes...</p>
+        <p role="status" aria-live="polite" class="text-sm text-muted-foreground">Carregando participantes...</p>
       } @else {
         @for (p of participantes(); track p.id) {
           <!-- D-04: o admin não remove a própria linha — limitação de UI, não de banco
