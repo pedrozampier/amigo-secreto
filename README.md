@@ -136,7 +136,7 @@ Entidades: `profile` (usuário), `group` (grupo), `participant` (participante) e
 ## Design System
 
 Os tokens vivem em [`src/styles.css`](src/styles.css) (Tailwind CSS 4, configuração CSS-first, sem
-`tailwind.config.js`) e vêm do preset do Spartan UI (HLM), customizados com uma paleta natalina sóbria: verde-pinho
+tailwind.config.js) e vêm do preset do Spartan UI (HLM), customizados com uma paleta natalina sóbria: verde-pinho
 como cor primária e dourado como acento, sem virar cartão de Natal.
 
 ### Tokens de cor
@@ -157,17 +157,17 @@ como cor primária e dourado como acento, sem virar cartão de Natal.
 Os valores hex foram obtidos por conversão a partir do oklch (e conferidos contra o `theme_color` do manifest).
 Os contrastes citados e o método de cálculo ficam em [`docs/accessibility-audit.md`](docs/accessibility-audit.md).
 
-**Tema escuro.** É entregue por `@media (prefers-color-scheme: dark)` em `styles.css`, seguindo a preferência do
+**Tema escuro.** É entregue por `@media (prefers-color-scheme: dark)` em `src/styles.css`, seguindo a preferência do
 sistema operacional. Não há toggle, nem signal, nem `localStorage`: a auditoria de contraste cobre os dois temas.
 
-**Limitação registrada (sincronização manual).** O `manifest.webmanifest` e o `<meta name="theme-color">` do
-`index.html` não aceitam `oklch()` nem `var(--primary)`; usam hex literal (`#16452a` para `theme_color` e
-`#fafafa` para `background_color`). Esses valores precisam ser sincronizados à mão com `styles.css` sempre que a
+**Limitação registrada (sincronização manual).** O `public/manifest.webmanifest` e o `<meta name="theme-color">` do
+`src/index.html` não aceitam `oklch()` nem `var(--primary)`; usam hex literal (`#16452a` para `theme_color` e
+`#fafafa` para `background_color`). Esses valores precisam ser sincronizados à mão com `src/styles.css` sempre que a
 paleta mudar.
 
 ### Tipografia e espaçamento
 
-- **Fonte:** `--font-sans`, stack de sistema declarada em `styles.css` (`-apple-system`, `Segoe UI`, `Roboto`,
+- **Fonte:** `--font-sans`, stack de sistema declarada em `src/styles.css` (`-apple-system`, `Segoe UI`, `Roboto`,
   `Helvetica Neue`, `Arial`, `Noto Sans`, `sans-serif`). Nenhuma fonte web é baixada.
 - **Tamanhos de texto em uso nos templates:** `text-xs` (rodapés, confirmações), `text-sm` (corpo, descrições,
   mensagens de erro e formulários), `text-base` (títulos de seção) e `text-3xl` (número da contagem para o Natal).
@@ -241,7 +241,7 @@ A flag `--legacy-peer-deps` é necessária porque o npm 10.9.2 trava no grafo de
 `vitest@4` neste projeto; não se trata de um conflito real de versões.
 
 As variáveis de ambiente do Supabase (`SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY`) são lidas por
-`scripts/generate-env.js`, executado automaticamente no `prebuild`, que gera `src/environments/environment.prod.ts`. Em desenvolvimento local, copie `src/environments/environment.example.ts` para `environment.ts`.
+`scripts/generate-env.js`, executado automaticamente no `prebuild`, que gera `src/environments/environment.prod.ts`. Em desenvolvimento local, copie `src/environments/environment.example.ts` para `src/environments/environment.ts`.
 Apenas a chave publicável entra no bundle; a secret key nunca.
 
 Outros scripts úteis: `npm run check:no-rxjs-state` (impede `BehaviorSubject`/`Subject` de estado em `src/app`)
@@ -249,7 +249,45 @@ e `npm run check:no-secrets`.
 
 ## Checklist de Competências (RA1-RA8)
 
-<!-- PREENCHIDO NA PLAN 05-05 (D-14): a tabela só pode ser escrita no fim da fase. -->
+33 indicadores do `docs/checklist.md` (a numeração reinicia por RA; existem dois "ID3"). A coluna **Evidência** aponta onde cada um está provado no repositório. Itens `[ ]` dependem de verificação humana em navegador/produção ou de artefato externo ainda pendente - não foram marcados por otimismo.
+
+| Indicador | Exigência | Status | Evidência |
+|:----------|:----------|:------:|:----------|
+| RA1-ID1 | Protótipo navegável com link público | [ ] | Pendente: link do Figma ainda não fornecido (ver seção Links). Roteiro pronto em `docs/prototype-brief.md` |
+| RA1-ID2 | Interfaces responsivas Mobile-First | [ ] | `docs/accessibility-audit.md` (Parte C) e `src/app/features/shell/authenticated-layout.page.html`; verificação a 320px em navegador pendente (Parte D) |
+| RA1-ID3 | PWA: manifest, ícones, standalone, estado offline | [ ] | `public/manifest.webmanifest`, `src/app/app.config.ts` (`provideServiceWorker`), `src/app/core/services/connectivity.service.ts`; validação no Lighthouse/Manifest pendente |
+| RA2-ID3 | Componentes Standalone, sem NgModules | [x] | `eslint.config.js` (`prefer-standalone`), `docs/eslint-negative-test.md` |
+| RA2-ID4 | Framework CSS moderno customizado | [x] | `src/styles.css` (Tailwind 4 + paleta natalina via `@theme`), seção Design System deste README |
+| RA2-ID5 | `@if` / `@switch` | [x] | `src/app/features/draw/result/draw-result.page.html`, `src/app/features/group/view/group-view.page.html`, `src/app/features/group/manage/manage-group.page.html` (`@switch`); `eslint.config.js` |
+| RA2-ID6 | `@for` com `track` | [x] | `src/app/features/dashboard/dashboard.page.html`, `src/app/features/group/manage/manage-group.page.html` |
+| RA2-ID7 | Pipes | [x] | `src/app/features/dashboard/christmas-countdown.card.html` (DatePipe) |
+| RA2-ID8 | `@defer` | [x] | `src/app/features/dashboard/dashboard.page.html`, `src/app/features/draw/result/draw-result.page.html` |
+| RA3-ID9 | One-way binding com Signals | [x] | `src/app/core/services/auth.service.ts` (signal + computed) |
+| RA3-ID10 | Event binding | [x] | `src/app/features/draw/result/draw-result.page.html`, `src/app/features/group/manage/manage-group.page.html` |
+| RA3-ID11 | Two-way binding com `model()` | [x] | `src/app/features/group/view/group-view.page.ts`, `src/app/features/group/manage/manage-group.page.ts` |
+| RA3-ID12 | `effect()` | [x] | `src/app/core/services/connectivity.service.ts`, `src/app/features/shell/authenticated-layout.page.ts` |
+| RA4-ID13 | `input()` / `output()` | [x] | `src/app/features/group/manage/participant-row.ts` |
+| RA4-ID14 | Services com `inject()` | [x] | `src/app/core/services/group.service.ts`, `src/app/core/services/draw.service.ts`; `eslint.config.js` (`prefer-inject`) |
+| RA5-ID15 | `provideRouter` + `withComponentInputBinding` | [x] | `src/app/app.config.ts` |
+| RA5-ID16 | Parâmetros de rota como inputs | [x] | `src/app/features/group/join/join-group.page.ts`, `src/app/features/draw/result/draw-result.page.ts` |
+| RA5-ID17 | Rotas filhas | [x] | `src/app/features/group/group.routes.ts`, `src/app/app.routes.ts` |
+| RA5-ID18 | Guards e Resolvers funcionais | [x] | `src/app/core/guards/auth.guard.ts`, `src/app/core/guards/admin.guard.ts`, `src/app/core/guards/member.guard.ts`, `src/app/core/resolvers/group.resolver.ts`, `src/app/core/resolvers/draw-result.resolver.ts` |
+| RA6-ID19 | GET em API pública | [x] | `src/app/core/services/holiday.service.ts` (BrasilAPI) |
+| RA6-ID20 | Autenticação e sessão JWT via BaaS | [x] | `src/app/core/services/auth.service.ts`, `src/app/core/services/supabase-client.service.ts` |
+| RA6-ID21 | CRUD completo no BaaS | [x] | `src/app/core/services/group.service.ts` |
+| RA6-ID22 | Interceptors funcionais (token + erros) | [ ] | Tratamento centralizado de erros em `src/app/core/interceptors/error.interceptor.ts`; injeção de token não aplicável ao tráfego Supabase (o supabase-js anexa o JWT sozinho) - parcial |
+| RA6-ID23 | Reactive Forms com validação e submit desabilitado | [x] | `src/app/features/auth/login/login.page.ts`, `src/app/features/auth/register/register.page.ts`, `src/app/features/group/create/create-group.page.ts` |
+| RA6-ID24 | `toSignal()` / `toObservable()` | [x] | `src/app/core/services/holiday.service.ts`, `src/app/core/services/connectivity.service.ts` |
+| RA7-ID25 | Gitflow (`main` + `develop`) | [x] | Branches `main` e `develop` no remoto; branches `gsd/phase-*` por fase |
+| RA7-ID26 | Pull Requests e resolução de conflitos | [ ] | PRs no GitHub (ex.: #32 mergeado em `develop`, #33 aberto); resolução de conflitos ainda não evidenciada |
+| RA7-ID27 | Build moderno + deploy automatizado | [ ] | `vercel.json`, `.github/workflows/ci.yml`, `docs/deploy.md`; previews da Vercel compilam, deploy de produção ainda não validado ponta a ponta |
+| RA8-ID28 | User Stories como Issues + Kanban | [x] | `docs/kanban.md` |
+| RA8-ID29 | ER (Mermaid) + Design System no README | [x] | Seções Modelagem de Dados e Design System deste README |
+| RA8-ID30 | Especificação `.spec.md` | [x] | `docs/utf-secret.spec.md` |
+| RA8-ID31 | MCP e Skills | [x] | `docs/sdd.md` (§1 Supabase MCP, §1.2 Figma MCP) |
+| RA8-ID32 | Testes unitários das regras de negócio | [x] | `src/app/core/draw-algorithm.spec.ts` e demais `.spec.ts` em `src/app` |
+
+**Cobertura:** 33 indicadores · 27 marcados · 6 pendentes
 
 ## Documentação
 
