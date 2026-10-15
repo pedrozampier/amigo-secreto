@@ -54,4 +54,4 @@ jobs:
           echo "zero NgModule"
 
       - name: Testes unitários
-        run: npm test -- --run --passWithNoTests
+        run: npm test --passWithNoTests
