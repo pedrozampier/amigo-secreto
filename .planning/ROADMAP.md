@@ -8,8 +8,8 @@
 
 ## Phases
 
-- [ ] **Phase 1: Fundação — Scaffold, Banco e RLS** - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
-- [ ] **Phase 2: Autenticação End-to-End** - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
+- [x] **Phase 1: Fundação — Scaffold, Banco e RLS** (concluída 2026-10-14) - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
+- [x] **Phase 2: Autenticação End-to-End** (concluída 2026-10-15) - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
 - [ ] **Phase 3: Grupos, Participantes, Wishlist e API Pública** - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
 - [ ] **Phase 4: Sorteio e Revelação** - Sorteio roda uma única vez em Edge Function, sem autossorteio, e cada participante revela e vê apenas o próprio par — provadamente inacessível ao administrador
 - [ ] **Phase 5: PWA, Acessibilidade e Entrega** - Aplicação instalável, responsiva e acessível em produção, com toda a documentação de entrega (PRD/SDD/ER, protótipo Figma, spec técnica) consolidada
@@ -62,7 +62,15 @@ Plans:
   4. Usuário faz logout a partir de qualquer página autenticada e a sessão é encerrada de fato (nova tentativa de acessar rota protegida redireciona para `/login`)
   5. Visitante não autenticado que tenta acessar uma rota protegida é redirecionado para `/login` pelo guard funcional
 
-**Plans**: TBD
+**Plans**: 4 plans (3 waves)
+
+Plans:
+- [x] 02-01-PLAN.md — `SupabaseClientService` injetável, `AuthService` com um signal de sessão e tudo derivado em `computed()`, mapa PT-BR de erros do Auth (AUTH-01..03, AUTH-06)
+- [x] 02-02-PLAN.md — Geração das primitivas Spartan `input` e `label` em `libs/ui/`, sem nenhuma dependência nova, registrada no SDD §2.1 (AUTH-01, AUTH-02)
+- [x] 02-03-PLAN.md — `authGuard` funcional com `returnUrl`, `provideAppInitializer` matando o flash no F5, rotas com layout autenticado aninhado, header com logout e `/dashboard` placeholder (AUTH-03..05)
+- [~] 02-04-PLAN.md — Reactive Forms de `/login` e `/register` com validação PT-BR e submit condicional, mais o checkpoint que confere `profile.display_name` no banco (AUTH-01, AUTH-02, AUTH-04..06) — Tasks 1-2 verificadas; Task 3 (checkpoint humano) pendente
+
+**Waves**: Wave 1 = 02-01 + 02-02 (paralelos) · Wave 2 = 02-03 · Wave 3 = 02-04 (checkpoint humano)
 
 **UI hint**: yes
 
@@ -83,7 +91,17 @@ Plans:
   4. Participante cadastra e edita a própria lista de desejos a qualquer momento antes do encerramento, mas não consegue editar a de outra pessoa
   5. A tela exibe quantos dias faltam até o Natal, obtidos de um `GET` real à `BrasilAPI` via `HttpClient`, convertidos de Observable para Signal (`toSignal()`), com falhas de rede tratadas por um interceptor funcional centralizado
 
-**Plans**: TBD
+**Plans**: 6 plans (5 waves)
+
+Plans:
+- [x] 03-01-PLAN.md — Migration `0004` com os RPCs `SECURITY DEFINER` do convite (`join_group_by_token`, `preview_group_by_token`), mapa PT-BR dos códigos de erro e validação com dois usuários (GRP-06..08)
+- [x] 03-02-PLAN.md — Trilha de API pública: `provideHttpClient` + interceptor funcional, `HolidayService` com `toSignal()` e card de contagem do Natal em `@defer` (API-01..04)
+- [x] 03-03-PLAN.md — Contratos TypeScript, `GroupService` em signals com refetch-após-mutação, e `groupResolver` funcional com a checagem de admin embutida (camada de contrato das telas)
+- [x] 03-04-PLAN.md — Rotas `/group` aninhadas + `/join/:token` flat, tela de criar grupo com link de convite copiável, dashboard com as duas listas (GRP-01..03, GRP-09)
+- [x] 03-05-PLAN.md — Tela de gestão (participantes, remoção, wishlist com `model()`), tela de convite, e atualização do `docs/sdd.md` §5.1/§5.2/§5.3 (GRP-04..08, WISH-01..03)
+- [ ] 03-06-PLAN.md — **Gap closure:** `memberGuard` + rota `/group/:id` com tela do participante (colegas + própria wishlist), `routerLink` no dashboard e SDD §5.1/§5.2 reconciliados (WISH-01, WISH-02)
+
+**Waves**: Wave 1 = 03-01 + 03-02 (paralelos: trilhas Supabase e API são independentes, D-21) · Wave 2 = 03-03 · Wave 3 = 03-04 · Wave 4 = 03-05 (checkpoint humano final) · Wave 5 = 03-06 (gap closure de WISH-01/02, planejada após a verificação da fase)
 
 **UI hint**: yes
 
@@ -195,9 +213,9 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Fundação — Scaffold, Banco e RLS | 0/4 | Planned | - |
-| 2. Autenticação End-to-End | 0/TBD | Not started | - |
-| 3. Grupos, Participantes, Wishlist e API Pública | 0/TBD | Not started | - |
+| 1. Fundação — Scaffold, Banco e RLS | 4/4 | Complete | 2026-10-14 |
+| 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
+| 3. Grupos, Participantes, Wishlist e API Pública | 5/6 | Gap closure planned | - |
 | 4. Sorteio e Revelação | 0/TBD | Not started | - |
 | 5. PWA, Acessibilidade e Entrega | 0/TBD | Not started | - |
 

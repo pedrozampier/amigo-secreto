@@ -117,7 +117,9 @@ Indicadores que impõem APIs obrigatórias:
 | RLS como mecanismo de privacidade (não a UI) | Esconder na interface não é segurança; a política no banco é verificável e demonstrável | — Pendente |
 | Granularidade grossa (poucas fases amplas) | Pedido explícito do usuário: simples e fácil de explicar | — Pendente |
 | Pares circulares (Fisher-Yates + rotação) | Garante matematicamente que ninguém tira a si mesmo, sem retentativas; trivial de explicar numa banca | — Pendente |
-| Sem login social no MVP | PRD define e-mail/senha; OAuth não demonstra nenhum indicador adicional | — Pendente |
+| Sem login social no MVP | PRD define e-mail/senha; OAuth não demonstra nenhum indicador adicional | ✓ Validado na Fase 2 — AUTH-01/02 entregues com e-mail/senha |
+| Sessão como Signal tri-estado (`loading`/`authenticated`/`unauthenticated`), não booleano | Um booleano não distingue "ainda carregando" de "deslogado", o que é exatamente a causa do flash de `/login` no F5 | ✓ Validado na Fase 2 — `provideAppInitializer` aguarda `initialize()`, tornando o flash estruturalmente impossível |
+| "Confirm email" desativado no Supabase | Sem ele, `signUp` devolve `session: null` sem erro e o redirect para `/dashboard` é revertido em silêncio pelo guard; e a banca não deve depender de round-trip de e-mail | ✓ Decidido na Fase 2 (D-20) — `mailer_autoconfirm: true`; fragilidade residual registrada em `deferred-items.md` |
 
 ## Evolução
 
@@ -137,4 +139,4 @@ Este documento evolui nas transições de fase e nos limites de milestone.
 4. Atualizar Contexto com o estado atual
 
 ---
-*Última atualização: 2026-10-14 após inicialização*
+*Última atualização: 2026-10-15 após conclusão da Fase 2 (Autenticação End-to-End) — Fases 1 e 2 completas e verificadas; 8 plans executados; próximo: Fase 3 (Grupos, Participantes, Wishlist e API Pública)*

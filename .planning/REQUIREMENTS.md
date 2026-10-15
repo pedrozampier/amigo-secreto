@@ -17,12 +17,12 @@
 
 ### Autenticação (AUTH)
 
-- [ ] **AUTH-01**: Visitante cria conta com e-mail e senha via Supabase Auth
-- [ ] **AUTH-02**: Usuário faz login com e-mail e senha e recebe sessão JWT
-- [ ] **AUTH-03**: Sessão persiste após recarregar a página (`onAuthStateChange` → Signal)
-- [ ] **AUTH-04**: Usuário faz logout a partir de qualquer página autenticada
-- [ ] **AUTH-05**: Rotas protegidas redirecionam visitante não autenticado para `/login`
-- [ ] **AUTH-06**: Criação de conta popula automaticamente a tabela `profile` (trigger `handle_new_user`)
+- [x] **AUTH-01**: Visitante cria conta com e-mail e senha via Supabase Auth
+- [x] **AUTH-02**: Usuário faz login com e-mail e senha e recebe sessão JWT
+- [x] **AUTH-03**: Sessão persiste após recarregar a página (`onAuthStateChange` → Signal)
+- [x] **AUTH-04**: Usuário faz logout a partir de qualquer página autenticada
+- [x] **AUTH-05**: Rotas protegidas redirecionam visitante não autenticado para `/login`
+- [x] **AUTH-06**: Criação de conta popula automaticamente a tabela `profile` (trigger `handle_new_user`)
 
 ### Banco de Dados e Segurança (DB)
 
@@ -40,15 +40,15 @@
 
 ### Gestão de Grupos (GRP)
 
-- [ ] **GRP-01**: Administrador cria um grupo informando nome (Reactive Form validado)
-- [ ] **GRP-02**: Sistema gera um `invite_token` único por grupo
-- [ ] **GRP-03**: Administrador visualiza o link de convite e consegue copiá-lo
-- [ ] **GRP-04**: Administrador vê a lista de participantes do seu grupo
-- [ ] **GRP-05**: Administrador remove um participante do grupo
-- [ ] **GRP-06**: Usuário autenticado entra em um grupo via link de convite
-- [ ] **GRP-07**: Tentativa de entrar duas vezes no mesmo grupo é rejeitada com mensagem clara
-- [ ] **GRP-08**: Grupo com status diferente de `open` não aceita novos participantes
-- [ ] **GRP-09**: Usuário vê no dashboard os grupos que administra e os que participa
+- [x] **GRP-01**: Administrador cria um grupo informando nome (Reactive Form validado)
+- [x] **GRP-02**: Sistema gera um `invite_token` único por grupo
+- [x] **GRP-03**: Administrador visualiza o link de convite e consegue copiá-lo
+- [x] **GRP-04**: Administrador vê a lista de participantes do seu grupo
+- [x] **GRP-05**: Administrador remove um participante do grupo
+- [x] **GRP-06**: Usuário autenticado entra em um grupo via link de convite
+- [x] **GRP-07**: Tentativa de entrar duas vezes no mesmo grupo é rejeitada com mensagem clara
+- [x] **GRP-08**: Grupo com status diferente de `open` não aceita novos participantes
+- [x] **GRP-09**: Usuário vê no dashboard os grupos que administra e os que participa
 
 ### Sorteio (DRAW)
 
@@ -67,7 +67,7 @@
 
 - [ ] **WISH-01**: Participante cadastra a própria lista de desejos (texto livre, opcional)
 - [ ] **WISH-02**: Participante edita a própria lista de desejos a qualquer momento antes do encerramento
-- [ ] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
+- [x] **WISH-03**: Participante não consegue editar a lista de desejos de outra pessoa
 
 ### Contexto Externo / API Pública (API)
 
@@ -75,10 +75,10 @@
 > o único lugar onde os interceptors funcionais (ID22) podem legitimamente atuar, já que o
 > `supabase-js` usa `fetch` próprio e nunca passa pelo `HttpClient`.
 
-- [ ] **API-01**: Aplicação consome `GET https://brasilapi.com.br/api/feriados/v1/{ano}` via `HttpClient`
-- [ ] **API-02**: Interface exibe quantos dias faltam para o Natal, derivado da resposta da API
-- [ ] **API-03**: Interceptor funcional de erro trata falhas dessa chamada de forma centralizada
-- [ ] **API-04**: Resposta é convertida de Observable para Signal via `toSignal()`
+- [x] **API-01**: Aplicação consome `GET https://brasilapi.com.br/api/feriados/v1/{ano}` via `HttpClient`
+- [x] **API-02**: Interface exibe quantos dias faltam para o Natal, derivado da resposta da API
+- [x] **API-03**: Interceptor funcional de erro trata falhas dessa chamada de forma centralizada
+- [x] **API-04**: Resposta é convertida de Observable para Signal via `toSignal()`
 
 ### Interface e PWA (UI)
 
@@ -155,7 +155,13 @@ a tabela que garante o pedido central do usuário: **cumprir o checklist inteiro
 ### Melhorias de Robustez
 
 - **V2-01**: Mover o INSERT dos pares e o UPDATE de `status` para uma função plpgsql transacional via RPC (fecha a janela não atômica da Edge Function — débito técnico conhecido e documentado)
-- **V2-02**: Trigger `BEFORE UPDATE` validando as transições de `group.status` no banco
+- **V2-02**: Triggers de defesa em profundidade no banco: (a) `BEFORE UPDATE` validando as
+  transições de `group.status`; (b) `BEFORE UPDATE` em `participant` restringindo a edição à
+  coluna `wish_list` — hoje a policy `"participant: editar os proprios dados"` permite ao
+  usuário atualizar a linha inteira da própria participação (inclusive `group_id` e
+  `display_name`), e a restrição vive apenas no `GroupService.updateWishList()`, que envia
+  somente `{ wish_list }`. WISH-03 (não editar a lista de outra pessoa) já está garantido
+  pela policy, que é o que importa para a nota.
 - **V2-03**: Confirmação de presença (RSVP) explícita antes do sorteio
 - **V2-04**: Avatar gerado automaticamente por participante
 
@@ -182,12 +188,12 @@ Preenchido durante a criação do roadmap.
 
 | Requisito | Fase | Status |
 |-----------|------|--------|
-| AUTH-01 | Fase 2 | Pendente |
-| AUTH-02 | Fase 2 | Pendente |
-| AUTH-03 | Fase 2 | Pendente |
-| AUTH-04 | Fase 2 | Pendente |
-| AUTH-05 | Fase 2 | Pendente |
-| AUTH-06 | Fase 2 | Pendente |
+| AUTH-01 | Fase 2 | Completo |
+| AUTH-02 | Fase 2 | Completo |
+| AUTH-03 | Fase 2 | Completo |
+| AUTH-04 | Fase 2 | Completo |
+| AUTH-05 | Fase 2 | Completo |
+| AUTH-06 | Fase 2 | Completo |
 | DB-01 | Fase 1 | Completo |
 | DB-02 | Fase 1 | Completo |
 | DB-03 | Fase 1 | Completo |
@@ -199,15 +205,15 @@ Preenchido durante a criação do roadmap.
 | DB-09 | Fase 1 | Completo |
 | DB-10 | Fase 1 | Completo |
 | DB-11 | Fase 1 | Completo |
-| GRP-01 | Fase 3 | Pendente |
-| GRP-02 | Fase 3 | Pendente |
-| GRP-03 | Fase 3 | Pendente |
-| GRP-04 | Fase 3 | Pendente |
-| GRP-05 | Fase 3 | Pendente |
-| GRP-06 | Fase 3 | Pendente |
-| GRP-07 | Fase 3 | Pendente |
-| GRP-08 | Fase 3 | Pendente |
-| GRP-09 | Fase 3 | Pendente |
+| GRP-01 | Fase 3 | Completo |
+| GRP-02 | Fase 3 | Completo |
+| GRP-03 | Fase 3 | Completo |
+| GRP-04 | Fase 3 | Completo |
+| GRP-05 | Fase 3 | Completo |
+| GRP-06 | Fase 3 | Completo |
+| GRP-07 | Fase 3 | Completo |
+| GRP-08 | Fase 3 | Completo |
+| GRP-09 | Fase 3 | Completo |
 | DRAW-01 | Fase 4 | Pendente |
 | DRAW-02 | Fase 4 | Pendente |
 | DRAW-03 | Fase 4 | Pendente |
@@ -218,13 +224,13 @@ Preenchido durante a criação do roadmap.
 | DRAW-08 | Fase 4 | Pendente |
 | DRAW-09 | Fase 4 | Pendente |
 | DRAW-10 | Fase 4 | Pendente |
-| WISH-01 | Fase 3 | Pendente |
-| WISH-02 | Fase 3 | Pendente |
-| WISH-03 | Fase 3 | Pendente |
-| API-01 | Fase 3 | Pendente |
-| API-02 | Fase 3 | Pendente |
-| API-03 | Fase 3 | Pendente |
-| API-04 | Fase 3 | Pendente |
+| WISH-01 | Fase 3 | Pendente (sem tela de participante — ver deferred-items da Fase 3) |
+| WISH-02 | Fase 3 | Pendente (sem tela de participante — ver deferred-items da Fase 3) |
+| WISH-03 | Fase 3 | Completo |
+| API-01 | Fase 3 | Completo |
+| API-02 | Fase 3 | Completo |
+| API-03 | Fase 3 | Completo |
+| API-04 | Fase 3 | Completo |
 | UI-01 | Fase 1 | Completo |
 | UI-02 | Fase 1 | Completo |
 | UI-03 | Fase 5 | Pendente |

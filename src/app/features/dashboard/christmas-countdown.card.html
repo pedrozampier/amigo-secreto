@@ -1,0 +1,26 @@
+<div hlmCard class="w-full">
+  <div hlmCardHeader>
+    <h2 hlmCardTitle>Contagem para o Natal</h2>
+    <p hlmCardDescription>Dados do feriado nacional via BrasilAPI.</p>
+  </div>
+  <div hlmCardContent>
+    @if (dias() === undefined) {
+      <p class="text-sm text-muted-foreground">Carregando feriados...</p>
+    } @else if (dias() === null) {
+      <!-- D-14: estado de erro discreto e visível. Nada de fallback calculando
+           25/12 local — isso tornaria o GET à API pública decorativo. -->
+      <p class="text-sm text-muted-foreground" role="status">
+        Não foi possível consultar os feriados agora.
+      </p>
+    } @else {
+      <p class="text-3xl font-semibold text-foreground">
+        {{ dias() }} {{ dias() === 1 ? 'dia' : 'dias' }}
+      </p>
+      @if (natal(); as feriado) {
+        <p class="mt-1 text-sm text-muted-foreground">
+          {{ feriado.name }} — {{ feriado.date + 'T00:00:00' | date: "dd 'de' MMMM 'de' y" }}
+        </p>
+      }
+    }
+  </div>
+</div>

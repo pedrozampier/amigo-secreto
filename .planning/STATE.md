@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-10-15T02:37:51.793Z"
+status: executing
+stopped_at: Completed 03-04-PLAN.md
+last_updated: "2026-10-15T13:44:24.250Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
-  completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
-  percent: 0
+  completed_phases: 3
+  total_plans: 13
+  completed_plans: 13
+  percent: 40
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-14)
 
 **Core value:** O sorteio é privado de verdade — garantido pelo banco (RLS), não pela interface — e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código entregue.
-**Current focus:** Phase 01 — fundacao-scaffold-banco-rls
+**Current focus:** Phase 03 — grupos-participantes-wishlist-e-api-p-blica
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 03 (grupos-participantes-wishlist-e-api-p-blica) — EXECUTING
+Plan: 2 of 5
+Status: Ready to execute
 Last activity: 2026-10-15
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -56,6 +56,13 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P01 | 15min | 3 tasks | 4 files |
 | Phase 01 P03 | 35 | 3 tasks | 54 files |
 | Phase 01-fundacao-scaffold-banco-rls P04 | 25min | 2 tasks | 5 files |
+| Phase 02 P02 | 10min | 2 tasks | 6 files |
+| Phase 02 P01 | 25min | 2 tasks | 4 files |
+| Phase 02 P03 | 20min | 3 tasks | 13 files |
+| Phase 03 P02 | 3min | 2 tasks | 9 files |
+| Phase 03 P01 | 36min | 3 tasks | 5 files |
+| Phase 03 P03 | 8min | 2 tasks | 4 files |
+| Phase 03 P04 | 12min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -84,6 +91,19 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: Disabled Vercel Deployment Protection deliberately for an academic deliverable so the grader can open the production URL without a Vercel login
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: amigo-secreto.vercel.app is an unrelated third-party Next.js app occupying that subdomain globally; the real production URL is the per-deployment Vercel URL under the zmp2 team scope
 - [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: npm requires --legacy-peer-deps in CI too (vitest@4/npm 10.9.2 arborist bug), consistent with plan 01-03
+- [Phase 02]: [Phase 02-02]: Generated only input and label Spartan primitives, not field — field pulls separator + @ng-icons peers absent from docs/sdd.md §2
+- [Phase 02]: [Phase 02-01]: ng test's Vitest builder rejects --run; use ng test --watch=false --include=<glob> to target a single spec
+- [Phase 02]: authGuard applied exactly once on the parent layout route (D-19); provideAppInitializer awaits AuthService.initialize() before first navigation, eliminating the F5 login flash (D-01)
+- [Phase 02]: Login/register stub components are structurally required in plan 02-03 because tsc resolves loadComponent statically; without them the route tree fails TS2307
+- [Phase 02-autentica-o-end-to-end]: 02-04 complete — human browser/SQL checkpoint approved 2026-10-15, all 6 steps passed and profile.display_name confirmed correct (D-13 chain proven end to end)
+- [Phase 02-autentica-o-end-to-end]: D-20 ("Confirm email" desabilitado) era falso no projeto real — signUp devolvia session: null sem erro e o redirect para /dashboard era revertido pelo authGuard em silencio. Resolvido desativando "Confirm email" no Supabase (escolha do usuario, Opcao A); fragilidade residual no codigo registrada em deferred-items.md
+- [Phase 03]: [Phase 03-02]: HolidayService exposes diasAteONatal/natal as raw signal references (no trailing call) on ChristmasCountdownCard fields to avoid freezing a one-time read; year for the countdown is sourced from the BrasilAPI response's own date field rather than new Date(), keeping the public GET load-bearing (D-14)
+- [Phase 03]: [Phase 03-01]: Falso negativo no grep de verificação da Task 1 da plan (conta 3 ocorrências da string de configuração search_path vazio, por causa de um comentário explicativo na própria plan); a migration está correta (confirmado via pg_proc: prosecdef=true em ambas as funções)
+- [Phase 03]: [Phase 03-01]: Verificação da Task 3 (migration 0004) executada pelo orquestrador via CLI do Supabase linkada contra o projeto de produção real, não pelo usuário manualmente no SQL Editor; a migration já estava aplicada remotamente antes desta sessão, e supabase_migrations.schema_migrations não existe no banco -- historico da CLI de migrations esta dissociado do estado real (dívida de processo documentada em docs/db-rls-verification.md)
+- [Phase 03]: [Phase 03-03]: updateWishList ganhou um terceiro parâmetro groupId (não previsto no pseudocódigo da plan) para permitir o refetch exigido por D-05 sem introduzir um signal extra
+- [Phase 03]: [Phase 03-03]: Desvio documentado de D-08 — checagem de admin embutida no groupResolver (devolvendo UrlTree) em vez de um adminGuard separado, porque canActivate roda antes de resolve na mesma rota; padrão a ser reaproveitado pelo drawResultResolver da Fase 4
+- [Phase 03]: [Phase 03-04]: ManageGroupPage e JoinGroupPage criados como esqueletos estruturais nesta plan (não na 03-05) porque tsc resolve loadComponent estaticamente; sem eles a árvore de rotas não compila
+- [Phase 03]: [Phase 03-04]: Cards de grupos participados no dashboard não linkam para /manage — o groupResolver redirecionaria o não-admin de volta, e um link que sempre rebate é péssima UX
 
 ### Pending Todos
 
@@ -94,9 +114,10 @@ Nenhum ainda.
 - Fase 1 é bloqueante para todas as demais — nenhuma linha de frontend antes de RLS testada manualmente com dois usuários distintos (DB-10)
 - Débito técnico aceito e documentado: atomicidade cross-statement entre inserir pares e fechar grupo na Edge Function (ver ARCHITECTURE.md) — não bloqueia a Fase 4, mas deve constar no SDD/README
 - ENG-06 (Gitflow/PRs) e ENG-08 (Kanban) são contínuos desde a Fase 1 — não tratar como tarefas de fechamento
+- Supabase "Confirm email" DEVE permanecer desativado (mailer_autoconfirm: true): com ele ligado, signUp devolve session: null sem erro e register.page.ts navega para /dashboard so para o authGuard devolver ao /login, sem mensagem alguma. Correcao robusta (signUp expor needsConfirmation) registrada em deferred-items.md
 
 ## Session Continuity
 
-Last session: 2026-10-15T02:31:27.194Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-10-15T13:13:32.776Z
+Stopped at: Completed 03-04-PLAN.md
 Resume file: None

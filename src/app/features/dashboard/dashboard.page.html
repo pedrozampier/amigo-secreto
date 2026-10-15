@@ -1,0 +1,64 @@
+<div hlmCard class="w-full">
+  <div hlmCardHeader>
+    <h1 hlmCardTitle>Olá, {{ displayName() }}!</h1>
+    <p hlmCardDescription>Você está autenticado.</p>
+  </div>
+  <div hlmCardContent>
+    <p class="text-sm text-muted-foreground">{{ email() }}</p>
+  </div>
+</div>
+
+<!-- RA2-ID8 / D-12: Deferrable View. O card só é baixado e inicializado quando
+     entra no viewport — e por isso a chamada HTTP à BrasilAPI também é diferida. -->
+@defer (on viewport) {
+  <div class="mt-4">
+    <app-christmas-countdown />
+  </div>
+} @placeholder {
+  <div class="mt-4 h-28 animate-pulse rounded-lg border bg-muted/40"></div>
+}
+
+<div class="mt-4 flex items-center justify-between gap-2">
+  <h2 class="text-base font-semibold text-foreground">Meus grupos</h2>
+  <a hlmBtn size="sm" routerLink="/group/create">Criar grupo</a>
+</div>
+
+@if (carregando()) {
+  <p class="mt-4 text-sm text-muted-foreground">Carregando seus grupos...</p>
+} @else if (erro()) {
+  <p class="mt-4 text-sm text-destructive" role="alert">{{ erro() }}</p>
+} @else {
+  <section class="mt-4">
+    <h3 class="mb-2 text-sm font-semibold text-foreground">Grupos que administro</h3>
+    @for (grupo of administrados(); track grupo.id) {
+      <a [routerLink]="['/group', grupo.id, 'manage']" class="mb-2 block">
+        <div hlmCard class="w-full">
+          <div hlmCardHeader>
+            <h4 hlmCardTitle>{{ grupo.name }}</h4>
+            <p hlmCardDescription>{{ grupo.status === 'open' ? 'Aberto' : grupo.status === 'drawing' ? 'Sorteando' : 'Encerrado' }}</p>
+          </div>
+        </div>
+      </a>
+    } @empty {
+      <p class="text-sm text-muted-foreground">
+        Você ainda não criou nenhum grupo. Use "Criar grupo" para começar.
+      </p>
+    }
+  </section>
+
+  <section class="mt-6">
+    <h3 class="mb-2 text-sm font-semibold text-foreground">Grupos que participo</h3>
+    @for (grupo of participados(); track grupo.id) {
+      <div hlmCard class="mb-2 w-full">
+        <div hlmCardHeader>
+          <h4 hlmCardTitle>{{ grupo.name }}</h4>
+          <p hlmCardDescription>{{ grupo.status === 'open' ? 'Aberto' : grupo.status === 'drawing' ? 'Sorteando' : 'Encerrado' }}</p>
+        </div>
+      </div>
+    } @empty {
+      <p class="text-sm text-muted-foreground">
+        Você ainda não entrou em nenhum grupo. Peça um link de convite ao organizador.
+      </p>
+    }
+  </section>
+}
