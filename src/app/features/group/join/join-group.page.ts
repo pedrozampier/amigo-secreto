@@ -1,14 +1,71 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { HlmButton } from '@spartan-ng/helm/button';
+import {
+  HlmCard,
+  HlmCardContent,
+  HlmCardHeader,
+  HlmCardTitle,
+} from '@spartan-ng/helm/card';
+import { GroupService } from '../../../core/services/group.service';
+import type { GroupPreview } from '../../../core/models/group.model';
 
 /**
- * ESQUELETO. O corpo (GRP-06, GRP-07, GRP-08) é implementado na plan 03-05.
- * O `token` chega como input() via withComponentInputBinding (D-09 / RA5-ID16).
+ * GRP-06/07/08 (D-02): preview por token + confirmação explícita de entrada —
+ * nunca entra automaticamente, para um F5 acidental não virar erro.
+ *
+ * `token` chega pelo param de rota via withComponentInputBinding (RA5-ID16).
  */
 @Component({
   selector: 'app-join-group',
-  imports: [],
+  imports: [RouterLink, HlmButton, HlmCard, HlmCardHeader, HlmCardTitle, HlmCardContent],
   templateUrl: './join-group.page.html',
 })
 export class JoinGroupPage {
+  private readonly groups = inject(GroupService);
+  private readonly router = inject(Router);
+
   readonly token = input.required<string>();
+
+  protected readonly carregando = signal(true);
+  protected readonly preview = signal<GroupPreview | null>(null);
+  protected readonly erro = signal<string | null>(null);
+  protected readonly entrando = signal(false);
+
+  constructor() {
+    void this.carregarPreview();
+  }
+
+  private async carregarPreview(): Promise<void> {
+    const { preview, error } = await this.groups.previewByToken(this.token());
+    if (error) {
+      this.erro.set(error);
+    } else if (!preview) {
+      // Token inexistente: mesma mensagem que o RPC de join daria para INVALID_TOKEN.
+      this.erro.set('Este convite não é válido.');
+    } else if (preview.status !== 'open') {
+      // GRP-08 antecipado na UI — o RPC rejeita de novo no clique, que é a garantia real.
+      this.preview.set(preview);
+      this.erro.set('Este grupo não está mais aceitando participantes.');
+    } else {
+      this.preview.set(preview);
+    }
+    this.carregando.set(false);
+  }
+
+  protected async confirmar(): Promise<void> {
+    this.entrando.set(true);
+    this.erro.set(null);
+    // Já em PT-BR: GroupService traduziu o código do RPC (ALREADY_MEMBER,
+    // GROUP_CLOSED, INVALID_TOKEN) via translateJoinError. GRP-07 e GRP-08.
+    const { error } = await this.groups.joinByToken(this.token());
+    this.entrando.set(false);
+    if (error) {
+      this.erro.set(error);
+      return;
+    }
+    // O groupResolver barra quem não é admin, e quem acabou de entrar por
+    // convite não é o admin — navegar para manage rebateria para /dashboard.
+    await this.router.navigate(['/dashboard']);
+  }
 }

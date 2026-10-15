@@ -1,1 +1,28 @@
-<p class="text-sm text-muted-foreground">Carregando convite...</p>
+<div hlmCard class="w-full">
+  <div hlmCardHeader>
+    <h1 hlmCardTitle>Convite</h1>
+  </div>
+  <div hlmCardContent>
+    @if (carregando()) {
+      <p class="text-sm text-muted-foreground">Carregando convite...</p>
+    } @else {
+      @if (preview(); as grupo) {
+        <p class="text-base text-foreground">
+          Você foi convidado para <strong>{{ grupo.name }}</strong>.
+        </p>
+      }
+      @if (erro()) {
+        <p class="mt-3 text-sm text-destructive" role="alert">{{ erro() }}</p>
+      }
+      @if (preview() && !erro()) {
+        <button hlmBtn type="button" class="mt-4 w-full"
+                [disabled]="entrando()" (click)="confirmar()">
+          {{ entrando() ? 'Entrando...' : 'Entrar no grupo' }}
+        </button>
+      }
+      <a hlmBtn variant="link" size="sm" routerLink="/dashboard" class="mt-2 px-0">
+        Ir para o painel
+      </a>
+    }
+  </div>
+</div>
