@@ -98,9 +98,9 @@
 - [x] **ENG-04**: Build de produção executa sem erros nem warnings de lint
 - [x] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
 - [x] **ENG-06**: Gitflow mantido (`main` + `develop`) com integrações via Pull Request
-- [ ] **ENG-07**: README consolida o PRD (diagrama ER em Mermaid + design system)
+- [x] **ENG-07**: README consolida o PRD (diagrama ER em Mermaid + design system)
 - [x] **ENG-08**: User stories cadastradas como Issues em um Kanban no GitHub Projects
-- [ ] **ENG-09**: Documento de especificação técnica (`.spec.md`) detalhando componentes Standalone e Services
+- [x] **ENG-09**: Documento de especificação técnica (`.spec.md`) detalhando componentes Standalone e Services
 - [x] **ENG-10**: Servidores MCP configurados na IDE (Supabase e/ou Figma) documentados no SDD
 
 ---

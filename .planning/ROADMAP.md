@@ -174,8 +174,8 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 05-03-PLAN.md — Correções WCAG: skip link funcional, aria-live (inclui "Sorteando..."), headings, labels, alvos de toque, D-12 (wave 3)
-- [ ] 05-04-PLAN.md — README com PRD/ER/Design System, .spec.md e roteiro do protótipo (wave 3)
+- [x] 05-03-PLAN.md — Correções WCAG: skip link funcional, aria-live (inclui "Sorteando..."), headings, labels, alvos de toque, D-12 (wave 3)
+- [x] 05-04-PLAN.md — README com PRD/ER/Design System, .spec.md e roteiro do protótipo (wave 3)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -257,7 +257,7 @@ Plans:
 | 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
 | 3. Grupos, Participantes, Wishlist e API Pública | 6/6 | Complete | 2026-10-15 |
 | 4. Sorteio e Revelação | 2/5 | In Progress|  |
-| 5. PWA, Acessibilidade e Entrega | 2/6 | In Progress|  |
+| 5. PWA, Acessibilidade e Entrega | 4/6 | In Progress|  |
 
 ---
 *Roadmap criado em: 2026-10-14*
