@@ -21,19 +21,18 @@ e cada indicador do checklist RA1–RA8 é comprovadamente cumprido no código e
 
 ### Validados
 
-(Nenhum ainda — é preciso entregar para validar)
+- [x] Scaffold Angular 17+ standalone funcionando, com Tailwind e deploy na Vercel — *validado na Fase 1*
+- [x] Banco Supabase modelado (`profile`, `group`, `participant`, `draw`) com RLS ativa — *validado na Fase 1*
+- [x] Autenticação completa via Supabase Auth (cadastro, login, sessão persistente, logout) — *validado na Fase 2*
+- [x] Administrador cria grupo e gera link de convite — *validado na Fase 3*
+- [x] Participante entra no grupo via link de convite — *validado na Fase 3*
+- [x] Administrador vê e remove participantes do seu grupo — *validado na Fase 3*
+- [x] Participante cadastra e edita a própria lista de desejos — *validado na Fase 3*
 
 ### Ativos
 
-- [ ] Scaffold Angular 17+ standalone funcionando, com Tailwind e deploy na Vercel
-- [ ] Autenticação completa via Supabase Auth (cadastro, login, sessão persistente, logout)
-- [ ] Banco Supabase modelado (`profile`, `group`, `participant`, `draw`) com RLS ativa
-- [ ] Administrador cria grupo e gera link de convite
-- [ ] Participante entra no grupo via link de convite
-- [ ] Administrador vê e remove participantes do seu grupo
 - [ ] Sorteio executado em Edge Function, uma única vez, sem auto-sorteio
 - [ ] Participante vê o próprio par sorteado de forma oculta (revelação deliberada)
-- [ ] Participante cadastra e edita a própria lista de desejos
 - [ ] Participante vê a lista de desejos de quem tirou
 - [ ] PWA instalável (manifest, ícones, tema, standalone, estado offline)
 - [ ] Interface mobile-first responsiva a partir de 320px, acessível (WCAG 2.1 AA)
@@ -139,4 +138,4 @@ Este documento evolui nas transições de fase e nos limites de milestone.
 4. Atualizar Contexto com o estado atual
 
 ---
-*Última atualização: 2026-10-15 após conclusão da Fase 2 (Autenticação End-to-End) — Fases 1 e 2 completas e verificadas; 8 plans executados; próximo: Fase 3 (Grupos, Participantes, Wishlist e API Pública)*
+*Última atualização: 2026-10-15 após conclusão da Fase 3 (Grupos, Participantes, Wishlist e API Pública) — Fases 1 a 3 completas e verificadas; 14 plans executados (6 na Fase 3, incluindo o gap closure 03-06 que abriu a rota do participante `/group/:id` com `memberGuard`); pendente de verificação humana: responsividade em 320px e roteiro end-to-end com duas contas (`03-HUMAN-UAT.md`); próximo: Fase 4 (Sorteio e Revelação)*
