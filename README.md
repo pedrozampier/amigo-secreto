@@ -277,7 +277,7 @@ e `npm run check:no-secrets`.
 | RA6-ID21 | CRUD completo no BaaS | [x] | `src/app/core/services/group.service.ts` |
 | RA6-ID22 | Interceptors funcionais (token + erros) | [ ] | Tratamento centralizado de erros em `src/app/core/interceptors/error.interceptor.ts`; injeção de token não aplicável ao tráfego Supabase (o supabase-js anexa o JWT sozinho) - parcial |
 | RA6-ID23 | Reactive Forms com validação e submit desabilitado | [x] | `src/app/features/auth/login/login.page.ts`, `src/app/features/auth/register/register.page.ts`, `src/app/features/group/create/create-group.page.ts` |
-| RA6-ID24 | `toSignal()` / `toObservable()` | [x] | `src/app/core/services/holiday.service.ts`, `src/app/core/services/connectivity.service.ts` |
+| RA6-ID24 | `toSignal()` / `toObservable()` | [x] | `src/app/core/services/holiday.service.ts` (`toSignal()` sobre o GET da BrasilAPI) |
 | RA7-ID25 | Gitflow (`main` + `develop`) | [x] | Branches `main` e `develop` no remoto; branches `gsd/phase-*` por fase |
 | RA7-ID26 | Pull Requests e resolução de conflitos | [ ] | PRs no GitHub (ex.: #32 mergeado em `develop`, #33 aberto); resolução de conflitos ainda não evidenciada |
 | RA7-ID27 | Build moderno + deploy automatizado | [ ] | `vercel.json`, `.github/workflows/ci.yml`, `docs/deploy.md`; previews da Vercel compilam, deploy de produção ainda não validado ponta a ponta |
@@ -293,6 +293,7 @@ e `npm run check:no-secrets`.
 
 - [`docs/prd.md`](docs/prd.md) - Product Requirements Document
 - [`docs/sdd.md`](docs/sdd.md) - Software Design Document (stack, contratos, rotas, RLS, algoritmo)
+- [`docs/guia-de-defesa.md`](docs/guia-de-defesa.md) - roteiro da apresentação: onde está cada parte do sistema e respostas às perguntas difíceis
 - [`docs/utf-secret.spec.md`](docs/utf-secret.spec.md) - especificação dos componentes Standalone e Services
 - [`docs/accessibility-audit.md`](docs/accessibility-audit.md) - auditoria WCAG 2.1 AA
 - [`docs/draw-privacy-verification.md`](docs/draw-privacy-verification.md) - prova de que o admin não vê os pares
