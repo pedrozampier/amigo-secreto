@@ -84,7 +84,7 @@
 
 - [x] **UI-01**: Layout mobile-first funcional a partir de 320px de largura
 - [x] **UI-02**: Interface construída com Tailwind CSS v4 + componentes Spartan UI
-- [ ] **UI-03**: `manifest.webmanifest` configurado com ícones, `theme_color`, `background_color` e `display: standalone`
+- [x] **UI-03**: `manifest.webmanifest` configurado com ícones, `theme_color`, `background_color` e `display: standalone`
 - [ ] **UI-04**: Aplicação é instalável como PWA (verificado no Lighthouse/DevTools)
 - [ ] **UI-05**: Estado offline exibe feedback visual ao usuário
 - [ ] **UI-06**: Acessibilidade WCAG 2.1 AA nos fluxos principais (contraste, foco, labels, navegação por teclado)
@@ -162,6 +162,7 @@ a tabela que garante o pedido central do usuário: **cumprir o checklist inteiro
   `display_name`), e a restrição vive apenas no `GroupService.updateWishList()`, que envia
   somente `{ wish_list }`. WISH-03 (não editar a lista de outra pessoa) já está garantido
   pela policy, que é o que importa para a nota.
+
 - **V2-03**: Confirmação de presença (RSVP) explícita antes do sorteio
 - **V2-04**: Avatar gerado automaticamente por participante
 

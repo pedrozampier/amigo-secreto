@@ -166,7 +166,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 05-01-PLAN.md — Paleta natalina nos dois temas, foco 1.4.11 e ícones PWA gerados por script (wave 1)
+- [x] 05-01-PLAN.md — Paleta natalina nos dois temas, foco 1.4.11 e ícones PWA gerados por script (wave 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -257,7 +257,7 @@ Plans:
 | 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
 | 3. Grupos, Participantes, Wishlist e API Pública | 6/6 | Complete | 2026-10-15 |
 | 4. Sorteio e Revelação | 2/5 | In Progress|  |
-| 5. PWA, Acessibilidade e Entrega | 0/TBD | Not started | - |
+| 5. PWA, Acessibilidade e Entrega | 1/6 | In Progress|  |
 
 ---
 *Roadmap criado em: 2026-10-14*
