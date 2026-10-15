@@ -18,8 +18,8 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --radius: 0.875rem;
+  --background: oklch(0.975 0.012 155);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -32,14 +32,14 @@
      docs/accessibility-audit.md, nao estimados no olho. */
   --primary: oklch(0.35 0.07 155);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.95 0.02 155);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --muted: oklch(0.95 0.015 155);
+  --muted-foreground: oklch(0.48 0.01 155);
+  --accent: oklch(0.95 0.03 85);
   --accent-foreground: oklch(0.5 0.12 85);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: oklch(0.9 0.02 155);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.52 0.09 155);
   --sidebar: oklch(0.985 0 0);
@@ -52,12 +52,10 @@
   --sidebar-ring: oklch(0.52 0.09 155);
 }
 
-/* D-07 / UI-06: o tema escuro segue a preferencia declarada do sistema operacional.
-   Sem toggle, sem signal, sem localStorage - e sem a classe `.dark` que nada no app
-   adicionava (o bloco era codigo morto ate a Fase 5). Consequencia: a auditoria de
-   contraste de UI-06 cobre os DOIS temas. */
-@media (prefers-color-scheme: dark) {
-  :root {
+/* Tema claro e o padrao (o escuro automatico deixava o app "todo dark").
+   Os tokens escuros ficam disponiveis por opt-in via classe `.dark` no <html>. */
+@layer theme {
+  :root.dark {
     color-scheme: dark;
 
     --chart-1: oklch(0.488 0.243 264.376);
@@ -106,5 +104,21 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Polimento visual: fundo com brilho sutil verde/dourado e cards elevados. Sem enfeites. */
+@layer base {
+  body {
+    background-image:
+      radial-gradient(60rem 30rem at 100% -10%, oklch(0.9 0.06 85 / 35%), transparent 60%),
+      radial-gradient(50rem 30rem at -10% 0%, oklch(0.88 0.05 155 / 40%), transparent 60%);
+    background-attachment: fixed;
+  }
+  [hlmCard],
+  hlm-card {
+    box-shadow:
+      0 1px 2px oklch(0.35 0.07 155 / 6%),
+      0 8px 24px -8px oklch(0.35 0.07 155 / 14%);
   }
 }
