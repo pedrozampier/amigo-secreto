@@ -1,4 +1,11 @@
 <div class="flex min-h-dvh flex-col">
+  <!-- D-11b / WCAG 2.4.1: skip link. O (click) é obrigatório: com <base href="/"> o href puro
+       navegaria para /#main-content em vez de focar o <main> da tela atual. -->
+  <a
+    href="#main-content"
+    (click)="pularParaConteudo($event)"
+    class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-ring"
+  >Pular para o conteúdo</a>
   @if (!online()) {
     <div
       class="sticky top-0 z-50 bg-foreground px-4 py-2 text-center text-sm font-medium text-background"
@@ -9,7 +16,7 @@
     </div>
   }
   <header class="border-b">
-    <div class="mx-auto flex w-full max-w-md items-center justify-between gap-2 p-4">
+    <div class="mx-auto flex w-full max-w-md lg:max-w-3xl items-center justify-between gap-2 p-4">
       <span class="text-sm font-semibold text-foreground">UTF-Secret</span>
       <div class="flex items-center gap-2">
         @if (displayName()) {
@@ -17,13 +24,20 @@
             {{ displayName() }}
           </span>
         }
-        <button hlmBtn variant="outline" size="sm" type="button" [disabled]="saindo()" (click)="sair()">
+        <button hlmBtn variant="outline" size="sm" class="min-h-11" type="button" [disabled]="saindo()" (click)="sair()">
           {{ saindo() ? 'Saindo...' : 'Sair' }}
         </button>
       </div>
     </div>
   </header>
-  <main class="mx-auto w-full max-w-md flex-1 p-4">
+  <!-- D-12 / RA1-ID2: mobile-first (max-w-md = largura de leitura em celular), alargando em lg:
+       para não virar coluna estreita no desktop. Justificativa em docs/accessibility-audit.md. -->
+  <main
+    #mainContent
+    id="main-content"
+    tabindex="-1"
+    class="mx-auto w-full max-w-md flex-1 p-4 outline-none lg:max-w-3xl lg:px-8 lg:py-6"
+  >
     <router-outlet />
   </main>
 </div>

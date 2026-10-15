@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { AuthService } from '../../core/services/auth.service';
@@ -20,6 +20,8 @@ export class AuthenticatedLayoutPage {
   private readonly router = inject(Router);
   private readonly connectivity = inject(ConnectivityService);
 
+  private readonly mainContent = viewChild.required<ElementRef<HTMLElement>>('mainContent');
+
   protected readonly online = this.connectivity.online;
 
   protected readonly displayName = this.auth.displayName;
@@ -36,6 +38,15 @@ export class AuthenticatedLayoutPage {
         void this.router.navigate(['/login']);
       }
     });
+  }
+
+  /**
+   * D-11b / WCAG 2.4.1: foca o <main>. preventDefault é necessário porque
+   * <base href="/"> faria o href="#main-content" navegar para /#main-content.
+   */
+  protected pularParaConteudo(event: Event): void {
+    event.preventDefault();
+    this.mainContent().nativeElement.focus();
   }
 
   protected async sair(): Promise<void> {
