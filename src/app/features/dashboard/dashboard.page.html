@@ -49,12 +49,14 @@
   <section class="mt-6">
     <h3 class="mb-2 text-sm font-semibold text-foreground">Grupos que participo</h3>
     @for (grupo of participados(); track grupo.id) {
-      <div hlmCard class="mb-2 w-full">
-        <div hlmCardHeader>
-          <h4 hlmCardTitle>{{ grupo.name }}</h4>
-          <p hlmCardDescription>{{ grupo.status === 'open' ? 'Aberto' : grupo.status === 'drawing' ? 'Sorteando' : 'Encerrado' }}</p>
+      <a [routerLink]="['/group', grupo.id]" class="mb-2 block">
+        <div hlmCard class="w-full">
+          <div hlmCardHeader>
+            <h4 hlmCardTitle>{{ grupo.name }}</h4>
+            <p hlmCardDescription>{{ grupo.status === 'open' ? 'Aberto' : grupo.status === 'drawing' ? 'Sorteando' : 'Encerrado' }}</p>
+          </div>
         </div>
-      </div>
+      </a>
     } @empty {
       <p class="text-sm text-muted-foreground">
         Você ainda não entrou em nenhum grupo. Peça um link de convite ao organizador.
