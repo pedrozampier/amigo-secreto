@@ -79,6 +79,8 @@ Flags `--read-only` e `--local-only` disponíveis para limitar o alcance.
 | **Utilitários (peer do Spartan)** | clsx (composição de classes) | ^2.x |
 | **Datas (peer do Spartan)** | luxon (uso interno dos componentes de data do Spartan) | ^3.x |
 | **Animações (peer do Spartan)** | tw-animate-css | ^1.x |
+| **PWA** | @angular/service-worker (Service Worker + manifest) | **^21.x** |
+| **Build de ícones (dev)** | @resvg/resvg-js (rasterização SVG -> PNG, devDependency) | ^2.x |
 
 ### 2.1. Changelog de Versões (decisões tomadas em 2026-10-14)
 
@@ -126,6 +128,13 @@ participante (GRP-05) foi deliberadamente implementada como uma confirmação in
 passos (um signal guardando o id em confirmação, alternando botões via `@if`), em vez da
 primitiva `dialog`: `dialog` arrastaria `@ng-icons/core` + `@ng-icons/lucide` como peers,
 ausentes da tabela §2 — exatamente a mesma razão que levou a não gerar `field` acima.
+
+#### Adições da Fase 5 (2026-10-15)
+
+| Item | Decisão | Motivo |
+|:-----|:--------|:-------|
+| `@angular/service-worker` | Adicionado (D-01 da Fase 5) | É o único caminho em que o Lighthouse marca o app como *Installable* sem ressalva, que é literalmente o critério 1 do ROADMAP da fase. Pinado na linha **21**, igual a `@angular/core` e `@angular/cdk`, para não repetir o conflito de peers da Fase 1. |
+| `@resvg/resvg-js` | Adicionado como **devDependency** (D-04 da Fase 5) | O Lighthouse exige ícones **PNG** reais (192x192, 512x512 e um 512x512 `maskable` separado); SVG no manifest não é honrado de forma confiável por iOS Safari nem por vários launchers Android. O `jsdom` já instalado **não** rasteriza — `HTMLCanvasElement.getContext('2d')` lança `Not implemented... without installing the canvas npm package`, verificado empiricamente neste projeto — logo uma dependência nova era inevitável. Escolhido em vez de `sharp` por ser zero-dependency (Rust/napi-rs, binários pré-compilados) e de propósito único. Usado **apenas** por um script de build em `scripts/`, nunca importado por código da aplicação nem enviado ao bundle do browser. |
 
 ---
 
