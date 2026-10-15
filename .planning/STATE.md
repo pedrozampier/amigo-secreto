@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-10-15T02:01:57.686Z"
+status: verifying
+stopped_at: Completed 01-04-PLAN.md
+last_updated: "2026-10-15T02:31:27.196Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 
 Phase: 01 (fundacao-scaffold-banco-rls) — EXECUTING
 Plan: 4 of 4
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-10-15
 
 Progress: [░░░░░░░░░░] 0%
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P02 | 25 | 2 tasks | 3 files |
 | Phase 01 P01 | 15min | 3 tasks | 4 files |
 | Phase 01 P03 | 35 | 3 tasks | 54 files |
+| Phase 01-fundacao-scaffold-banco-rls P04 | 25min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,9 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 01]: [Phase 01-03]: angular-eslint v22 (unpinned @angular-eslint/schematics) self-rejects on an Angular v21 workspace; use ng add angular-eslint@21 explicitly, not the generic schematics package
 - [Phase 01]: [Phase 01-03]: npm 10.9.2 arborist crashes on vitest@4's peer graph (edgesOut bug) for every install in this project; --legacy-peer-deps is the required workaround, not a real peer conflict
 - [Phase 01]: [Phase 01-03]: Spartan UI components import from @spartan-ng/helm/<name> (e.g. @spartan-ng/helm/button), the real tsconfig path alias written by the CLI — not a guessed src/app/shared/ui path
+- [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: Disabled Vercel Deployment Protection deliberately for an academic deliverable so the grader can open the production URL without a Vercel login
+- [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: amigo-secreto.vercel.app is an unrelated third-party Next.js app occupying that subdomain globally; the real production URL is the per-deployment Vercel URL under the zmp2 team scope
+- [Phase 01-fundacao-scaffold-banco-rls]: [Phase 01-04]: npm requires --legacy-peer-deps in CI too (vitest@4/npm 10.9.2 arborist bug), consistent with plan 01-03
 
 ### Pending Todos
 
@@ -93,6 +97,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T02:01:57.683Z
-Stopped at: Completed 01-03-PLAN.md
+Last session: 2026-10-15T02:31:27.194Z
+Stopped at: Completed 01-04-PLAN.md
 Resume file: None

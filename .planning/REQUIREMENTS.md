@@ -96,7 +96,7 @@
 - [ ] **ENG-02**: Testes unitários (`.spec.ts`) cobrindo o algoritmo de sorteio: ausência de autossorteio e *perfect matching*
 - [ ] **ENG-03**: Teste cobrindo a rejeição da segunda invocação do sorteio
 - [x] **ENG-04**: Build de produção executa sem erros nem warnings de lint
-- [ ] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
+- [x] **ENG-05**: Deploy automatizado na Vercel a partir da branch `main`, com rewrite de SPA configurado
 - [x] **ENG-06**: Gitflow mantido (`main` + `develop`) com integrações via Pull Request
 - [ ] **ENG-07**: README consolida o PRD (diagrama ER em Mermaid + design system)
 - [x] **ENG-08**: User stories cadastradas como Issues em um Kanban no GitHub Projects
