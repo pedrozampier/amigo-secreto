@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { memberGuard } from './core/guards/member.guard';
+import { drawResultResolver } from './core/resolvers/draw-result.resolver';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
@@ -43,6 +45,17 @@ export const routes: Routes = [
         path: 'join/:token',
         loadComponent: () =>
           import('./features/group/join/join-group.page').then((m) => m.JoinGroupPage),
+      },
+      // D-08 / RA5-ID17-ID18: a revelação do par, fora de /group (path diferente:
+      // começa com draw, não group). O memberGuard (generalizado nesta fase para
+      // ler :groupId além de :id) barra quem não é membro; drawResultResolver
+      // carrega o estado ready/not-drawn/missing.
+      {
+        path: 'draw/:groupId/result',
+        canActivate: [memberGuard],
+        resolve: { resultado: drawResultResolver },
+        loadComponent: () =>
+          import('./features/draw/result/draw-result.page').then((m) => m.DrawResultPage),
       },
     ],
   },

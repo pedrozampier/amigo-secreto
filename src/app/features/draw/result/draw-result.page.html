@@ -1,0 +1,54 @@
+@switch (resultado().status) {
+  @case ('not-drawn') {
+    <div hlmCard class="w-full">
+      <div hlmCardContent class="flex flex-col items-center gap-3 py-8 text-center">
+        <p class="text-sm text-muted-foreground">O sorteio deste grupo ainda não aconteceu.</p>
+        <a hlmBtn variant="outline" size="sm" [routerLink]="['/group', groupId()]">
+          Voltar para o grupo
+        </a>
+      </div>
+    </div>
+  }
+  @case ('missing') {
+    <div hlmCard class="w-full">
+      <div hlmCardContent class="flex flex-col items-center gap-3 py-8 text-center">
+        <p class="text-sm text-muted-foreground">
+          Não encontramos seu resultado. Tente novamente mais tarde.
+        </p>
+        <a hlmBtn variant="outline" size="sm" [routerLink]="['/group', groupId()]">
+          Voltar para o grupo
+        </a>
+      </div>
+    </div>
+  }
+  @case ('ready') {
+    <!-- DRAW-08/09 + ID8: um único bloco @defer. O @placeholder É o cartão fechado
+         clicável — o conteúdo revelado (nome + wishlist) só entra no DOM quando o
+         usuário interage com ESTE elemento, que é exatamente a semântica de
+         `on interaction` sem trigger explícito (D-06). -->
+    @defer (on interaction) {
+      <div hlmCard class="w-full">
+        <div hlmCardHeader>
+          <h2 hlmCardTitle>Você tirou {{ resultadoPronto()?.receiver?.display_name }}</h2>
+          <p hlmCardDescription>Aqui está a lista de desejos dessa pessoa.</p>
+        </div>
+        <div hlmCardContent>
+          <p class="text-sm text-foreground">
+            {{ resultadoPronto()?.receiver?.wish_list || 'Esta pessoa ainda não cadastrou uma lista de desejos.' }}
+          </p>
+        </div>
+      </div>
+    } @placeholder {
+      <button
+        hlmBtn
+        type="button"
+        class="h-28 w-full"
+        aria-label="Revelar meu amigo secreto"
+      >
+        Revelar meu amigo secreto
+      </button>
+    } @loading {
+      <div class="h-28 w-full animate-pulse rounded-lg border bg-muted/40"></div>
+    }
+  }
+}

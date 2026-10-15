@@ -246,10 +246,15 @@ export interface ParticipantWithProfile extends Participant {
   profile: Profile;
 }
 
-export interface MyDrawResult {
+export interface DrawResult {
+  id: string;
   receiver: Pick<Participant, 'display_name' | 'wish_list'>;
 }
 ```
+
+> Nota (plan 04-04): o nome real no código é `DrawResult`, não `MyDrawResult` — e
+> inclui `id` (o id da própria linha de `draw`), usado só para `track` no `@for`/debug.
+> Divergência mínima registrada aqui em vez de renomear o contrato já em uso.
 
 ---
 
@@ -322,7 +327,7 @@ src/
 | &nbsp;&nbsp;&nbsp;└ `/group/:id` | `features/group/view/group-view.page.ts` | herda `authGuard` + **`memberGuard`** (`canActivate`) |
 | &nbsp;&nbsp;&nbsp;└ `/group/:id/manage` | `features/group/manage/manage-group.page.ts` | herda `authGuard` + **`adminGuard`** (`canActivate`) + **`groupResolver`** (`resolve`) |
 | └ `/join/:token` | `features/group/join/join-group.page.ts` | herda `authGuard` (deep link via `returnUrl`) |
-| └ `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | Fase 4 |
+| └ `/draw/:groupId/result` | `features/draw/result/draw-result.page.ts` | herda `authGuard` + **`memberGuard`** (`canActivate`) + **`drawResultResolver`** (`resolve`) |
 
 **Hierarquia de layout (RA5-ID17).** `/group/create` e `/group/:id/manage` são rotas
 **filhas** de um `GroupLayoutPage` com `<router-outlet>` próprio, que por sua vez é filho da
@@ -380,7 +385,7 @@ A checagem vive agora no `adminGuard` (`CanActivateFn`), que roda antes de a rot
 | `AuthService` | `core/services/auth.service.ts` | Gerenciar sessão Supabase, estado do usuário logado (Signal) e fluxos de login/logout. |
 | `GroupService` | `core/services/group.service.ts` | CRUD de grupos, listagem/remoção de participantes, atualização da própria wishlist e os RPCs de `public`: `create_group` (0006 — cria o grupo E insere o admin como participante na mesma transação, D-01/D-02 da Fase 4), `join_group_by_token` e `preview_group_by_token` (0004). Estado em `signal()`, re-buscado após cada mutação. Não escreve `group.status` — isso pertence à Edge Function do sorteio. |
 | `HolidayService` | `core/services/holiday.service.ts` | `GET` à BrasilAPI via `HttpClient`, ponte Observable→Signal com `toSignal()` e cálculo de dias até o Natal. Único tráfego do projeto que passa por `HttpClient` e, portanto, pelos interceptors. |
-| `DrawService` | `core/services/draw.service.ts` | Invoca a Edge Function `run-draw` via `supabase.functions.invoke()` (DRAW-01/02) e traduz os códigos estáveis de erro com `draw-error-messages.ts` (D-12). Nenhuma lógica de sorteio vive no cliente. A consulta do par sorteado (join com `participant`) é adicionada no plan 04-04. |
+| `DrawService` | `core/services/draw.service.ts` | Invoca a Edge Function `run-draw` via `supabase.functions.invoke()` (DRAW-01/02) e traduz os códigos estáveis de erro com `draw-error-messages.ts` (D-12). Nenhuma lógica de sorteio vive no cliente. `getMyResult(groupId)` (plan 04-04, D-07/DRAW-09) busca o par do usuário numa única query com join FK-nomeado (`participant!draw_receiver_id_fkey`), consumida por `drawResultResolver`. |
 
 ---
 
