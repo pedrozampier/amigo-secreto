@@ -122,7 +122,16 @@ Plans:
   4. Cada participante revela o próprio par com uma ação deliberada (cartão flip controlado por Signal) e, através desse par, vê a lista de desejos de quem tirou
   5. Autenticando como o administrador e tentando ler a tabela `draw` de outro participante via chamada direta ao client (DevTools/console), o resultado vem vazio — prova prática, não só de UI, de que o admin não acessa os pares
 
-**Plans**: TBD
+**Plans**: 5 plans (4 waves)
+
+Plans:
+- [ ] 04-01-PLAN.md — Algoritmo puro de sorteio (Fisher-Yates + pareamento circular) duplicado para Deno/Vitest, specs de ENG-02, e a Edge Function run-draw completa (DRAW-02, DRAW-03, DRAW-05, DRAW-06, DRAW-07, ENG-02)
+- [ ] 04-02-PLAN.md — Migration 0006 com o RPC transacional create_group (admin participa do próprio sorteio, D-01/D-02) e GroupService.createGroup() atualizado (DRAW-04)
+- [ ] 04-03-PLAN.md — DrawService.runDraw() + mapa de erros + botão de sorteio na tela de gestão com confirmação, contador e refetch, e D-04 (admin não se remove) (DRAW-01, ENG-03)
+- [ ] 04-04-PLAN.md — Tela de revelação `/draw/:groupId/result` com @defer (on interaction), resolver funcional e join FK-nomeado (DRAW-08, DRAW-09)
+- [ ] 04-05-PLAN.md — Roteiro de verificação de DRAW-10, correção do critério 5 deste roadmap, e deploy real da Edge Function (DRAW-10)
+
+**Waves**: Wave 1 = 04-01 + 04-02 (paralelos, sem dependência entre si) · Wave 2 = 04-03 (depende da Edge Function de 04-01 e do RPC de 04-02) · Wave 3 = 04-04 (depende de DrawService criado em 04-03) · Wave 4 = 04-05 (checkpoint humano de deploy + prova de privacidade, depende de todo o resto)
 
 **UI hint**: yes
 
