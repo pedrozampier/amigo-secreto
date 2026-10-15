@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 context gathered
-last_updated: "2026-10-15T12:28:19.754Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-10-15T13:03:40.253Z"
 last_activity: 2026-10-15 -- Phase 03 execution started
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 13
-  completed_plans: 9
+  completed_plans: 10
   percent: 40
 ---
 
@@ -60,6 +60,7 @@ Progress: [████░░░░░░] 40%
 | Phase 02 P01 | 25min | 2 tasks | 4 files |
 | Phase 02 P03 | 20min | 3 tasks | 13 files |
 | Phase 03 P02 | 3min | 2 tasks | 9 files |
+| Phase 03 P01 | 36min | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 02-autentica-o-end-to-end]: 02-04 complete — human browser/SQL checkpoint approved 2026-10-15, all 6 steps passed and profile.display_name confirmed correct (D-13 chain proven end to end)
 - [Phase 02-autentica-o-end-to-end]: D-20 ("Confirm email" desabilitado) era falso no projeto real — signUp devolvia session: null sem erro e o redirect para /dashboard era revertido pelo authGuard em silencio. Resolvido desativando "Confirm email" no Supabase (escolha do usuario, Opcao A); fragilidade residual no codigo registrada em deferred-items.md
 - [Phase 03]: [Phase 03-02]: HolidayService exposes diasAteONatal/natal as raw signal references (no trailing call) on ChristmasCountdownCard fields to avoid freezing a one-time read; year for the countdown is sourced from the BrasilAPI response's own date field rather than new Date(), keeping the public GET load-bearing (D-14)
+- [Phase 03]: [Phase 03-01]: Falso negativo no grep de verificação da Task 1 da plan (conta 3 ocorrências da string de configuração search_path vazio, por causa de um comentário explicativo na própria plan); a migration está correta (confirmado via pg_proc: prosecdef=true em ambas as funções)
+- [Phase 03]: [Phase 03-01]: Verificação da Task 3 (migration 0004) executada pelo orquestrador via CLI do Supabase linkada contra o projeto de produção real, não pelo usuário manualmente no SQL Editor; a migration já estava aplicada remotamente antes desta sessão, e supabase_migrations.schema_migrations não existe no banco -- historico da CLI de migrations esta dissociado do estado real (dívida de processo documentada em docs/db-rls-verification.md)
 
 ### Pending Todos
 
@@ -109,6 +112,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T04:24:38.252Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-grupos-participantes-wishlist-e-api-p-blica/03-CONTEXT.md
+Last session: 2026-10-15T13:03:40.216Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None
