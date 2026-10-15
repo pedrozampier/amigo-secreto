@@ -10,7 +10,7 @@
 
 - [x] **Phase 1: Fundação — Scaffold, Banco e RLS** (concluída 2026-10-14) - Projeto Angular + Tailwind + Spartan rodando, schema completo com RLS testada manualmente, ESLint mecanicamente travando sintaxe antiga, Gitflow + Kanban + deploy Vercel operacionais desde o início
 - [x] **Phase 2: Autenticação End-to-End** (concluída 2026-10-15) - Usuário cria conta, loga, mantém sessão após F5, faz logout, e rotas protegidas redirecionam quem não está autenticado
-- [ ] **Phase 3: Grupos, Participantes, Wishlist e API Pública** - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
+- [x] **Phase 3: Grupos, Participantes, Wishlist e API Pública** (concluída 2026-10-15) - Administrador cria grupo e gerencia participantes via convite; participante mantém sua lista de desejos; aplicação consome uma API pública externa via HttpClient com interceptor funcional
 - [ ] **Phase 4: Sorteio e Revelação** - Sorteio roda uma única vez em Edge Function, sem autossorteio, e cada participante revela e vê apenas o próprio par — provadamente inacessível ao administrador
 - [ ] **Phase 5: PWA, Acessibilidade e Entrega** - Aplicação instalável, responsiva e acessível em produção, com toda a documentação de entrega (PRD/SDD/ER, protótipo Figma, spec técnica) consolidada
 
@@ -215,7 +215,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Fundação — Scaffold, Banco e RLS | 4/4 | Complete | 2026-10-14 |
 | 2. Autenticação End-to-End | 4/4 | Complete | 2026-10-15 |
-| 3. Grupos, Participantes, Wishlist e API Pública | 5/6 | Gap closure planned | - |
+| 3. Grupos, Participantes, Wishlist e API Pública | 6/6 | Complete | 2026-10-15 |
 | 4. Sorteio e Revelação | 0/TBD | Not started | - |
 | 5. PWA, Acessibilidade e Entrega | 0/TBD | Not started | - |
 
