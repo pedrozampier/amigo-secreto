@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-10-15T18:53:47.992Z"
+status: verifying
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-10-15T19:15:42.740Z"
 last_activity: 2026-10-15
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 19
-  completed_plans: 18
+  completed_plans: 19
   percent: 40
 ---
 
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-10-14)
 
 Phase: 04 (sorteio-e-revela-o) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
-Last activity: 2026-10-15 - Completed quick task 261015-mbk: link de revelacao para participantes nao-admin
+Status: Phase complete — ready for verification
+Last activity: 2026-10-15
 
 Progress: [████░░░░░░] 40%
 
@@ -68,6 +68,7 @@ Progress: [████░░░░░░] 40%
 | Phase 04-sorteio-e-revela-o P02 | 12min | 2 tasks | 3 files |
 | Phase 04-sorteio-e-revela-o P03 | 6min | 2 tasks | 7 files |
 | Phase 04-sorteio-e-revela-o P04 | 5min | 4 tasks | 10 files |
+| Phase 04 P05 | 19min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,8 @@ Decisões detalhadas em PROJECT.md § Decisões-Chave. Relevantes para o trabalh
 - [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: docs/sdd.md §4 had MyDrawResult without an id field; real code uses DrawResult with id — SDD updated in the same change per CLAUDE.md rule (spec divergence fixed alongside the code)
 - [Phase 04-sorteio-e-revela-o]: [Phase 04-04]: memberGuard generalized to read paramMap.get('id') ?? paramMap.get('groupId'), reusable between /group/:id and /draw/:groupId/result without duplicating the guard
 - [Quick 261015-mbk]: Added "Ver meu amigo secreto" link to group-view.page.html (participant screen), gated by podeVerResultadoDoSorteio(status, temParticipante) pure predicate — closes the UI gap where DRAW-08/09 were unreachable for non-admin participants (only manage-group.page.html, admin-only, linked to /draw/:groupId/result before this change)
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-05]: DRAW-10 verificado via SQL impersonado (role/claims) em vez do snippet literal de DevTools/fetch -- mesma policy de RLS, caminho de verificacao diferente
+- [Phase 04-sorteio-e-revela-o]: [Phase 04-05]: verificacao real de DRAW-10 rodou contra o banco de producao (ccruvfblgdvnjxenezuh), nao um ambiente de teste isolado -- limpeza de dados de teste (grupo Teste2 + 2 usuarios) fica pendente
 
 ### Pending Todos
 
@@ -133,6 +136,7 @@ Nenhum ainda.
 - ENG-06 (Gitflow/PRs) e ENG-08 (Kanban) são contínuos desde a Fase 1 — não tratar como tarefas de fechamento
 - Supabase "Confirm email" DEVE permanecer desativado (mailer_autoconfirm: true): com ele ligado, signUp devolve session: null sem erro e register.page.ts navega para /dashboard so para o authGuard devolver ao /login, sem mensagem alguma. Correcao robusta (signUp expor needsConfirmation) registrada em deferred-items.md
 - Plan 04-02 marcou DRAW-04 completo seguindo seu frontmatter, mas o texto de DRAW-04 em REQUIREMENTS.md (bloqueio com menos de 3 participantes) nao corresponde ao que 04-02 entregou (admin entra no proprio grupo via RPC create_group); revisar mapeamento de requisito em /gsd:transition da Fase 4
+- Limpeza pendente de dados de teste de producao: grupo 'Teste2' (9e0b6421-23e6-43d2-bbcd-3e162e08c4ef) e 2 usuarios de teste (bruno-teste4@exemplo.com, carla-teste4@exemplo.com) criados durante a verificacao de DRAW-10 (plan 04-05)
 
 ### Quick Tasks Completed
 
@@ -142,6 +146,6 @@ Nenhum ainda.
 
 ## Session Continuity
 
-Last session: 2026-10-15T19:08:00.000Z
-Stopped at: Completed quick task 261015-mbk
+Last session: 2026-10-15T19:15:42.737Z
+Stopped at: Completed 04-05-PLAN.md
 Resume file: None

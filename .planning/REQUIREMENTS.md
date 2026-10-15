@@ -61,7 +61,7 @@
 - [x] **DRAW-07**: Grupo passa para `status = 'closed'` ao fim do sorteio
 - [x] **DRAW-08**: Participante revela o próprio par com ação deliberada (cartão flip controlado por Signal)
 - [x] **DRAW-09**: Participante vê a lista de desejos de quem tirou
-- [ ] **DRAW-10**: Administrador não consegue ler os pares — verificável na prática, não só na UI
+- [x] **DRAW-10**: Administrador não consegue ler os pares — verificável na prática, não só na UI
 
 ### Lista de Desejos (WISH)
 
@@ -223,7 +223,7 @@ Preenchido durante a criação do roadmap.
 | DRAW-07 | Fase 4 | Pendente |
 | DRAW-08 | Fase 4 | Pendente |
 | DRAW-09 | Fase 4 | Pendente |
-| DRAW-10 | Fase 4 | Pendente |
+| DRAW-10 | Fase 4 | Completo |
 | WISH-01 | Fase 3 | Completo |
 | WISH-02 | Fase 3 | Completo |
 | WISH-03 | Fase 3 | Completo |

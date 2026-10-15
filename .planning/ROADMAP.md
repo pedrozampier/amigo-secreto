@@ -129,7 +129,7 @@ Plans:
 - [x] 04-02-PLAN.md — Migration 0006 com o RPC transacional create_group (admin participa do próprio sorteio, D-01/D-02) e GroupService.createGroup() atualizado (DRAW-04)
 - [x] 04-03-PLAN.md — DrawService.runDraw() + mapa de erros + botão de sorteio na tela de gestão com confirmação, contador e refetch, e D-04 (admin não se remove) (DRAW-01, ENG-03)
 - [x] 04-04-PLAN.md — Tela de revelação `/draw/:groupId/result` com @defer (on interaction), resolver funcional e join FK-nomeado (DRAW-08, DRAW-09)
-- [ ] 04-05-PLAN.md — Roteiro de verificação de DRAW-10, correção do critério 5 deste roadmap, e deploy real da Edge Function (DRAW-10)
+- [x] 04-05-PLAN.md — Roteiro de verificação de DRAW-10, correção do critério 5 deste roadmap, e deploy real da Edge Function (DRAW-10)
 
 **Waves**: Wave 1 = 04-01 + 04-02 (paralelos, sem dependência entre si) · Wave 2 = 04-03 (depende da Edge Function de 04-01 e do RPC de 04-02) · Wave 3 = 04-04 (depende de DrawService criado em 04-03) · Wave 4 = 04-05 (checkpoint humano de deploy + prova de privacidade, depende de todo o resto)
 
